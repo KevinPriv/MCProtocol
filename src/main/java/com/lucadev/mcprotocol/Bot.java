@@ -184,7 +184,7 @@ public class Bot {
     }
 
     public boolean isConnected() {
-        return connected;
+        return connected && getConnection().getSocket().isConnected();
     }
 
     public Connection getConnection() {
