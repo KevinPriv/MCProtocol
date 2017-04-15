@@ -1,4 +1,4 @@
-#MCProtocol
+# MCProtocol
 This project implements the current Minecraft protocol in Java. Might give up on this some day.
 
 This entire project is just a little challenge for me to get away from boredom.

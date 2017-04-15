@@ -15,7 +15,7 @@ public class Example {
         //init builder w some info in params
         BotBuilder builder = new BotBuilder("localhost", 25565);
         //Set authenticate to offline mode
-        builder.loginProvider(LoginProvider.getOfflineProvider()).username("Steve").authenticate();
+        builder.loginProvider(LoginProvider.getDefaultOfflineProvider()).username("Steve").authenticate();
         //build to bot
         Bot bot = builder.build();
         //additional bot config can be done here

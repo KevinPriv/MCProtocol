@@ -3,9 +3,9 @@ package com.lucadev.mcprotocol.protocol;
 import com.lucadev.mcprotocol.Bot;
 import com.lucadev.mcprotocol.game.chat.ChatConverterFactory;
 import com.lucadev.mcprotocol.game.chat.components.ChatComponent;
-import com.lucadev.mcprotocol.protocol.packets.Packet;
-import com.lucadev.mcprotocol.protocol.packets.PacketListener;
-import com.lucadev.mcprotocol.protocol.packets.ReadablePacket;
+import com.lucadev.mcprotocol.protocol.packet.Packet;
+import com.lucadev.mcprotocol.protocol.packet.PacketListener;
+import com.lucadev.mcprotocol.protocol.packet.ReadablePacket;
 import com.lucadev.mcprotocol.tick.TickEngine;
 import com.lucadev.mcprotocol.tick.TickListener;
 

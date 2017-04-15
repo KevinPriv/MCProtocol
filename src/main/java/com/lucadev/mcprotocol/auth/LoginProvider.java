@@ -1,5 +1,6 @@
 package com.lucadev.mcprotocol.auth;
 
+import com.lucadev.mcprotocol.auth.offline.OfflineModeLoginProvider;
 import com.lucadev.mcprotocol.auth.yggdrasil.YggdrasilLoginProvider;
 
 import java.io.IOException;
@@ -12,7 +13,7 @@ public abstract class LoginProvider {
 
     public abstract Session login(String email, String password) throws IOException;
 
-    public static LoginProvider getDefaultProvider() {
+    public static LoginProvider getDefaultOnlineProvider() {
         return new YggdrasilLoginProvider();
     }
 
@@ -20,7 +21,7 @@ public abstract class LoginProvider {
      * Provider for offline mode.
      * @return
      */
-    public static LoginProvider getOfflineProvider() {
+    public static LoginProvider getDefaultOfflineProvider() {
         return new OfflineModeLoginProvider();
     }
 

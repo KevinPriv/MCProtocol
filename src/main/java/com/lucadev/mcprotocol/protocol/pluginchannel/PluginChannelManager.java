@@ -1,7 +1,7 @@
 package com.lucadev.mcprotocol.protocol.pluginchannel;
 
 import com.lucadev.mcprotocol.Bot;
-import com.lucadev.mcprotocol.protocol.client.NetClient;
+import com.lucadev.mcprotocol.protocol.network.client.NetClient;
 
 import java.io.IOException;
 

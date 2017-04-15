@@ -1,7 +1,6 @@
 package com.lucadev.mcprotocol.game.nbt;
 
-import com.lucadev.mcprotocol.game.nbt.tags.Tag;
-import com.lucadev.mcprotocol.game.nbt.types.*;
+import com.lucadev.mcprotocol.game.nbt.tags.*;
 
 /**
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
@@ -26,61 +25,61 @@ public final class NBT {
 
     }
 
-    public static final int getIdByTagClass(Class<? extends Tag> clazz) {
-        if(clazz == EndTag.class) {
+    public static final int getIdByTagClass(Class<? extends NBTTag> clazz) {
+        if(clazz == NBTEndTag.class) {
             return TAG_END;
-        } else if (clazz == ByteTag.class) {
+        } else if (clazz == NBTByteTag.class) {
             return TAG_BYTE;
-        } else if (clazz == ShortTag.class) {
+        } else if (clazz == NBTShortTag.class) {
             return TAG_SHORT;
-        } else if (clazz == IntTag.class) {
+        } else if (clazz == NBTIntTag.class) {
             return TAG_INT;
-        } else if (clazz == LongTag.class) {
+        } else if (clazz == NBTLongTag.class) {
             return TAG_LONG;
-        } else if (clazz == FloatTag.class) {
+        } else if (clazz == NBTFloatTag.class) {
             return TAG_FLOAT;
-        } else if (clazz == DoubleTag.class) {
+        } else if (clazz == NBTDoubleTag.class) {
             return TAG_DOUBLE;
-        } else if (clazz == ByteArrayTag.class) {
+        } else if (clazz == NBTByteArrayTag.class) {
             return TAG_BYTE_ARRAY;
-        } else if (clazz == StringTag.class) {
+        } else if (clazz == NBTStringTag.class) {
             return TAG_STRING;
-        } else if (clazz == ListTag.class) {
+        } else if (clazz == NBTListTag.class) {
             return TAG_LIST;
-        } else if (clazz == CompoundTag.class) {
+        } else if (clazz == NBTCompoundTag.class) {
             return TAG_COMPOUND;
-        } else if (clazz == IntArrayTag.class) {
+        } else if (clazz == NBTIntArrayTag.class) {
             return TAG_INT_ARRAY;
         }
         return -1;
     }
 
-    public static final Class<? extends Tag> getTagClassById(int tagCode) {
+    public static final Class<? extends NBTTag> getTagClassById(int tagCode) {
         switch (tagCode) {
             case 0:
-                return EndTag.class;
+                return NBTEndTag.class;
             case 1:
-                return ByteTag.class;
+                return NBTByteTag.class;
             case 2:
-                return ShortTag.class;
+                return NBTShortTag.class;
             case 3:
-                return IntTag.class;
+                return NBTIntTag.class;
             case 4:
-                return LongTag.class;
+                return NBTLongTag.class;
             case 5:
-                return FloatTag.class;
+                return NBTFloatTag.class;
             case 6:
-                return DoubleTag.class;
+                return NBTDoubleTag.class;
             case 7:
-                return ByteArrayTag.class;
+                return NBTByteArrayTag.class;
             case 8:
-                return StringTag.class;
+                return NBTStringTag.class;
             case 9:
-                return ListTag.class;
+                return NBTListTag.class;
             case 10:
-                return CompoundTag.class;
+                return NBTCompoundTag.class;
             case 11:
-                return IntArrayTag.class;
+                return NBTIntArrayTag.class;
         }
         return null;
     }

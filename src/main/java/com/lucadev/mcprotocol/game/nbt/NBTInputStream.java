@@ -1,8 +1,7 @@
 package com.lucadev.mcprotocol.game.nbt;
 
-import com.lucadev.mcprotocol.game.nbt.tags.Tag;
-import com.lucadev.mcprotocol.game.nbt.types.*;
-import com.lucadev.mcprotocol.network.io.EndianSwitchableInputStream;
+import com.lucadev.mcprotocol.game.nbt.tags.*;
+import com.lucadev.mcprotocol.protocol.network.stream.EndianSwitchableInputStream;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,14 +31,14 @@ public class NBTInputStream extends EndianSwitchableInputStream {
         this.compressed = compressed;
     }
 
-    public Tag readTag() throws IOException {
+    public NBTTag readTag() throws IOException {
         return readTag(0);
     }
 
-    public Tag readTag(int depth) throws IOException{
+    public NBTTag readTag(int depth) throws IOException{
         int typeId = readByte() & 0xFF;
-        if(typeId == getIdByTagClass(EndTag.class)) {
-            return new EndTag();
+        if(typeId == getIdByTagClass(NBTEndTag.class)) {
+            return new NBTEndTag();
         }
 
         int nameLength = readShort() & 0xFFFF;
@@ -49,37 +48,37 @@ public class NBTInputStream extends EndianSwitchableInputStream {
         return createTag(typeId, name);
     }
 
-    private Tag createTag(int typeId, String name) throws IOException{
-        Tag t;
+    private NBTTag createTag(int typeId, String name) throws IOException{
+        NBTTag t;
         switch (typeId) {
             case TAG_END:
-                return new EndTag();
+                return new NBTEndTag();
             case TAG_BYTE:
-                t = new ByteTag();
+                t = new NBTByteTag();
                 break;
             case TAG_SHORT:
-                t = new ShortTag();
+                t = new NBTShortTag();
                 break;
             case TAG_INT:
-                t = new IntTag();
+                t = new NBTIntTag();
                 break;
             case TAG_LONG:
-                t = new LongTag();
+                t = new NBTLongTag();
                 break;
             case TAG_FLOAT:
-                t = new FloatTag();
+                t = new NBTFloatTag();
                 break;
             case TAG_DOUBLE:
-                t = new DoubleTag();
+                t = new NBTDoubleTag();
                 break;
             case TAG_BYTE_ARRAY:
-                t = new ByteArrayTag();
+                t = new NBTByteArrayTag();
                 break;
             case TAG_STRING:
-                t = new StringTag();
+                t = new NBTStringTag();
                 break;
             case TAG_LIST:
-                t = new ListTag(readByte());
+                t = new NBTListTag(readByte());
                 break;
             default:
                 throw new NBTException("Unknown tag id: " + typeId);

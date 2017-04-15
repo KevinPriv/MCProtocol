@@ -1,27 +1,26 @@
 package com.lucadev.mcprotocol;
 
 import com.google.gson.Gson;
-import com.lucadev.mcprotocol.game.entity.Player;
+import com.lucadev.mcprotocol.game.entity.player.Player;
 import com.lucadev.mcprotocol.auth.LoginProvider;
 import com.lucadev.mcprotocol.auth.Session;
 import com.lucadev.mcprotocol.game.world.World;
-import com.lucadev.mcprotocol.network.Connection;
-import com.lucadev.mcprotocol.network.ConnectionFactory;
+import com.lucadev.mcprotocol.protocol.network.connection.Connection;
+import com.lucadev.mcprotocol.protocol.network.connection.ConnectionFactory;
 import com.lucadev.mcprotocol.protocol.Protocol;
 import com.lucadev.mcprotocol.protocol.ProtocolFactory;
 import com.lucadev.mcprotocol.protocol.State;
-import com.lucadev.mcprotocol.protocol.client.NetClient;
-import com.lucadev.mcprotocol.protocol.client.NetClientFactory;
-import com.lucadev.mcprotocol.protocol.packets.headers.PacketLengthHeader;
-import com.lucadev.mcprotocol.protocol.packets.sbound.handshake.S00Handshake;
-import com.lucadev.mcprotocol.protocol.packets.sbound.S00Request;
-import com.lucadev.mcprotocol.protocol.packets.sbound.play.S02ChatMessage;
-import com.lucadev.mcprotocol.responses.MOTDResponse;
+import com.lucadev.mcprotocol.protocol.network.client.NetClient;
+import com.lucadev.mcprotocol.protocol.network.client.NetClientFactory;
+import com.lucadev.mcprotocol.protocol.packet.headers.PacketLengthHeader;
+import com.lucadev.mcprotocol.protocol.packet.sbound.handshake.S00Handshake;
+import com.lucadev.mcprotocol.protocol.packet.sbound.status.S00Request;
+import com.lucadev.mcprotocol.protocol.packet.sbound.play.S02ChatMessage;
+import com.lucadev.mcprotocol.util.model.MOTDResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.Scanner;
 
 /**
  * Connects all classes together and functions as the actual bot.

@@ -1,9 +1,8 @@
 package com.lucadev.mcprotocol.protocol.pluginchannel.impl;
 
 import com.lucadev.mcprotocol.Bot;
-import com.lucadev.mcprotocol.protocol.client.NetClient;
-import com.lucadev.mcprotocol.protocol.impl.v316.Protocol316;
-import com.lucadev.mcprotocol.protocol.packets.sbound.play.S09PluginMessage;
+import com.lucadev.mcprotocol.protocol.network.client.NetClient;
+import com.lucadev.mcprotocol.protocol.packet.sbound.play.S09PluginMessage;
 import com.lucadev.mcprotocol.protocol.pluginchannel.PluginChannel;
 import com.lucadev.mcprotocol.protocol.pluginchannel.PluginChannelManager;
 import org.slf4j.Logger;

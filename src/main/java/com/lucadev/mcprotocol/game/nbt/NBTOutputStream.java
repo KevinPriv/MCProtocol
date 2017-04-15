@@ -1,8 +1,7 @@
 package com.lucadev.mcprotocol.game.nbt;
 
-import com.lucadev.mcprotocol.game.nbt.tags.Tag;
-import com.lucadev.mcprotocol.game.nbt.types.EndTag;
-import com.lucadev.mcprotocol.network.io.EndianSwitchableOutputStream;
+import com.lucadev.mcprotocol.game.nbt.tags.NBTEndTag;
+import com.lucadev.mcprotocol.protocol.network.stream.EndianSwitchableOutputStream;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -26,16 +25,16 @@ public class NBTOutputStream extends EndianSwitchableOutputStream {
     }
 
     /**
-     * Writes a NBT tag to the stream.
-     * @param tag the tag to write
+     * Writes a NBT NBTTag to the stream.
+     * @param NBTTag the NBTTag to write
      * @throws IOException
      */
-    public void writeTag(Tag tag) throws IOException {
-        writeByte(tag.getId());
-        if(tag instanceof EndTag) {
+    public void writeTag(NBTTag NBTTag) throws IOException {
+        writeByte(NBTTag.getId());
+        if(NBTTag instanceof NBTEndTag) {
             return;
         }
-        String name = tag.getName();
+        String name = NBTTag.getName();
         if(name == null || name.isEmpty()) {
             writeShort(0);
         } else {
@@ -43,6 +42,6 @@ public class NBTOutputStream extends EndianSwitchableOutputStream {
             writeShort(nameBytes.length);
             write(nameBytes);
         }
-        tag.writePayload(this);
+        NBTTag.writePayload(this);
     }
 }

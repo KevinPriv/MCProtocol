@@ -4,10 +4,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.lucadev.mcprotocol.Bot;
 import com.lucadev.mcprotocol.game.chat.ChatConverter;
-import com.lucadev.mcprotocol.game.chat.actions.ClickAction;
-import com.lucadev.mcprotocol.game.chat.actions.HoverAction;
+import com.lucadev.mcprotocol.game.chat.event.action.ClickAction;
+import com.lucadev.mcprotocol.game.chat.event.action.HoverAction;
 import com.lucadev.mcprotocol.game.chat.components.ChatComponent;
 import com.lucadev.mcprotocol.game.chat.components.ScoreComponent;
 import com.lucadev.mcprotocol.game.chat.components.TextComponent;
@@ -16,7 +15,7 @@ import com.lucadev.mcprotocol.game.chat.event.ClickEvent;
 import com.lucadev.mcprotocol.game.chat.event.HoverEvent;
 import com.lucadev.mcprotocol.game.chat.styling.ChatColor;
 import com.lucadev.mcprotocol.game.chat.styling.ChatStyle;
-import com.lucadev.mcprotocol.exceptions.ParseException;
+import com.lucadev.mcprotocol.game.chat.ChatParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,10 +35,10 @@ public class DefaultChatConverter implements ChatConverter {
      *
      * @param node
      * @return
-     * @throws ParseException
+     * @throws ChatParseException
      */
     @Override
-    public ChatComponent parse(JsonNode node) throws ParseException {
+    public ChatComponent parse(JsonNode node) throws ChatParseException {
         ChatComponent component;
         if(node.has("text")) {
             //text component
@@ -118,10 +117,10 @@ public class DefaultChatConverter implements ChatConverter {
      *
      * @param json
      * @return
-     * @throws ParseException
+     * @throws ChatParseException
      */
     @Override
-    public ChatComponent parse(String json) throws ParseException {
+    public ChatComponent parse(String json) throws ChatParseException {
         ObjectMapper mapper = new ObjectMapper();
         try {
             return parse(mapper.readTree(json));

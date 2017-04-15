@@ -2,14 +2,10 @@ package com.lucadev.mcprotocol.protocol;
 
 import com.lucadev.mcprotocol.game.chat.ChatConverterFactory;
 import com.lucadev.mcprotocol.game.chat.impl.DefaultChatConverterFactory;
-import com.lucadev.mcprotocol.protocol.packets.Packet;
-import com.lucadev.mcprotocol.protocol.packets.UndefinedPacket;
-import com.lucadev.mcprotocol.tick.TickListener;
-import com.lucadev.mcprotocol.tick.TickWorker;
+import com.lucadev.mcprotocol.protocol.packet.Packet;
+import com.lucadev.mcprotocol.protocol.packet.UndefinedPacket;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * Abstract class for protocol which includes methods like varint and such.

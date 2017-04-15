@@ -1,6 +1,6 @@
 package com.lucadev.mcprotocol.game.chat.event;
 
-import com.lucadev.mcprotocol.game.chat.actions.HoverAction;
+import com.lucadev.mcprotocol.game.chat.event.action.HoverAction;
 
 /**
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >

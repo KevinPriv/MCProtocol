@@ -1,6 +1,6 @@
 package com.lucadev.mcprotocol.game.chat.event;
 
-import com.lucadev.mcprotocol.game.chat.actions.ClickAction;
+import com.lucadev.mcprotocol.game.chat.event.action.ClickAction;
 
 /**
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >

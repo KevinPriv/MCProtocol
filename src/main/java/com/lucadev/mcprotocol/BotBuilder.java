@@ -1,9 +1,9 @@
 package com.lucadev.mcprotocol;
 
 import com.lucadev.mcprotocol.auth.LoginProvider;
-import com.lucadev.mcprotocol.network.ConnectionFactory;
+import com.lucadev.mcprotocol.protocol.network.connection.ConnectionFactory;
 import com.lucadev.mcprotocol.protocol.ProtocolFactory;
-import com.lucadev.mcprotocol.protocol.client.NetClientFactory;
+import com.lucadev.mcprotocol.protocol.network.client.NetClientFactory;
 
 /**
  * Builder for the bot.
@@ -23,7 +23,7 @@ public class BotBuilder {
     /**
      * Used to obtain the mojang auth
      */
-    private LoginProvider loginProvider = LoginProvider.getDefaultProvider();
+    private LoginProvider loginProvider = LoginProvider.getDefaultOnlineProvider();
 
     private String username;
     private String password;

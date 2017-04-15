@@ -1,0 +1,8 @@
+package com.lucadev.mcprotocol.protocol.packet;
+
+/**
+ * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
+ */
+public abstract class AbstractPacket implements Packet {
+
+}
