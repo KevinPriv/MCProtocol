@@ -28,6 +28,16 @@ public class MOTDResponse {
         return favicon;
     }
 
+    @Override
+    public String toString() {
+        return "MOTDResponse{" +
+                "description=" + description +
+                ", players=" + players +
+                ", version=" + version +
+                ", favicon='" + favicon + '\'' +
+                '}';
+    }
+
     public class Version {
         private String name;
         private int protocol;
