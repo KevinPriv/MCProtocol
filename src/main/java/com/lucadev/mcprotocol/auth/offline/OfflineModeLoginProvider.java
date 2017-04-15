@@ -13,7 +13,7 @@ public class OfflineModeLoginProvider extends LoginProvider {
 
     @Override
     public Session login(String email, String password) throws IOException {
-        return new Session("", "", "", email);
+        return new OfflineSession(email);
     }
 
     /**

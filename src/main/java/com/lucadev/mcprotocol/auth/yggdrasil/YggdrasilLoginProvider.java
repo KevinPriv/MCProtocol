@@ -66,7 +66,7 @@ public class YggdrasilLoginProvider extends LoginProvider {
             JsonNode profile = node.get("selectedProfile");
             String profileId = profile.get("id").textValue();
             String profileName = profile.get("name").textValue();
-            return new Session(accessToken, clientToken, profileId, profileName);
+            return new YggdrasilSession(accessToken, clientToken, profileId, profileName);
         } else {
             //TODO: Handle error
             logger.info(conn.getResponseMessage());
