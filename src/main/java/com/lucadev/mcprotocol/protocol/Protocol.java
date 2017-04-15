@@ -81,8 +81,6 @@ public interface Protocol {
      */
     void onChatMessage(ChatComponent component, byte position);
 
-    void register(int tickDelay, TickListener listener);
-
     void disconnect();
 
     TickEngine getTickEngine();

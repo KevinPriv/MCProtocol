@@ -58,7 +58,6 @@ public class Protocol316 extends AbstractProtocol {
     private static final Logger logger = LoggerFactory.getLogger(Protocol316.class);
     private PluginChannelManager pluginChannelManager;
     private HashMap<Class<? extends ReadablePacket>, List<PacketListener>> listenerMap = new HashMap<>();
-    private List<TickWorker> tickWorkers = new ArrayList<>();
     private TickEngine tickEngine;
 
     /**
@@ -100,9 +99,14 @@ public class Protocol316 extends AbstractProtocol {
     }
 
     private void setupTickWorkers() {
-        //do this action every so often
-        register(20, (bot) -> {
+        //Send player pos and look every 1 sec when not moving.
+        getTickEngine().register(20, (bot) -> {
             bot.getNetClient().sendPacket(new S13PlayerPositionLook(bot.getPlayer()));
+        });
+
+        //tick method for protocol class itself.
+        getTickEngine().register(1, (bot) -> {
+            tick();
         });
 
     }
@@ -263,7 +267,6 @@ public class Protocol316 extends AbstractProtocol {
 
     @Override
     public void tick() {
-        tickWorkers.forEach(TickWorker::tick);
     }
 
     /**
@@ -277,11 +280,6 @@ public class Protocol316 extends AbstractProtocol {
         if (position == 1) {
             logger.info("CHAT: {}", component.getCompleteText());
         }
-    }
-
-    @Override
-    public void register(int tickDelay, TickListener listener) {
-        tickWorkers.add(new TickWorker(bot, tickDelay, listener));
     }
 
     @Override

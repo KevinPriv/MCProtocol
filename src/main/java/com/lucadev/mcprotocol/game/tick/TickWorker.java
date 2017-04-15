@@ -31,6 +31,10 @@ public class TickWorker {
      * Called by the tick engine, handles internal worker counter and the listener.
      */
     public void tick() {
+        if(delay <= 1) {
+            listener.onAction(bot);
+            return;
+        }
         counter++;
         if (counter == delay) {
             listener.onAction(bot);
