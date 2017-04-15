@@ -20,7 +20,7 @@ public class TickWorker {
 
     public void tick() {
         counter++;
-        if(counter == delay) {
+        if (counter == delay) {
             listener.onAction(bot);
             counter = 0;
         }

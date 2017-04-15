@@ -8,6 +8,7 @@ import java.io.IOException;
 
 /**
  * A signed floating point type.
+ *
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  */
 public class NBTFloatTag extends NBTPrimaryDataTag<Float> {

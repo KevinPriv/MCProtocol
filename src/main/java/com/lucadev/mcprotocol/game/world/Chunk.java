@@ -15,7 +15,7 @@ public class Chunk {
     }
 
     public Chunk(ChunkSection[] chunkSections) {
-        if(chunkSections.length != 16) {
+        if (chunkSections.length != 16) {
             throw new IllegalStateException("Chunk column must be given 16 chunk sections");
         }
         this.sections = chunkSections;

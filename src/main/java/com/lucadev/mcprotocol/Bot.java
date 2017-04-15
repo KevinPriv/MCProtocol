@@ -1,21 +1,21 @@
 package com.lucadev.mcprotocol;
 
 import com.google.gson.Gson;
+import com.lucadev.mcprotocol.auth.Session;
 import com.lucadev.mcprotocol.auth.SessionProvider;
 import com.lucadev.mcprotocol.game.entity.player.Player;
-import com.lucadev.mcprotocol.auth.Session;
 import com.lucadev.mcprotocol.game.world.World;
-import com.lucadev.mcprotocol.protocol.network.connection.Connection;
-import com.lucadev.mcprotocol.protocol.network.connection.ConnectionFactory;
 import com.lucadev.mcprotocol.protocol.Protocol;
 import com.lucadev.mcprotocol.protocol.ProtocolFactory;
 import com.lucadev.mcprotocol.protocol.State;
 import com.lucadev.mcprotocol.protocol.network.client.NetClient;
 import com.lucadev.mcprotocol.protocol.network.client.NetClientFactory;
+import com.lucadev.mcprotocol.protocol.network.connection.Connection;
+import com.lucadev.mcprotocol.protocol.network.connection.ConnectionFactory;
 import com.lucadev.mcprotocol.protocol.packet.headers.PacketLengthHeader;
 import com.lucadev.mcprotocol.protocol.packet.sbound.handshake.S00Handshake;
-import com.lucadev.mcprotocol.protocol.packet.sbound.status.S00Request;
 import com.lucadev.mcprotocol.protocol.packet.sbound.play.S02ChatMessage;
+import com.lucadev.mcprotocol.protocol.packet.sbound.status.S00Request;
 import com.lucadev.mcprotocol.util.model.MOTDResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +25,7 @@ import java.io.IOException;
 /**
  * Connects all classes together and functions as the actual bot.
  * This class could be seen as the player who connects to the server.
+ *
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  */
 public class Bot {
@@ -80,7 +81,7 @@ public class Bot {
         this.protocolFactory = builder.getProtocolFactory();
         this.netClientFactory = builder.getNetClientFactory();
         this.sessionProvider = builder.getSessionProvider();
-        if(builder.shouldAuthenticate()) {
+        if (builder.shouldAuthenticate()) {
             try {
                 authenticate(builder.getUsername(), builder.getPassword());
             } catch (IOException e) {
@@ -90,7 +91,7 @@ public class Bot {
         this.botBuilder = builder;
     }
 
-    public void authenticate(String username, String password) throws IOException{
+    public void authenticate(String username, String password) throws IOException {
         logger.info("Authenticating user");
         login = sessionProvider.login(username, password);
         logger.info(login.toString());
@@ -106,11 +107,12 @@ public class Bot {
 
     /**
      * Connects to the server.
+     *
      * @param host
      * @param port
      */
     public void connect(String host, int port) throws IOException {
-        if(isConnected()) {
+        if (isConnected()) {
             throw new IllegalStateException("Already connected!");
         }
         Connection connection = connectionFactory.createConnection();
@@ -123,10 +125,11 @@ public class Bot {
 
     /**
      * Joins the server by following the serverLogin and whatnot.
+     *
      * @throws IOException
      */
     public void joinServer() throws IOException {
-        if(!isConnected()) {
+        if (!isConnected()) {
             connect();
         }
         logger.info("Joining server as player...");
@@ -135,11 +138,12 @@ public class Bot {
 
     /**
      * Fetches motd
+     *
      * @return
      * @throws IOException
      */
     public MOTDResponse fetchMOTD() throws IOException {
-        if(!isConnected()) {
+        if (!isConnected()) {
             connect();
         }
         logger.info("Fetching MOTD");
@@ -208,7 +212,7 @@ public class Bot {
     }
 
     public void blockUntilFinished() {
-        while(getConnection().getSocket().isConnected()) {
+        while (getConnection().getSocket().isConnected()) {
         }
     }
 

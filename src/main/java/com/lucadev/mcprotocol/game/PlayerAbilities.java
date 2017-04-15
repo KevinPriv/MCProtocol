@@ -18,10 +18,10 @@ public class PlayerAbilities {
         this.flyingSpeed = flyingSpeed;
         this.fovModifier = fovModifier;
 
-        invulnerable = BitFlagUtil.isFlagSet(flag, (byte)0x01);
-        flying = BitFlagUtil.isFlagSet(flag, (byte)0x02);
-        flyingAllowed = BitFlagUtil.isFlagSet(flag, (byte)0x04);
-        creativeMode = BitFlagUtil.isFlagSet(flag, (byte)0x08);
+        invulnerable = BitFlagUtil.isFlagSet(flag, (byte) 0x01);
+        flying = BitFlagUtil.isFlagSet(flag, (byte) 0x02);
+        flyingAllowed = BitFlagUtil.isFlagSet(flag, (byte) 0x04);
+        creativeMode = BitFlagUtil.isFlagSet(flag, (byte) 0x08);
     }
 
     public boolean isInvulnerable() {

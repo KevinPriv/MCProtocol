@@ -10,6 +10,7 @@ public interface ChatConverter {
 
     /**
      * Parses the given objectnode into a valid chat component
+     *
      * @param objectNode
      * @return
      * @throws ChatParseException
@@ -18,6 +19,7 @@ public interface ChatConverter {
 
     /**
      * Parses the given json string to a chatnode.
+     *
      * @param json
      * @return
      * @throws ChatParseException
@@ -26,6 +28,7 @@ public interface ChatConverter {
 
     /**
      * Convert object to json
+     *
      * @param chatComponent
      * @return
      */
@@ -33,6 +36,7 @@ public interface ChatConverter {
 
     /**
      * Convert object to json
+     *
      * @param chatComponent
      * @return
      */

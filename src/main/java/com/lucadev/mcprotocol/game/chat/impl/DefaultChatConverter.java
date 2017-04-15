@@ -5,17 +5,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.lucadev.mcprotocol.game.chat.ChatConverter;
-import com.lucadev.mcprotocol.game.chat.event.action.ClickAction;
-import com.lucadev.mcprotocol.game.chat.event.action.HoverAction;
+import com.lucadev.mcprotocol.game.chat.ChatParseException;
 import com.lucadev.mcprotocol.game.chat.components.ChatComponent;
 import com.lucadev.mcprotocol.game.chat.components.ScoreComponent;
 import com.lucadev.mcprotocol.game.chat.components.TextComponent;
 import com.lucadev.mcprotocol.game.chat.components.TranslationComponent;
 import com.lucadev.mcprotocol.game.chat.event.ClickEvent;
 import com.lucadev.mcprotocol.game.chat.event.HoverEvent;
+import com.lucadev.mcprotocol.game.chat.event.action.ClickAction;
+import com.lucadev.mcprotocol.game.chat.event.action.HoverAction;
 import com.lucadev.mcprotocol.game.chat.styling.ChatColor;
 import com.lucadev.mcprotocol.game.chat.styling.ChatStyle;
-import com.lucadev.mcprotocol.game.chat.ChatParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,14 +40,14 @@ public class DefaultChatConverter implements ChatConverter {
     @Override
     public ChatComponent parse(JsonNode node) throws ChatParseException {
         ChatComponent component;
-        if(node.has("text")) {
+        if (node.has("text")) {
             //text component
             component = new TextComponent(node.get("text").textValue());
         } else if (node.has("translate")) {
             //translate component
             String key = node.get("translate").textValue();
             List<ChatComponent> params = new ArrayList<>();
-            if(node.has("with")) {
+            if (node.has("with")) {
                 for (JsonNode comp : node.get("with")) {
                     params.add(parse(comp));
                 }
@@ -59,7 +59,7 @@ public class DefaultChatConverter implements ChatConverter {
             String name = score.get("name").textValue();
             String objective = score.get("objective").textValue();
             String value = null;
-            if(score.has("value")) {
+            if (score.has("value")) {
                 value = score.get("value").textValue();
             }
             component = new ScoreComponent(name, objective, value);
@@ -72,35 +72,35 @@ public class DefaultChatConverter implements ChatConverter {
             };
         }
 
-        if(node.has("color")) {
+        if (node.has("color")) {
             component.setColor(ChatColor.getColor(node.get("color").textValue()));
         }
 
         for (ChatStyle style : ChatStyle.values()) {
-            if(node.has(style.getName()) && Boolean.parseBoolean(node.get(style.getName()).textValue())) {
+            if (node.has(style.getName()) && Boolean.parseBoolean(node.get(style.getName()).textValue())) {
                 component.addStyle(style);
             }
         }
 
-        if(node.has("insertion")) {
+        if (node.has("insertion")) {
             component.setInsertion(node.get("insertion").textValue());
         }
 
-        if(node.has("clickEvent")) {
+        if (node.has("clickEvent")) {
             JsonNode clickNode = node.get("clickEvent");
             ClickAction action = ClickAction.getAction(clickNode.get("action").textValue());
             String value = clickNode.get("value").textValue();
             component.setClickEvent(new ClickEvent(action, value));
         }
 
-        if(node.has("hoverEvent")) {
+        if (node.has("hoverEvent")) {
             JsonNode hoverNode = node.get("hoverEvent");
             HoverAction action = HoverAction.getAction(hoverNode.get("action").textValue());
             String value = hoverNode.get("value").textValue();
             component.setHoverEvent(new HoverEvent(action, value));
         }
 
-        if(node.has("extra")) {
+        if (node.has("extra")) {
             JsonNode extras = node.get("extra");
             for (JsonNode compNode : extras) {
                 ChatComponent ex = parse(compNode);
@@ -140,42 +140,42 @@ public class DefaultChatConverter implements ChatConverter {
     public JsonNode toJson(ChatComponent component) {
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode node = mapper.createObjectNode();
-        if(component instanceof TextComponent) {
+        if (component instanceof TextComponent) {
             node.put("text", component.getText());
-        } else if(component instanceof TranslationComponent) {
-            TranslationComponent translation = (TranslationComponent)component;
+        } else if (component instanceof TranslationComponent) {
+            TranslationComponent translation = (TranslationComponent) component;
             node.put("translate", translation.getTranslationKey());
-            if(translation.getTranslationParameters() != null && translation.getTranslationParameters().length > 0) {
+            if (translation.getTranslationParameters() != null && translation.getTranslationParameters().length > 0) {
                 ArrayNode array = node.putArray("with");
                 for (ChatComponent comp : translation.getTranslationParameters()) {
                     array.add(toJson(comp));
                 }
             }
         } else if (component instanceof ScoreComponent) {
-            ScoreComponent score = (ScoreComponent)component;
+            ScoreComponent score = (ScoreComponent) component;
             ObjectNode scoreNode = node.putObject("score");
             scoreNode.put("name", score.getName());
             scoreNode.put("objective", score.getObjective());
-            if(score.getValue() != null && !score.getValue().isEmpty()) {
+            if (score.getValue() != null && !score.getValue().isEmpty()) {
                 scoreNode.put("value", score.getValue());
             }
         } else {
             throw new IllegalStateException("Unknown chat component, cannot convert to json!");
         }
-        if(component.getColor() != ChatColor.NONE)
+        if (component.getColor() != ChatColor.NONE)
             node.put("color", component.getColor().getName());
 
-        if(component.getInsertion() != null && !component.getInsertion().isEmpty())
+        if (component.getInsertion() != null && !component.getInsertion().isEmpty())
             node.put("insertion", component.getInsertion());
 
-        if(component.getClickEvent() != null) {
+        if (component.getClickEvent() != null) {
             ClickEvent event = component.getClickEvent();
             ObjectNode clickNode = node.putObject("clickEvent");
             clickNode.put("action", event.getAction().getName());
             clickNode.put("value", event.getValue());
         }
 
-        if(component.getHoverEvent() != null) {
+        if (component.getHoverEvent() != null) {
             HoverEvent event = component.getHoverEvent();
             ObjectNode hoverNode = node.putObject("hoverEvent");
             hoverNode.put("action", event.getAction().getName());
@@ -186,7 +186,7 @@ public class DefaultChatConverter implements ChatConverter {
             node.put(chatStyle.getName(), "true");
         }
 
-        if(component.getExtra().size() > 0) {
+        if (component.getExtra().size() > 0) {
             ArrayNode siblings = node.putArray("extra");
             for (ChatComponent ex : component.getExtra()) {
                 siblings.add(toJson(ex));

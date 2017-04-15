@@ -11,7 +11,7 @@ import java.io.IOException;
 /**
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  */
-public class C13ServerDifficulty extends AbstractPacket implements ReadablePacket{
+public class C13ServerDifficulty extends AbstractPacket implements ReadablePacket {
 
     private Difficulty difficulty;
 

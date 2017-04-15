@@ -12,7 +12,7 @@ import static com.lucadev.mcprotocol.protocol.VarHelper.readVarInt;
 /**
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  */
-public class C46PlayerPositionLook extends AbstractPacket implements ReadablePacket{
+public class C46PlayerPositionLook extends AbstractPacket implements ReadablePacket {
 
     private double x, y, z;
     private float yaw;

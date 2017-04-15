@@ -12,7 +12,6 @@ public class OfflineSession extends Session {
     private static final String OFFLINE_PROFILE_ID = "";
 
 
-
     public OfflineSession(String profileName) {
         super(OFFLINE_ACCESS_TOKEN, OFFLINE_CLIENT_TOKEN, OFFLINE_PROFILE_ID, profileName);
     }

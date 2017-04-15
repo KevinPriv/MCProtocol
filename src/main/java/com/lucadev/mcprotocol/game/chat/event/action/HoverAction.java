@@ -2,6 +2,7 @@ package com.lucadev.mcprotocol.game.chat.event.action;
 
 /**
  * Hover action
+ *
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  */
 public enum HoverAction {

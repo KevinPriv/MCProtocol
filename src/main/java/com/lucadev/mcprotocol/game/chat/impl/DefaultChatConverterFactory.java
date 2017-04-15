@@ -12,7 +12,7 @@ public class DefaultChatConverterFactory implements ChatConverterFactory {
 
     @Override
     public ChatConverter createParser() {
-        if(parser == null) {
+        if (parser == null) {
             parser = new DefaultChatConverter();
         }
         return parser;

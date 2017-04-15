@@ -9,12 +9,14 @@ public interface OtherPlayer extends Entity {
 
     /**
      * Get player username
+     *
      * @return
      */
     String getUsername();
 
     /**
      * Get player uuid
+     *
      * @return
      */
     String getUUID();

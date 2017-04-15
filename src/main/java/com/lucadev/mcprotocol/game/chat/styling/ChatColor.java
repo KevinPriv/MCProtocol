@@ -2,6 +2,7 @@ package com.lucadev.mcprotocol.game.chat.styling;
 
 /**
  * Minecraft chat colors. http://wiki.vg/Chat#Styles
+ *
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  */
 public enum ChatColor {
@@ -41,7 +42,7 @@ public enum ChatColor {
     public static ChatColor getColorByCode(String code) {
         code = code.toLowerCase();
         for (ChatColor chatColor : values()) {
-            if(chatColor.getCode().equalsIgnoreCase(code)) {
+            if (chatColor.getCode().equalsIgnoreCase(code)) {
                 return chatColor;
             }
         }

@@ -23,11 +23,11 @@ public final class StringUtil {
      * @see java.lang.String
      */
     public static boolean isNullOrEmpty(String str) {
-        if(str == null) {
+        if (str == null) {
             return true;
         }
 
-        if(str.isEmpty()) {
+        if (str.isEmpty()) {
             return true;
         }
 

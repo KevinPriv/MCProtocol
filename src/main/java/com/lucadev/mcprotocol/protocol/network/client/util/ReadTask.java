@@ -19,7 +19,7 @@ public class ReadTask extends Thread {
     @Override
     public void run() {
         setName("READ");
-        while(bot.getConnection().getSocket().isConnected()) {
+        while (bot.getConnection().getSocket().isConnected()) {
             netClient.tickRead();
         }
     }

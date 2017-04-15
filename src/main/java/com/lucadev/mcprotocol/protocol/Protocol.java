@@ -18,12 +18,14 @@ public interface Protocol {
 
     /**
      * Setup everything in here to prepare a connection tot he server
+     *
      * @param bot
      */
     void setup(Bot bot);
 
     /**
      * Get the protocol version
+     *
      * @return
      */
     int getVersion();
@@ -35,6 +37,7 @@ public interface Protocol {
 
     /**
      * Find a packet
+     *
      * @param id
      * @param state
      * @return
@@ -43,18 +46,21 @@ public interface Protocol {
 
     /**
      * Current state
+     *
      * @return
      */
     State getCurrentState();
 
     /**
      * Set current state
+     *
      * @param state
      */
     void setCurrentState(State state);
 
     /**
      * Get the factory used to create chat parses.
+     *
      * @return
      */
     ChatConverterFactory getChatConverterFactory();
@@ -62,14 +68,16 @@ public interface Protocol {
     void handlePacket(ReadablePacket packet);
 
     void registerPacketListener(Class<? extends ReadablePacket> clazz, PacketListener listener);
+
     void unregisterPacketListener(Class<? extends ReadablePacket> clazz, PacketListener listener);
 
     void tick();
 
     /**
      * Chat message
+     *
      * @param component the chat component
-     * @param position 0=chatbox, 1=system message, 2=above hotbar
+     * @param position  0=chatbox, 1=system message, 2=above hotbar
      */
     void onChatMessage(ChatComponent component, byte position);
 

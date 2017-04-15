@@ -31,7 +31,7 @@ public class SimplePluginChannelManager implements PluginChannelManager {
 
     @Override
     public PluginChannel getPluginChannel(String name) {
-        if(!map.containsKey(name)) {
+        if (!map.containsKey(name)) {
             return null;
         }
         return map.get(name);
@@ -41,7 +41,7 @@ public class SimplePluginChannelManager implements PluginChannelManager {
     public void handle(String name, byte[] data) throws IOException {
         logger.info("Handling plugin message: " + name);
         PluginChannel pluginChannel = getPluginChannel(name);
-        if(pluginChannel == null) {
+        if (pluginChannel == null) {
             logger.info("Plugin channel {} not supported", name);
             return;
         }

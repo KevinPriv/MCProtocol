@@ -1,15 +1,16 @@
 package com.lucadev.mcprotocol.game.chat.components;
 
-import com.lucadev.mcprotocol.game.chat.styling.ChatColor;
-import com.lucadev.mcprotocol.game.chat.styling.ChatStyle;
 import com.lucadev.mcprotocol.game.chat.event.ClickEvent;
 import com.lucadev.mcprotocol.game.chat.event.HoverEvent;
+import com.lucadev.mcprotocol.game.chat.styling.ChatColor;
+import com.lucadev.mcprotocol.game.chat.styling.ChatStyle;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Minecraft chat message component
+ *
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  */
 public abstract class ChatComponent {
@@ -43,16 +44,18 @@ public abstract class ChatComponent {
 
     /**
      * Get the text from the component
+     *
      * @return
      */
     public abstract String getText();
 
     /**
      * Gets the complete text without any styling.
+     *
      * @return
      */
     public String getCompleteText() {
-        if(extra == null) {
+        if (extra == null) {
 
             return getText();
         }

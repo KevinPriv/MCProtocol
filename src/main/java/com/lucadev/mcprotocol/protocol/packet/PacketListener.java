@@ -9,6 +9,7 @@ public interface PacketListener<T extends ReadablePacket> {
 
     /**
      * Event on the packet.
+     *
      * @param bot
      * @param packet
      */

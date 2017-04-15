@@ -8,6 +8,7 @@ import java.io.IOException;
 
 /**
  * An array of bytes.
+ *
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  */
 public class NBTByteArrayTag extends NBTTag<byte[]> {

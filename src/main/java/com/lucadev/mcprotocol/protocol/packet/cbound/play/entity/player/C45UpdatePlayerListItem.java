@@ -10,7 +10,7 @@ import java.io.IOException;
 /**
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  */
-public class C45UpdatePlayerListItem extends AbstractPacket implements ReadablePacket{
+public class C45UpdatePlayerListItem extends AbstractPacket implements ReadablePacket {
 
     @Override
     public int getId() {

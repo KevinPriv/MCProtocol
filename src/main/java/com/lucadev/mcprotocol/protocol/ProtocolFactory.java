@@ -4,6 +4,7 @@ import com.lucadev.mcprotocol.protocol.impl.DefaultProtocolFactory;
 
 /**
  * ProtocolFactory makes it easier to find the required protocol version.
+ *
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  */
 public abstract class ProtocolFactory {
@@ -19,12 +20,14 @@ public abstract class ProtocolFactory {
 
     /**
      * Returns new protocol implementation of the current version.
+     *
      * @return
      */
     public abstract Protocol getCreateProtocol();
 
     /**
      * Obtain the protocol for a specific version. May be null if not found.
+     *
      * @param version
      * @return
      */
@@ -32,6 +35,7 @@ public abstract class ProtocolFactory {
 
     /**
      * Returns default factory
+     *
      * @return
      */
     public static ProtocolFactory getDefault() {

@@ -5,10 +5,10 @@ package com.lucadev.mcprotocol.game;
  */
 public enum Difficulty {
 
-    PEACEFUL((byte)0),
-    EASY((byte)1),
-    NORMAL((byte)2),
-    HARD((byte)3);
+    PEACEFUL((byte) 0),
+    EASY((byte) 1),
+    NORMAL((byte) 2),
+    HARD((byte) 3);
 
     private byte level;
 
@@ -18,7 +18,7 @@ public enum Difficulty {
 
     public static Difficulty getDifficulty(byte b) {
         for (Difficulty difficulty : values()) {
-            if(difficulty.level == b) {
+            if (difficulty.level == b) {
                 return difficulty;
             }
         }

@@ -2,6 +2,7 @@ package com.lucadev.mcprotocol.auth.yggdrasil;
 
 /**
  * Payload sent to auth servers.
+ *
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  */
 public class AuthPayload {

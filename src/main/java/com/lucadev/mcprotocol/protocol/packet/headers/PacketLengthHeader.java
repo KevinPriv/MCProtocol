@@ -1,9 +1,9 @@
 package com.lucadev.mcprotocol.protocol.packet.headers;
 
-import static com.lucadev.mcprotocol.protocol.VarHelper.*;
-
 import java.io.DataOutputStream;
 import java.io.IOException;
+
+import static com.lucadev.mcprotocol.protocol.VarHelper.writeVarInt;
 
 /**
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >

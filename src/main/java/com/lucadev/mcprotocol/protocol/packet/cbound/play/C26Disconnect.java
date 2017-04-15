@@ -14,7 +14,7 @@ import static com.lucadev.mcprotocol.protocol.VarHelper.readString;
 /**
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  */
-public class C26Disconnect extends AbstractPacket implements ReadablePacket{
+public class C26Disconnect extends AbstractPacket implements ReadablePacket {
 
     private ChatComponent reason;
 

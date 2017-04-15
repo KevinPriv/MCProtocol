@@ -7,6 +7,7 @@ import java.io.IOException;
 
 /**
  * SessionProvider is used to authenticate a user with mojang so he or she can play online.
+ *
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  */
 public abstract class SessionProvider {
@@ -19,6 +20,7 @@ public abstract class SessionProvider {
 
     /**
      * Provider for offline mode.
+     *
      * @return
      */
     public static SessionProvider getDefaultOfflineProvider() {
@@ -28,6 +30,7 @@ public abstract class SessionProvider {
 
     /**
      * Authenticate to mojang auth servers.
+     *
      * @param login
      * @param hash
      */

@@ -9,9 +9,10 @@ import java.util.HashMap;
 
 /**
  * Abstract class for protocol which includes methods like varint and such.
+ *
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  */
-public abstract class AbstractProtocol implements Protocol{
+public abstract class AbstractProtocol implements Protocol {
 
     /**
      * PACKET ID -> PACKET CLASS
@@ -27,21 +28,21 @@ public abstract class AbstractProtocol implements Protocol{
     public void register(State state, int id, Class<? extends Packet> packet) {
         switch (state) {
             case PLAY:
-                if(packetMapPlay.containsKey(id)) {
+                if (packetMapPlay.containsKey(id)) {
                     throw new IllegalArgumentException("Packet id already registered");
                 }
                 packetMapPlay.put(id, packet);
 
                 break;
             case LOGIN:
-                if(packetMapLogin.containsKey(id)) {
+                if (packetMapLogin.containsKey(id)) {
                     throw new IllegalArgumentException("Packet id already registered");
                 }
                 packetMapLogin.put(id, packet);
 
                 break;
             case STATUS:
-                if(packetMapStatus.containsKey(id)) {
+                if (packetMapStatus.containsKey(id)) {
                     throw new IllegalArgumentException("Packet id already registered");
                 }
                 packetMapStatus.put(id, packet);
@@ -55,17 +56,17 @@ public abstract class AbstractProtocol implements Protocol{
         try {
             switch (state) {
                 case PLAY:
-                    if(!packetMapPlay.containsKey(id)) {
+                    if (!packetMapPlay.containsKey(id)) {
                         return new UndefinedPacket(id);
                     }
                     return packetMapPlay.get(id).newInstance();
                 case LOGIN:
-                    if(!packetMapLogin.containsKey(id)) {
+                    if (!packetMapLogin.containsKey(id)) {
                         return new UndefinedPacket(id);
                     }
                     return packetMapLogin.get(id).newInstance();
                 case STATUS:
-                    if(!packetMapStatus.containsKey(id)) {
+                    if (!packetMapStatus.containsKey(id)) {
                         return new UndefinedPacket(id);
                     }
                     return packetMapStatus.get(id).newInstance();

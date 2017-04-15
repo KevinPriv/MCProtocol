@@ -1,12 +1,10 @@
 package com.lucadev.mcprotocol.game.nbt;
 
-import com.lucadev.mcprotocol.game.nbt.NBTInputStream;
-import com.lucadev.mcprotocol.game.nbt.NBTOutputStream;
-
 import java.io.IOException;
 
 /**
  * NBT NBTTag
+ *
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  */
 public abstract class NBTTag<T> {
@@ -36,13 +34,14 @@ public abstract class NBTTag<T> {
 
     /**
      * Initialize a NBT tag
-     * @param id nbt tag id
+     *
+     * @param id   nbt tag id
      * @param type nbt tag type
      */
     public NBTTag(int id, String type) {
         this.id = id;
         //TAG_End for example
-        if(!type.startsWith(TAG_PREFIX)) {
+        if (!type.startsWith(TAG_PREFIX)) {
             type = TAG_PREFIX + type;
         }
         this.type = type;
@@ -50,6 +49,7 @@ public abstract class NBTTag<T> {
 
     /**
      * NBT NBTTag type
+     *
      * @return
      */
     public String getType() {
@@ -58,6 +58,7 @@ public abstract class NBTTag<T> {
 
     /**
      * NBTTag ID
+     *
      * @return
      */
     public int getId() {
@@ -66,6 +67,7 @@ public abstract class NBTTag<T> {
 
     /**
      * NBTTag payload
+     *
      * @return
      */
     public T getPayload() {
@@ -74,6 +76,7 @@ public abstract class NBTTag<T> {
 
     /**
      * Set the tag payload
+     *
      * @param data
      */
     public void setPayload(T data) {
@@ -82,6 +85,7 @@ public abstract class NBTTag<T> {
 
     /**
      * NBT NBTTag name
+     *
      * @return
      */
     public String getName() {
@@ -90,6 +94,7 @@ public abstract class NBTTag<T> {
 
     /**
      * Set nbt tag name
+     *
      * @param name
      */
     public void setName(String name) {
@@ -98,12 +103,14 @@ public abstract class NBTTag<T> {
 
     /**
      * Get String representation of the NBT tag
+     *
      * @return
      */
     public abstract String toString();
 
     /**
      * Write the payload of the tag to the stream.
+     *
      * @param outputStream
      * @throws IOException
      */
@@ -111,6 +118,7 @@ public abstract class NBTTag<T> {
 
     /**
      * Read the payload from the stream.
+     *
      * @param inputStream
      * @throws IOException
      */

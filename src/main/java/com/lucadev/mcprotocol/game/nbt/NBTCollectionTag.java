@@ -4,6 +4,7 @@ import java.util.List;
 
 /**
  * Class that can be used by tags that contain a list of tags
+ *
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  */
 public abstract class NBTCollectionTag<T extends NBTTag> extends NBTTag<List<T>> {
@@ -25,7 +26,7 @@ public abstract class NBTCollectionTag<T extends NBTTag> extends NBTTag<List<T>>
     public String toString() {
         StringBuilder sb = new StringBuilder(getType());
         sb.append("(");
-        if(getName() != null && !getName().isEmpty()) {
+        if (getName() != null && !getName().isEmpty()) {
             sb.append("'");
             sb.append(getName());
             sb.append("'");
@@ -50,6 +51,7 @@ public abstract class NBTCollectionTag<T extends NBTTag> extends NBTTag<List<T>>
 
     /**
      * Amount of entries.
+     *
      * @return
      */
     public int getSize() {

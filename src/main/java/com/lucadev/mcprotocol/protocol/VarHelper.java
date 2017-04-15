@@ -1,22 +1,23 @@
 package com.lucadev.mcprotocol.protocol;
 
 import com.lucadev.mcprotocol.game.Position;
-import com.lucadev.mcprotocol.game.world.ChunkSection;
 
-import java.io.DataInput;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
 /**
  * Contains static methods to read variables and stuff
+ *
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  */
 public class VarHelper {
 
     public static final int MAX_STRING_LENGTH = 32767;
+
     /**
      * Credit to http://wiki.vg/Protocol
+     *
      * @param is
      * @return
      * @throws IOException
@@ -44,9 +45,9 @@ public class VarHelper {
 
     public static int varIntLength(int x) {
         int size = 0;
-        while(true) {
+        while (true) {
             size++;
-            if((x & 0xFFFFFF80) == 0)
+            if ((x & 0xFFFFFF80) == 0)
                 return size;
             x >>>= 7;
         }
@@ -54,6 +55,7 @@ public class VarHelper {
 
     /**
      * Credit to http://wiki.vg/Protocol
+     *
      * @param is
      * @return
      * @throws IOException
@@ -78,6 +80,7 @@ public class VarHelper {
 
     /**
      * Credit to http://wiki.vg/Protocol
+     *
      * @param os
      * @param value
      * @throws IOException
@@ -96,13 +99,14 @@ public class VarHelper {
 
     /**
      * Credit to http://wiki.vg/Protocol
+     *
      * @param os
      * @param value
      * @throws IOException
      */
     public static void writeVarLong(DataOutputStream os, long value) throws IOException {
         do {
-            byte temp = (byte)(value & 0b01111111);
+            byte temp = (byte) (value & 0b01111111);
             // Note: >>> means that the sign bit is shifted with the rest of the number rather than being left alone
             value >>>= 7;
             if (value != 0) {
@@ -114,7 +118,7 @@ public class VarHelper {
 
     public static String readString(DataInputStream in, int maxSize) throws IOException {
         int length = readVarInt(in);
-        if(length > maxSize)
+        if (length > maxSize)
             throw new IOException("String too big");
 
         byte[] bytes = new byte[length];
@@ -127,7 +131,7 @@ public class VarHelper {
     }
 
     public static void writeString(DataOutputStream out, String string) throws IOException {
-        if(string.length() > MAX_STRING_LENGTH)
+        if (string.length() > MAX_STRING_LENGTH)
             throw new IOException("String too big");
         writeVarInt(out, string.length());
         out.writeBytes(string);

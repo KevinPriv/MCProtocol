@@ -10,11 +10,11 @@ public class World {
     private HashMap<Integer, HashMap<Integer, Chunk>> map = new HashMap<>();
 
     public Chunk getChunk(int xPos, int zPos) {
-        if(!map.containsKey(xPos)) {
+        if (!map.containsKey(xPos)) {
             return null;
         }
         HashMap<Integer, Chunk> zMap = map.get(xPos);
-        if(!zMap.containsKey(zPos)) {
+        if (!zMap.containsKey(zPos)) {
             return null;
         }
 
@@ -22,7 +22,7 @@ public class World {
     }
 
     public void setChunk(Chunk chunk) {
-        if(!map.containsKey(chunk.getPosX())) {
+        if (!map.containsKey(chunk.getPosX())) {
             map.put(chunk.getPosX(), new HashMap<>());
         }
         map.get(chunk.getPosX()).put(chunk.getPosZ(), chunk);

@@ -8,6 +8,7 @@ import java.io.IOException;
 
 /**
  * An array of TAG_Int's payloads.
+ *
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  */
 public class NBTIntArrayTag extends NBTTag<int[]> {
@@ -55,7 +56,7 @@ public class NBTIntArrayTag extends NBTTag<int[]> {
     public void readPayload(NBTInputStream inputStream) throws IOException {
         int size = inputStream.readInt();
         int[] data = new int[size];
-        for(int x = 0; x < size; x++) {
+        for (int x = 0; x < size; x++) {
             data[x] = inputStream.readInt();
         }
         setPayload(data);

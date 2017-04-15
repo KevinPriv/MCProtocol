@@ -46,6 +46,7 @@ public abstract class Session {
 
     /**
      * Simple online mode check
+     *
      * @return
      */
     public abstract boolean isOnline();

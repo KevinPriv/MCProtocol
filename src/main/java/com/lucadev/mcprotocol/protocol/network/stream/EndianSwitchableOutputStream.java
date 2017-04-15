@@ -40,7 +40,7 @@ public class EndianSwitchableOutputStream extends FilterOutputStream implements 
 
     @Override
     public void writeShort(int i) throws IOException {
-        if(byteOrder == ByteOrder.LITTLE_ENDIAN) {
+        if (byteOrder == ByteOrder.LITTLE_ENDIAN) {
             i = Integer.reverseBytes(i) >> 16;
         }
         getParent().writeShort(i);
@@ -48,15 +48,15 @@ public class EndianSwitchableOutputStream extends FilterOutputStream implements 
 
     @Override
     public void writeChar(int i) throws IOException {
-        if(byteOrder == ByteOrder.LITTLE_ENDIAN) {
-            i = Character.reverseBytes((char)i);
+        if (byteOrder == ByteOrder.LITTLE_ENDIAN) {
+            i = Character.reverseBytes((char) i);
         }
         getParent().writeChar(i);
     }
 
     @Override
     public void writeInt(int i) throws IOException {
-        if(byteOrder == ByteOrder.LITTLE_ENDIAN) {
+        if (byteOrder == ByteOrder.LITTLE_ENDIAN) {
             i = Integer.reverseBytes(i);
         }
         getParent().writeInt(i);
@@ -64,7 +64,7 @@ public class EndianSwitchableOutputStream extends FilterOutputStream implements 
 
     @Override
     public void writeLong(long l) throws IOException {
-        if(byteOrder == ByteOrder.LITTLE_ENDIAN) {
+        if (byteOrder == ByteOrder.LITTLE_ENDIAN) {
             l = Long.reverseBytes(l);
         }
         getParent().writeLong(l);

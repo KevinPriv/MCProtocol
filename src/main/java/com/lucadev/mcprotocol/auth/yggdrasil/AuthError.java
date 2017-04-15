@@ -2,6 +2,7 @@ package com.lucadev.mcprotocol.auth.yggdrasil;
 
 /**
  * Object with error info if something fails
+ *
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  */
 public class AuthError {

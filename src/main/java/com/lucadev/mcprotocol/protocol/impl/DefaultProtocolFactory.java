@@ -6,6 +6,7 @@ import com.lucadev.mcprotocol.protocol.impl.v316.Protocol316;
 
 /**
  * Default implementation of the protocol factory.
+ *
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  */
 public class DefaultProtocolFactory extends ProtocolFactory {

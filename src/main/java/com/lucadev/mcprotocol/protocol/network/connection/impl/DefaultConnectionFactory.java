@@ -7,6 +7,7 @@ import javax.net.SocketFactory;
 
 /**
  * Basic implementation of connection factory.
+ *
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  */
 public class DefaultConnectionFactory extends ConnectionFactory {

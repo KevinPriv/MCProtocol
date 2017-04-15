@@ -5,6 +5,7 @@ import com.lucadev.mcprotocol.game.chat.components.TextComponent;
 
 /**
  * Some help methods to make chatting easier
+ *
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  */
 public class ChatHelper {

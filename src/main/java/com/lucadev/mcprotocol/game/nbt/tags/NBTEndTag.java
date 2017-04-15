@@ -10,6 +10,7 @@ import java.io.IOException;
  * Used to mark the end of compound tags.
  * This tag does not have a name, so it is only ever a single byte 0.
  * It may also be the type of empty List tags.
+ *
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  */
 public class NBTEndTag extends NBTTag<Object> {

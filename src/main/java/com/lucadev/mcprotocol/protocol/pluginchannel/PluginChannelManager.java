@@ -20,6 +20,7 @@ public interface PluginChannelManager {
 
     /**
      * Register your own channels to the server.
+     *
      * @param bot
      * @param client
      */

@@ -5,11 +5,11 @@ package com.lucadev.mcprotocol.game;
  */
 public enum GameMode {
 
-    SURVIVAL((byte)0),
-    CREATIVE((byte)1),
-    ADVENTURE((byte)2),
-    SPECTATOR((byte)3),
-    HARDCORE((byte)0x8);
+    SURVIVAL((byte) 0),
+    CREATIVE((byte) 1),
+    ADVENTURE((byte) 2),
+    SPECTATOR((byte) 3),
+    HARDCORE((byte) 0x8);
 
     private byte flag;
 

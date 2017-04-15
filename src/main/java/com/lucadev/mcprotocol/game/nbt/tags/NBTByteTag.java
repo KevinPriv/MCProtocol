@@ -9,6 +9,7 @@ import java.io.IOException;
 
 /**
  * A signed integral type. Sometimes used for booleans
+ *
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  */
 public class NBTByteTag extends NBTPrimaryDataTag<Byte> {

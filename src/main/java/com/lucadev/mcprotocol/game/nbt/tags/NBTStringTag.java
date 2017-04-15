@@ -9,6 +9,7 @@ import java.io.IOException;
 
 /**
  * A UTF-8 string. It has a size, rather than being null terminated.
+ *
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  */
 public class NBTStringTag extends NBTPrimaryDataTag<String> {

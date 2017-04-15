@@ -56,7 +56,7 @@ public class EndianSwitchableInputStream extends FilterInputStream implements Da
     @Override
     public short readShort() throws IOException {
         short ret = getParent().readShort();
-        if(byteOrder == ByteOrder.LITTLE_ENDIAN) {
+        if (byteOrder == ByteOrder.LITTLE_ENDIAN) {
             ret = Short.reverseBytes(ret);
         }
         return ret;
@@ -65,8 +65,8 @@ public class EndianSwitchableInputStream extends FilterInputStream implements Da
     @Override
     public int readUnsignedShort() throws IOException {
         int ret = getParent().readUnsignedShort();
-        if(byteOrder == ByteOrder.LITTLE_ENDIAN) {
-            ret = (char)(Integer.reverseBytes(ret) >> 16);
+        if (byteOrder == ByteOrder.LITTLE_ENDIAN) {
+            ret = (char) (Integer.reverseBytes(ret) >> 16);
         }
         return ret;
     }
@@ -74,7 +74,7 @@ public class EndianSwitchableInputStream extends FilterInputStream implements Da
     @Override
     public char readChar() throws IOException {
         char ret = getParent().readChar();
-        if(byteOrder == ByteOrder.LITTLE_ENDIAN) {
+        if (byteOrder == ByteOrder.LITTLE_ENDIAN) {
             ret = Character.reverseBytes(ret);
         }
         return ret;
@@ -83,7 +83,7 @@ public class EndianSwitchableInputStream extends FilterInputStream implements Da
     @Override
     public int readInt() throws IOException {
         int ret = getParent().readInt();
-        if(byteOrder == ByteOrder.LITTLE_ENDIAN) {
+        if (byteOrder == ByteOrder.LITTLE_ENDIAN) {
             ret = Integer.reverseBytes(ret);
         }
         return ret;
@@ -92,7 +92,7 @@ public class EndianSwitchableInputStream extends FilterInputStream implements Da
     @Override
     public long readLong() throws IOException {
         long ret = getParent().readLong();
-        if(byteOrder == ByteOrder.LITTLE_ENDIAN) {
+        if (byteOrder == ByteOrder.LITTLE_ENDIAN) {
             ret = Long.reverseBytes(ret);
         }
         return ret;

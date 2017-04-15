@@ -5,7 +5,6 @@ import com.lucadev.mcprotocol.game.chat.components.ChatComponent;
 import com.lucadev.mcprotocol.game.entity.player.BotPlayer;
 import com.lucadev.mcprotocol.game.world.World;
 import com.lucadev.mcprotocol.protocol.AbstractProtocol;
-
 import com.lucadev.mcprotocol.protocol.State;
 import com.lucadev.mcprotocol.protocol.network.client.NetClient;
 import com.lucadev.mcprotocol.protocol.network.client.util.ReadTask;
@@ -24,7 +23,7 @@ import com.lucadev.mcprotocol.protocol.packet.cbound.play.world.chunk.C32ChunkDa
 import com.lucadev.mcprotocol.protocol.packet.sbound.handshake.S00Handshake;
 import com.lucadev.mcprotocol.protocol.packet.sbound.login.S00LoginStart;
 import com.lucadev.mcprotocol.protocol.packet.sbound.login.S01EncryptionResponse;
-import com.lucadev.mcprotocol.protocol.packet.sbound.play.*;
+import com.lucadev.mcprotocol.protocol.packet.sbound.play.S10KeepAlive;
 import com.lucadev.mcprotocol.protocol.packet.sbound.play.client.S03ClientStatus;
 import com.lucadev.mcprotocol.protocol.packet.sbound.play.client.S04ClientSettings;
 import com.lucadev.mcprotocol.protocol.packet.sbound.play.entity.player.S00TeleportConfirm;
@@ -119,7 +118,7 @@ public class Protocol316 extends AbstractProtocol {
      */
     private void setupPacketListeners() {
         registerPacketListener(C24PluginMessage.class, (bot, packet) -> {
-            C24PluginMessage pluginMessage = (C24PluginMessage)packet;
+            C24PluginMessage pluginMessage = (C24PluginMessage) packet;
             try {
                 pluginChannelManager.handle(pluginMessage.getChannelName(), pluginMessage.getData());
             } catch (IOException e) {
@@ -128,23 +127,23 @@ public class Protocol316 extends AbstractProtocol {
         });
 
         registerPacketListener(C13ServerDifficulty.class, (bot, packet) -> {
-            C13ServerDifficulty serverDifficulty = (C13ServerDifficulty)packet;
+            C13ServerDifficulty serverDifficulty = (C13ServerDifficulty) packet;
             bot.getPlayer().setDifficulty(serverDifficulty.getDifficulty());
         });
 
         registerPacketListener(C67SpawnPosition.class, (bot, packet) -> {
-            C67SpawnPosition spawnPosition = (C67SpawnPosition)packet;
+            C67SpawnPosition spawnPosition = (C67SpawnPosition) packet;
             //logger.info("Updated spawn positon to " + spawnPosition.getPosition().toString());
         });
 
         registerPacketListener(C43PlayerAbilities.class, (bot, packet) -> {
-            C43PlayerAbilities playerAbilities = (C43PlayerAbilities)packet;
+            C43PlayerAbilities playerAbilities = (C43PlayerAbilities) packet;
             //logger.info("Updated player abilities: {}", playerAbilities.getPlayerAbilities().toString());
             bot.getPlayer().setPlayerAbilities(playerAbilities.getPlayerAbilities());
         });
 
         registerPacketListener(C46PlayerPositionLook.class, (bot, packet) -> {
-            C46PlayerPositionLook positionLook = (C46PlayerPositionLook)packet;
+            C46PlayerPositionLook positionLook = (C46PlayerPositionLook) packet;
             bot.getPlayer().setPosition(positionLook.getX(), positionLook.getY(), positionLook.getZ());
             bot.getPlayer().setYawPitch(positionLook.getYaw(), positionLook.getPitch());
             //send tp confirmation
@@ -153,18 +152,18 @@ public class Protocol316 extends AbstractProtocol {
         });
 
         registerPacketListener(C16ChatMessage.class, (bot, packet) -> {
-            C16ChatMessage c16ChatMessage = (C16ChatMessage)packet;
+            C16ChatMessage c16ChatMessage = (C16ChatMessage) packet;
             onChatMessage(c16ChatMessage.getChatComponent(), c16ChatMessage.getPosition());
         });
 
         registerPacketListener(C31KeepAlive.class, (bot, packet) -> {
-            C31KeepAlive keepAlive = (C31KeepAlive)packet;
+            C31KeepAlive keepAlive = (C31KeepAlive) packet;
             //logger.info("KeepAlive received");
             bot.getNetClient().sendPacket(new S10KeepAlive(keepAlive.getKeepAliveId()));
         });
 
         registerPacketListener(C26Disconnect.class, (bot, packet) -> {
-            logger.info("SERVER DISCONNECTED REASON: " + ((C26Disconnect)packet).getReason().getCompleteText());
+            logger.info("SERVER DISCONNECTED REASON: " + ((C26Disconnect) packet).getReason().getCompleteText());
             try {
                 bot.getConnection().close();
                 bot.getNetClient().shutdown();
@@ -190,17 +189,17 @@ public class Protocol316 extends AbstractProtocol {
         NetClient client = bot.getNetClient();
         client.writePacket(new S00Handshake(host, port, getVersion(), State.LOGIN));
         client.writePacket(new S00LoginStart(username));
-        if(bot.getSession().isOnline()) {
+        if (bot.getSession().isOnline()) {
             setupCrypto();
         }
         ReadablePacket compOrLoginPacket = client.readPacket();
-        if(compOrLoginPacket instanceof C03SetCompression) {
-            C03SetCompression comp = (C03SetCompression)compOrLoginPacket;
+        if (compOrLoginPacket instanceof C03SetCompression) {
+            C03SetCompression comp = (C03SetCompression) compOrLoginPacket;
             enableCompression(comp.getThreshold());
             compOrLoginPacket = client.readPacket();
         }
 
-        if(compOrLoginPacket instanceof C02LoginSuccess) {
+        if (compOrLoginPacket instanceof C02LoginSuccess) {
             logger.info("Login success!!!");
             logger.info(compOrLoginPacket.toString());
         }
@@ -208,15 +207,15 @@ public class Protocol316 extends AbstractProtocol {
         setCurrentState(State.PLAY);
         ReadablePacket joingamePacket = client.readPacket();
         logger.info(joingamePacket.toString());
-        if(joingamePacket instanceof C35JoinGame) {
-            C35JoinGame joinGame = (C35JoinGame)joingamePacket;
-            C02LoginSuccess loginSuccess = (C02LoginSuccess)compOrLoginPacket;
+        if (joingamePacket instanceof C35JoinGame) {
+            C35JoinGame joinGame = (C35JoinGame) joingamePacket;
+            C02LoginSuccess loginSuccess = (C02LoginSuccess) compOrLoginPacket;
             bot.setPlayer(new BotPlayer(joinGame.getEntityId(), loginSuccess.getUuid(), loginSuccess.getUsername(), joinGame.getGameMode(), joinGame.getDimension(),
                     joinGame.getDifficulty(), joinGame.getLevelType(), joinGame.isReducedDebug()));
         }
 
         ReadablePacket packet = client.readPacket();
-        while(!(packet instanceof C43PlayerAbilities)) {
+        while (!(packet instanceof C43PlayerAbilities)) {
             handlePacket(packet);
             packet = client.readPacket();
         }
@@ -235,14 +234,14 @@ public class Protocol316 extends AbstractProtocol {
 
     @Override
     public void handlePacket(ReadablePacket packet) {
-        if(listenerMap.containsKey(packet.getClass())) {
+        if (listenerMap.containsKey(packet.getClass())) {
             listenerMap.get(packet.getClass()).forEach(listener -> listener.onPacket(bot, packet));
         }
     }
 
     @Override
     public void registerPacketListener(Class<? extends ReadablePacket> clazz, PacketListener listener) {
-        if(!listenerMap.containsKey(clazz)) {
+        if (!listenerMap.containsKey(clazz)) {
             listenerMap.put(clazz, new ArrayList<>());
         }
 
@@ -251,12 +250,12 @@ public class Protocol316 extends AbstractProtocol {
 
     @Override
     public void unregisterPacketListener(Class<? extends ReadablePacket> clazz, PacketListener listener) {
-        if(!listenerMap.containsKey(clazz)) {
+        if (!listenerMap.containsKey(clazz)) {
             return;
         }
 
         listenerMap.get(clazz).remove(listener);
-        if(listenerMap.get(clazz).isEmpty()) {
+        if (listenerMap.get(clazz).isEmpty()) {
             listenerMap.remove(clazz);
         }
     }
@@ -268,12 +267,13 @@ public class Protocol316 extends AbstractProtocol {
 
     /**
      * Chat message
+     *
      * @param component the chat component
-     * @param position 0=chatbox, 1=system message, 2=above hotbar
+     * @param position  0=chatbox, 1=system message, 2=above hotbar
      */
     @Override
     public void onChatMessage(ChatComponent component, byte position) {
-        if(position == 1) {
+        if (position == 1) {
             logger.info("CHAT: {}", component.getCompleteText());
         }
     }
@@ -294,7 +294,7 @@ public class Protocol316 extends AbstractProtocol {
     }
 
     private void enableCompression(int threshold) {
-        if(threshold < 0) {
+        if (threshold < 0) {
             //skip since we need a positive integer
             return;
         }
@@ -304,11 +304,11 @@ public class Protocol316 extends AbstractProtocol {
     private void setupCrypto() throws IOException {
         NetClient client = bot.getNetClient();
         ReadablePacket readablePacket = client.readPacket();
-        if(!(readablePacket instanceof C01EncryptionRequest)) {
+        if (!(readablePacket instanceof C01EncryptionRequest)) {
             throw new IllegalStateException("Expected C01EncryptionRequest but got other packet instead!");
         }
         logger.info("Enabling crypto");
-        C01EncryptionRequest cryptoRequest = (C01EncryptionRequest)readablePacket;
+        C01EncryptionRequest cryptoRequest = (C01EncryptionRequest) readablePacket;
         try {
             PublicKey pubKey = EncryptionUtil.generatePublicKey(cryptoRequest.getPubKey());
             SecretKey secKey = EncryptionUtil.generateSecretKey();

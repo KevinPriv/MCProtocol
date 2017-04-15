@@ -2,6 +2,7 @@ package com.lucadev.mcprotocol.game;
 
 /**
  * http://wiki.vg/Protocol#Position
+ *
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  */
 public class Position {

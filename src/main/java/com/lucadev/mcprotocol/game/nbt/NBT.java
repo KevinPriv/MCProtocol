@@ -26,7 +26,7 @@ public final class NBT {
     }
 
     public static final int getIdByTagClass(Class<? extends NBTTag> clazz) {
-        if(clazz == NBTEndTag.class) {
+        if (clazz == NBTEndTag.class) {
             return TAG_END;
         } else if (clazz == NBTByteTag.class) {
             return TAG_BYTE;

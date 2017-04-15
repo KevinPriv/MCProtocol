@@ -14,6 +14,7 @@ import java.net.Socket;
 
 /**
  * Default implementation of Connection which simply uses the default socketfactory
+ *
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  */
 public class DefaultConnection implements Connection {

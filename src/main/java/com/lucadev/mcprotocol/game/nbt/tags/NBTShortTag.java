@@ -8,6 +8,7 @@ import java.io.IOException;
 
 /**
  * A signed integral type.
+ *
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  */
 public class NBTShortTag extends NBTPrimaryDataTag<Short> {

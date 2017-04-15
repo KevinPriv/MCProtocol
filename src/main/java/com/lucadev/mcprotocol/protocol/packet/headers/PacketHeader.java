@@ -5,6 +5,7 @@ import java.io.IOException;
 
 /**
  * Packet header without length
+ *
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  */
 public class PacketHeader {
@@ -20,6 +21,7 @@ public class PacketHeader {
 
     /**
      * Write the packet header data to the stream
+     *
      * @param os
      * @throws IOException
      */

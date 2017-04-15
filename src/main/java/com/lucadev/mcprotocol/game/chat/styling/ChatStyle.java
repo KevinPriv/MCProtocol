@@ -2,6 +2,7 @@ package com.lucadev.mcprotocol.game.chat.styling;
 
 /**
  * Chat styles http://wiki.vg/Chat#Styles
+ *
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  */
 public enum ChatStyle {
@@ -26,7 +27,7 @@ public enum ChatStyle {
     public static ChatStyle getStyleByCode(String code) {
         code = code.toLowerCase();
         for (ChatStyle chatStyle : values()) {
-            if(chatStyle.getCode().equals(code)) {
+            if (chatStyle.getCode().equals(code)) {
                 return chatStyle;
             }
         }

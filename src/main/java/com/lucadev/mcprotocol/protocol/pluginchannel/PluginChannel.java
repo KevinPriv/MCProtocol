@@ -16,6 +16,7 @@ public abstract class PluginChannel {
 
     /**
      * Constructor setting the channel name
+     *
      * @param name
      */
     public PluginChannel(String name) {
@@ -24,6 +25,7 @@ public abstract class PluginChannel {
 
     /**
      * Get plugin channel name
+     *
      * @return
      */
     public String getName() {
@@ -32,12 +34,14 @@ public abstract class PluginChannel {
 
     /**
      * Handle the bytes
+     *
      * @param is data buffer
      */
     public abstract void handleData(DataInputStream is) throws IOException;
 
     /**
      * Data to write
+     *
      * @param dos
      */
     public abstract void registerToServer(DataOutputStream dos) throws IOException;

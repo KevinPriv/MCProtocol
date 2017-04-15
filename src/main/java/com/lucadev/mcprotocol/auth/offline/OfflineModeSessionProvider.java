@@ -1,12 +1,13 @@
 package com.lucadev.mcprotocol.auth.offline;
 
-import com.lucadev.mcprotocol.auth.SessionProvider;
 import com.lucadev.mcprotocol.auth.Session;
+import com.lucadev.mcprotocol.auth.SessionProvider;
 
 import java.io.IOException;
 
 /**
  * Login provider for offline mode
+ *
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  */
 public class OfflineModeSessionProvider extends SessionProvider {

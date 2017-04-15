@@ -1,19 +1,23 @@
 package com.lucadev.mcprotocol.util;
 
-import java.io.*;
-import java.security.*;
-import java.security.spec.X509EncodedKeySpec;
-
-import javax.crypto.*;
-import javax.crypto.spec.SecretKeySpec;
-
-import org.bouncycastle.crypto.*;
+import org.bouncycastle.crypto.BufferedBlockCipher;
+import org.bouncycastle.crypto.CipherKeyGenerator;
+import org.bouncycastle.crypto.KeyGenerationParameters;
 import org.bouncycastle.crypto.engines.AESEngine;
-import org.bouncycastle.crypto.engines.AESFastEngine;
 import org.bouncycastle.crypto.io.CipherInputStream;
 import org.bouncycastle.crypto.io.CipherOutputStream;
 import org.bouncycastle.crypto.modes.CFBBlockCipher;
-import org.bouncycastle.crypto.params.*;
+import org.bouncycastle.crypto.params.KeyParameter;
+import org.bouncycastle.crypto.params.ParametersWithIV;
+
+import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.security.*;
+import java.security.spec.X509EncodedKeySpec;
 
 /**
  * All credit for this class goes to DarkStorm
@@ -40,7 +44,7 @@ public final class EncryptionUtil {
 
     private static byte[] hash(String algorithm, byte[]... data) throws NoSuchAlgorithmException {
         MessageDigest digest = MessageDigest.getInstance(algorithm);
-        for(byte[] section : data)
+        for (byte[] section : data)
             digest.update(section);
         return digest.digest();
     }

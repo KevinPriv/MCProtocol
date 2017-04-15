@@ -1,12 +1,13 @@
 package com.lucadev.mcprotocol;
 
 import com.lucadev.mcprotocol.auth.SessionProvider;
-import com.lucadev.mcprotocol.protocol.network.connection.ConnectionFactory;
 import com.lucadev.mcprotocol.protocol.ProtocolFactory;
 import com.lucadev.mcprotocol.protocol.network.client.NetClientFactory;
+import com.lucadev.mcprotocol.protocol.network.connection.ConnectionFactory;
 
 /**
  * Builder for the bot.
+ *
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  */
 public class BotBuilder {
@@ -94,6 +95,7 @@ public class BotBuilder {
 
     /**
      * Protocol version!
+     *
      * @param version
      */
     public BotBuilder version(int version) {

@@ -8,7 +8,7 @@ import com.lucadev.mcprotocol.Bot;
 public class TickEngine extends Thread {
 
     public static final long TPS = 20;
-    public static final long DELAY = 1000/TPS;
+    public static final long DELAY = 1000 / TPS;
 
     private boolean running = false;
     private Bot bot;
@@ -21,7 +21,7 @@ public class TickEngine extends Thread {
     public void run() {
         setName("TICK-ENGINE");
         running = true;
-        while(bot.getConnection().getSocket().isConnected() && running) {
+        while (bot.getConnection().getSocket().isConnected() && running) {
             bot.getProtocol().tick();
             try {
                 sleep(DELAY);

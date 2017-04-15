@@ -11,7 +11,7 @@ import java.io.IOException;
 /**
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  */
-public class C32ChunkData extends AbstractPacket implements ReadablePacket{
+public class C32ChunkData extends AbstractPacket implements ReadablePacket {
 
     private int xPos;
     private int zPos;

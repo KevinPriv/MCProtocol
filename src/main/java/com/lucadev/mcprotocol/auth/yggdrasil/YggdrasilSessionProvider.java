@@ -4,8 +4,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.lucadev.mcprotocol.auth.AuthException;
-import com.lucadev.mcprotocol.auth.SessionProvider;
 import com.lucadev.mcprotocol.auth.Session;
+import com.lucadev.mcprotocol.auth.SessionProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,6 +18,7 @@ import java.net.URL;
 
 /**
  * Implementation for the Yggdrasil auth mechanism from mojang.
+ *
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  */
 public class YggdrasilSessionProvider extends SessionProvider {
@@ -32,7 +33,7 @@ public class YggdrasilSessionProvider extends SessionProvider {
     private static final String CONTENT_TYPE = "application/json";
     private static final String AGENT = "Minecraft";
     private static final int AGENT_VERSION = 1;
-    private static final String CHARSET =  "UTF-8";
+    private static final String CHARSET = "UTF-8";
 
     @Override
     public Session login(String email, String password) throws IOException {
@@ -44,8 +45,8 @@ public class YggdrasilSessionProvider extends SessionProvider {
         HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
         conn.setDoOutput(true);
         conn.setRequestMethod("POST");
-        conn.setRequestProperty( "Content-Type", CONTENT_TYPE);
-        conn.setRequestProperty( "Content-Length", String.valueOf(encodedPayload.length()));
+        conn.setRequestProperty("Content-Type", CONTENT_TYPE);
+        conn.setRequestProperty("Content-Length", String.valueOf(encodedPayload.length()));
         OutputStream os = conn.getOutputStream();
         os.write(encodedPayload.getBytes());
 
@@ -95,8 +96,8 @@ public class YggdrasilSessionProvider extends SessionProvider {
         HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
         conn.setDoOutput(true);
         conn.setRequestMethod("POST");
-        conn.setRequestProperty( "Content-Type", CONTENT_TYPE);
-        conn.setRequestProperty( "Content-Length", String.valueOf(encodedPayload.length()));
+        conn.setRequestProperty("Content-Type", CONTENT_TYPE);
+        conn.setRequestProperty("Content-Length", String.valueOf(encodedPayload.length()));
         OutputStream os = conn.getOutputStream();
         os.write(encodedPayload.getBytes());
 

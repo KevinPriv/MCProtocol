@@ -3,6 +3,7 @@ package com.lucadev.mcprotocol.game.nbt;
 /**
  * Tags that have a primary java datatype as payload may extend to this class instead of the NBTTag class.
  * String payload also works.
+ *
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  */
 public abstract class NBTPrimaryDataTag<T> extends NBTTag<T> {
@@ -20,7 +21,7 @@ public abstract class NBTPrimaryDataTag<T> extends NBTTag<T> {
     public String toString() {
         StringBuilder sb = new StringBuilder(getType());
         sb.append("(");
-        if(getName() != null && !getName().isEmpty()) {
+        if (getName() != null && !getName().isEmpty()) {
             sb.append("'");
             sb.append(getName());
             sb.append("'");
@@ -28,7 +29,7 @@ public abstract class NBTPrimaryDataTag<T> extends NBTTag<T> {
             sb.append("None");
         }
         sb.append("): ");
-        if(getPayload() instanceof String) {
+        if (getPayload() instanceof String) {
             sb.append("'");
             sb.append(getPayload());
             sb.append("'");

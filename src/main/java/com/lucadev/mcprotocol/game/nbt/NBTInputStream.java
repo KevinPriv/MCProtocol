@@ -12,6 +12,7 @@ import static com.lucadev.mcprotocol.game.nbt.NBT.*;
 
 /**
  * IO NBT input stream
+ *
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  */
 public class NBTInputStream extends EndianSwitchableInputStream {
@@ -35,9 +36,9 @@ public class NBTInputStream extends EndianSwitchableInputStream {
         return readTag(0);
     }
 
-    public NBTTag readTag(int depth) throws IOException{
+    public NBTTag readTag(int depth) throws IOException {
         int typeId = readByte() & 0xFF;
-        if(typeId == getIdByTagClass(NBTEndTag.class)) {
+        if (typeId == getIdByTagClass(NBTEndTag.class)) {
             return new NBTEndTag();
         }
 
@@ -48,7 +49,7 @@ public class NBTInputStream extends EndianSwitchableInputStream {
         return createTag(typeId, name);
     }
 
-    private NBTTag createTag(int typeId, String name) throws IOException{
+    private NBTTag createTag(int typeId, String name) throws IOException {
         NBTTag t;
         switch (typeId) {
             case TAG_END:
