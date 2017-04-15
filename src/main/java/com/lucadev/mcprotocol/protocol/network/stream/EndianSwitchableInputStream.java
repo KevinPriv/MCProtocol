@@ -4,21 +4,45 @@ import java.io.*;
 import java.nio.ByteOrder;
 
 /**
+ * InputStream in which you can set the byte code(also known as endianness).
+ *
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
+ * @see java.nio.ByteOrder
+ * @see java.io.DataInput for documentation regarding reading and writing data
  */
 public class EndianSwitchableInputStream extends FilterInputStream implements DataInput {
 
-    private ByteOrder byteOrder;
+    private final ByteOrder byteOrder;
 
+    /**
+     * Construct a stream with its parent stream and the endianness to use.
+     * @param inputStream parent stream.
+     * @param byteOrder endianness to use
+     */
     public EndianSwitchableInputStream(InputStream inputStream, ByteOrder byteOrder) {
         super(inputStream instanceof DataInputStream ? inputStream : new DataInputStream(inputStream));
         this.byteOrder = byteOrder;
     }
 
+    /**
+     * Constructs a stream with it's parent stream. Uses big endian as byte order.
+     * @param inputStream parent stream.
+     */
+    public EndianSwitchableInputStream(InputStream inputStream) {
+        this(inputStream, ByteOrder.BIG_ENDIAN);
+    }
+
+    /**
+     * The parent stream is a data stream since we encapsulated it.
+     * @return parent data stream.
+     */
     private DataInputStream getParent() {
         return (DataInputStream) super.in;
     }
 
+    /**
+     * @return endianness used by the stream.
+     */
     public ByteOrder getByteOrder() {
         return byteOrder;
     }

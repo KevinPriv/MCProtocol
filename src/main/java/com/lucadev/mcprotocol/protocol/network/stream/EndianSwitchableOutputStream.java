@@ -4,25 +4,53 @@ import java.io.*;
 import java.nio.ByteOrder;
 
 /**
+ * OutputStream in which you can change the byte order(endianness) which is read with.
+ *
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
+ * @see java.nio.ByteOrder
+ * @see java.io.DataOutput documentation regarding the data write methods.
  */
 public class EndianSwitchableOutputStream extends FilterOutputStream implements DataOutput {
 
     private ByteOrder byteOrder;
 
+    /**
+     * Construct a stream from the parent stream and set the endianness that will be used initially.
+     * @param outputStream parent stream.
+     * @param byteOrder endianness to use.
+     */
     public EndianSwitchableOutputStream(OutputStream outputStream, ByteOrder byteOrder) {
         super(outputStream instanceof DataOutputStream ? outputStream : new DataOutputStream(outputStream));
         setByteOrder(byteOrder);
     }
 
+    /**
+     * Constructs a stream from its parent stream. Using big endian as initial byte order.
+     * @param outputStream the parent stream.
+     */
+    public EndianSwitchableOutputStream(OutputStream outputStream) {
+        this(outputStream, ByteOrder.BIG_ENDIAN);
+    }
+
+    /**
+     * Get parent stream. It's a data stream since we encapsulated it in the constructor.
+     * @return parent data stream
+     */
     private DataOutputStream getParent() {
         return (DataOutputStream) super.out;
     }
 
+    /**
+     * @return endianness used to write data
+     */
     public ByteOrder getByteOrder() {
         return byteOrder;
     }
 
+    /**
+     * Set what endianness we should use for the stream.
+     * @param byteOrder the endianness to use.
+     */
     public void setByteOrder(ByteOrder byteOrder) {
         this.byteOrder = byteOrder;
     }
