@@ -17,13 +17,6 @@ import java.util.HashMap;
  */
 public abstract class AbstractProtocol implements Protocol {
 
-    /*
-     * PACKET ID -> PACKET CLASS MAPPING FOR EACH POSSIBLE STATE
-     */
-    private HashMap<Integer, Class<? extends Packet>> packetMapStatus = new HashMap<>();
-    private HashMap<Integer, Class<? extends Packet>> packetMapLogin = new HashMap<>();
-    private HashMap<Integer, Class<? extends Packet>> packetMapPlay = new HashMap<>();
-
     private State state = State.HANDSHAKE;
     private ChatConverterFactory chatConverterFactory = new DefaultChatConverterFactory();
 
@@ -34,52 +27,7 @@ public abstract class AbstractProtocol implements Protocol {
      * @param packet the packet class
      */
     public void register(State state, int id, Class<? extends Packet> packet) {
-        try {
-            verifyPacketClass(packet);
-        } catch (ProtocolException e) {
-            e.printStackTrace();
-            return;
-        }
-        switch (state) {
-            case PLAY:
-                if (packetMapPlay.containsKey(id)) {
-                    throw new IllegalArgumentException("Packet id already registered");
-                }
-                packetMapPlay.put(id, packet);
-                break;
-            case LOGIN:
-                if (packetMapLogin.containsKey(id)) {
-                    throw new IllegalArgumentException("Packet id already registered");
-                }
-                packetMapLogin.put(id, packet);
-                break;
-            case STATUS:
-                if (packetMapStatus.containsKey(id)) {
-                    throw new IllegalArgumentException("Packet id already registered");
-                }
-                packetMapStatus.put(id, packet);
-                break;
-        }
-    }
-
-    /**
-     * Verifies if the class meets requirements such as a default constructor and whatnot.
-     * @param packet the packet class to inspect
-     * @throws ProtocolException gets thrown when the packet does not meet requirement which result into a protocol exception.
-     */
-    protected void verifyPacketClass(Class<? extends Packet> packet) throws ProtocolException {
-        try {
-            //gets the declared constructor with no parameters. Declared means it might not be publicly accessable.
-            Constructor con = packet.getDeclaredConstructor();
-            //Checks if we can access it.
-            if(!Modifier.isPublic(con.getModifiers())) {
-                throw new ProtocolException("Packet " + packet.getName() + " has a non public default constructor.");
-            }
-
-            //Well it's for the rest.
-        } catch (NoSuchMethodException e) {
-            throw new ProtocolException("No default constructor discovered in packet " + packet.getName(), e);
-        }
+        state.registerPacket(id, packet);
     }
 
     /**
@@ -91,32 +39,7 @@ public abstract class AbstractProtocol implements Protocol {
      */
     @Override
     public Packet resolvePacket(int id, State state) {
-        try {
-            switch (state) {
-                case PLAY:
-                    if (!packetMapPlay.containsKey(id)) {
-                        return new UndefinedPacket(id);
-                    }
-                    return packetMapPlay.get(id).newInstance();
-                case LOGIN:
-                    if (!packetMapLogin.containsKey(id)) {
-                        return new UndefinedPacket(id);
-                    }
-                    return packetMapLogin.get(id).newInstance();
-                case STATUS:
-                    if (!packetMapStatus.containsKey(id)) {
-                        return new UndefinedPacket(id);
-                    }
-                    return packetMapStatus.get(id).newInstance();
-            }
-        } catch (InstantiationException e) {
-            //IS THE CONSTRUCTOR AVAILABLE?
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            //IS THE CONSTRUCTOR PUBLIC?
-            e.printStackTrace();
-        }
-        return null;
+        return state.resolvePacket(id);
     }
 
     /**
