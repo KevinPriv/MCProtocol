@@ -4,26 +4,33 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 /**
- * Packet header without length
+ * Packet header without length.
  *
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  */
 public class PacketHeader {
-    private int id;
 
+    private final int id;
+
+    /**
+     * Construct the packet header with a packet id.
+     * @param id read packet id.
+     */
     public PacketHeader(int id) {
         this.id = id;
     }
 
+    /**
+     * @return packet ID
+     */
     public int getId() {
         return id;
     }
 
     /**
-     * Write the packets header data to the stream
-     *
-     * @param os
-     * @throws IOException
+     * Write the packet's header data to the stream
+     * @param os the stream to write to.
+     * @throws IOException when something goes wrong while writing the packet header to stream.
      */
     public void write(DataOutputStream os) throws IOException {
         os.writeByte(id);
