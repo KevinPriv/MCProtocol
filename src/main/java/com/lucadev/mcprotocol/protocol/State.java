@@ -101,6 +101,12 @@ public enum State {
         }
     }
 
+    /**
+     * Resolve a packet id to an instance of the packet from this state.
+     * @param id the packet id to resolve.
+     * @return resolved packet object or an UndefinedPacket object if the packet id was not registered.
+     * @see com.lucadev.mcprotocol.protocol.packets.UndefinedPacket
+     */
     public Packet resolvePacket(int id) {
         if(!packets.containsKey(id)) {
             return new UndefinedPacket(id);
