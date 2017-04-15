@@ -6,19 +6,19 @@ import java.io.DataInputStream;
 import java.io.IOException;
 
 /**
- * Means a packets can read their datas
+ * Extension of the Packet interface.
+ * This interface is required for all packets that are read from stream(clientbound/coming from the server)
  *
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  */
 public interface ReadablePacket extends Packet {
 
     /**
-     * Read the data from the packets in here. This does not include packets id and stuff.
-     *
-     * @param bot
-     * @param is
-     * @param totalSize total size of the data we're able to read.
-     * @throws IOException
+     * Read the data payload from the packet in here. This does not include packets id and fields.
+     * @param bot the bot that received the packet.
+     * @param is stream that contains the packet data.
+     * @param totalSize size of the available data in the stream
+     * @throws IOException gets thrown when something goes wrong reading the data payload
      */
     void read(Bot bot, DataInputStream is, int totalSize) throws IOException;
 }
