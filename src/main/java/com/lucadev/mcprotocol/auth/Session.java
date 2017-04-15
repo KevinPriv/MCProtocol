@@ -3,7 +3,7 @@ package com.lucadev.mcprotocol.auth;
 /**
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  */
-public class Session {
+public abstract class Session {
 
     private String accessToken;
     private String clientToken;
@@ -48,8 +48,5 @@ public class Session {
      * Simple online mode check
      * @return
      */
-    public boolean isOnline() {
-        return (accessToken != null && !accessToken.isEmpty()) ||
-                (clientToken != null && !clientToken.isEmpty());
-    }
+    public abstract boolean isOnline();
 }
