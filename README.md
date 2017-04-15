@@ -1,8 +1,9 @@
 # MCProtocol
-This project implements the current Minecraft protocol in Java. Might give up on this some day.
+MCProtocol is a library that implements the Minecraft protocol from scratch(PC version, multiplayer protocol).
 
-This entire project is just a little challenge for me to get away from boredom.
-I try to improve my code quality, make my code modular, apply design patterns and other concepts.
+This library is packet-based which means it's incredibly easy to extend yourself.
+
+I wrote this as a challenge for myself incase I got bored. Feel free to fork since I will probably discontinue this project sometime in the near future.
 
 ## Current Features
 - Fetch MOTD
@@ -25,7 +26,10 @@ I try to improve my code quality, make my code modular, apply design patterns an
 - Better and more generic event management throughout the protocol.
 - Event bus with the new generic event management(custom, can connect to plugins)
 
-##Credit/Attribution
+## Examples
+Example code can be found in the [example](https://github.com/Camphul/MCProtocol/tree/master/src/main/java/example) package.
+
+## Credit/Attribution
 Major thanks to [wiki.vg](http://wiki.vg/Protocol) for their protocol specification wiki. Without them I would not be able to create this.
 
 I also want to credit:
