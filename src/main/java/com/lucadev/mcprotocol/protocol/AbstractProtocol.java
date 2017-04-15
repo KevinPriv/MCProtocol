@@ -3,6 +3,7 @@ package com.lucadev.mcprotocol.protocol;
 import com.lucadev.mcprotocol.game.chat.ChatConverterFactory;
 import com.lucadev.mcprotocol.game.chat.impl.DefaultChatConverterFactory;
 import com.lucadev.mcprotocol.protocol.packets.Packet;
+import com.lucadev.mcprotocol.protocol.packets.UndefinedPacket;
 import com.lucadev.mcprotocol.tick.TickListener;
 import com.lucadev.mcprotocol.tick.TickWorker;
 
@@ -59,17 +60,17 @@ public abstract class AbstractProtocol implements Protocol{
             switch (state) {
                 case PLAY:
                     if(!packetMapPlay.containsKey(id)) {
-                        return null;
+                        return new UndefinedPacket(id);
                     }
                     return packetMapPlay.get(id).newInstance();
                 case LOGIN:
                     if(!packetMapLogin.containsKey(id)) {
-                        return null;
+                        return new UndefinedPacket(id);
                     }
                     return packetMapLogin.get(id).newInstance();
                 case STATUS:
                     if(!packetMapStatus.containsKey(id)) {
-                        return null;
+                        return new UndefinedPacket(id);
                     }
                     return packetMapStatus.get(id).newInstance();
             }
