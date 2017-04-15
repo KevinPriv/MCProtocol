@@ -1,5 +1,7 @@
 package com.lucadev.mcprotocol.protocol;
 
+import com.lucadev.mcprotocol.protocol.impl.DefaultProtocolFactory;
+
 /**
  * ProtocolFactory makes it easier to find the required protocol version.
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
