@@ -6,8 +6,8 @@ import com.lucadev.mcprotocol.game.chat.components.ChatComponent;
 import com.lucadev.mcprotocol.protocol.packet.Packet;
 import com.lucadev.mcprotocol.protocol.packet.PacketListener;
 import com.lucadev.mcprotocol.protocol.packet.ReadablePacket;
-import com.lucadev.mcprotocol.tick.TickEngine;
-import com.lucadev.mcprotocol.tick.TickListener;
+import com.lucadev.mcprotocol.game.tick.TickEngine;
+import com.lucadev.mcprotocol.game.tick.TickListener;
 
 import java.io.IOException;
 

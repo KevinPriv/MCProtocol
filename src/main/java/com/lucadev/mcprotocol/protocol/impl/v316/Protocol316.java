@@ -31,9 +31,9 @@ import com.lucadev.mcprotocol.protocol.packet.sbound.play.entity.player.S13Playe
 import com.lucadev.mcprotocol.protocol.pluginchannel.PluginChannelManager;
 import com.lucadev.mcprotocol.protocol.pluginchannel.PluginChannelManagerFactory;
 import com.lucadev.mcprotocol.protocol.pluginchannel.channels.MCBrandPluginChannel;
-import com.lucadev.mcprotocol.tick.TickEngine;
-import com.lucadev.mcprotocol.tick.TickListener;
-import com.lucadev.mcprotocol.tick.TickWorker;
+import com.lucadev.mcprotocol.game.tick.TickEngine;
+import com.lucadev.mcprotocol.game.tick.TickListener;
+import com.lucadev.mcprotocol.game.tick.TickWorker;
 import com.lucadev.mcprotocol.util.EncryptionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

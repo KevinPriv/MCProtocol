@@ -1,4 +1,4 @@
-package com.lucadev.mcprotocol.tick;
+package com.lucadev.mcprotocol.game.tick;
 
 import com.lucadev.mcprotocol.Bot;
 
