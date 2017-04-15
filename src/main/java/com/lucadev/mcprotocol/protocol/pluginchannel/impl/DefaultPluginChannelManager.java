@@ -12,23 +12,42 @@ import java.io.*;
 import java.util.HashMap;
 
 /**
+ * Default PluginChannelManager implementation.
+ *
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  */
-public class SimplePluginChannelManager implements PluginChannelManager {
+public class DefaultPluginChannelManager implements PluginChannelManager {
 
     private HashMap<String, PluginChannel> map = new HashMap<>();
-    private static final Logger logger = LoggerFactory.getLogger(SimplePluginChannelManager.class);
 
+    /**
+     * System logger
+     */
+    private static final Logger logger = LoggerFactory.getLogger(DefaultPluginChannelManager.class);
+
+    /**
+     * Register a new plugin channel.
+     * @param pluginChannel the plugin channel to register.
+     */
     @Override
     public void register(PluginChannel pluginChannel) {
         map.put(pluginChannel.getName(), pluginChannel);
     }
 
+    /**
+     * Unregister/remove a plugin channel.
+     * @param pluginChannel the plugin channel to remove.
+     */
     @Override
     public void unregister(PluginChannel pluginChannel) {
         map.remove(pluginChannel.getName());
     }
 
+    /**
+     * Get a plugin channel by its name.
+     * @param name plugin channel name. Case sensitive.
+     * @return corresponding plugin channel or null if not found.
+     */
     @Override
     public PluginChannel getPluginChannel(String name) {
         if (!map.containsKey(name)) {
@@ -37,6 +56,12 @@ public class SimplePluginChannelManager implements PluginChannelManager {
         return map.get(name);
     }
 
+    /**
+     * Raw handle method to handle incoming plugin messages.
+     * @param name plugin channel name.
+     * @param data payload for that channel.
+     * @throws IOException when something goes wrong handling the channel.
+     */
     @Override
     public void handle(String name, byte[] data) throws IOException {
         logger.info("Handling plugin message: " + name);
@@ -46,14 +71,14 @@ public class SimplePluginChannelManager implements PluginChannelManager {
             return;
         }
 
-        pluginChannel.handleData(new DataInputStream(new ByteArrayInputStream(data)));
+        pluginChannel.readPayload(new DataInputStream(new ByteArrayInputStream(data)));
     }
 
     /**
-     * Register your own channels to the server.
-     *
-     * @param bot
-     * @param client
+     * Register the channels to the server.
+     * @param bot instance of the bot.
+     * @param client net client which is used for packet networking.
+     * @see com.lucadev.mcprotocol.protocol.network.client.NetClient
      */
     @Override
     public void registerToServer(Bot bot, NetClient client) {

@@ -33,7 +33,7 @@ public class MCBrandPluginChannel extends PluginChannel {
      * @param is
      */
     @Override
-    public void handleData(DataInputStream is) throws IOException {
+    public void readPayload(DataInputStream is) throws IOException {
         String clientName = readString(is);
         logger.info("Received server implementation: " + clientName);
     }

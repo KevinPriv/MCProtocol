@@ -33,8 +33,6 @@ import com.lucadev.mcprotocol.protocol.pluginchannel.PluginChannelManager;
 import com.lucadev.mcprotocol.protocol.pluginchannel.PluginChannelManagerFactory;
 import com.lucadev.mcprotocol.protocol.pluginchannel.channels.MCBrandPluginChannel;
 import com.lucadev.mcprotocol.game.tick.TickEngine;
-import com.lucadev.mcprotocol.game.tick.TickListener;
-import com.lucadev.mcprotocol.game.tick.TickWorker;
 import com.lucadev.mcprotocol.util.EncryptionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -74,7 +72,7 @@ public class Protocol316 extends AbstractProtocol {
     public void setup(Bot bot) {
         this.bot = bot;
         tickEngine = TickEngineFactory.getDefaultFactory().createEngine(bot);
-        pluginChannelManager = PluginChannelManagerFactory.createDefault();
+        pluginChannelManager = PluginChannelManagerFactory.getDefaultFactory().createPluginChannelManager();
         setupPluginChannels();
         setupPacketListeners();
         setupTickWorkers();
