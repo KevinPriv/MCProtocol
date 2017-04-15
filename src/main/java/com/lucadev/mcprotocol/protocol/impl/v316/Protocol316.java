@@ -313,7 +313,7 @@ public class Protocol316 extends AbstractProtocol {
             PublicKey pubKey = EncryptionUtil.generatePublicKey(cryptoRequest.getPubKey());
             SecretKey secKey = EncryptionUtil.generateSecretKey();
             String hash = new BigInteger(EncryptionUtil.encrypt(cryptoRequest.getServerId(), pubKey, secKey)).toString(16);
-            bot.getLoginProvider().authenticateServer(bot.getSession(), hash);
+            bot.getSessionProvider().authenticateServer(bot.getSession(), hash);
             client.writePacket(new S01EncryptionResponse(pubKey, secKey, cryptoRequest.getVerifyToken()));
             client.setSharedKey(secKey);
             client.enableEncryption();

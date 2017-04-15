@@ -1,6 +1,6 @@
 package com.lucadev.mcprotocol.auth.offline;
 
-import com.lucadev.mcprotocol.auth.LoginProvider;
+import com.lucadev.mcprotocol.auth.SessionProvider;
 import com.lucadev.mcprotocol.auth.Session;
 
 import java.io.IOException;
@@ -9,7 +9,7 @@ import java.io.IOException;
  * Login provider for offline mode
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  */
-public class OfflineModeLoginProvider extends LoginProvider {
+public class OfflineModeSessionProvider extends SessionProvider {
 
     @Override
     public Session login(String email, String password) throws IOException {

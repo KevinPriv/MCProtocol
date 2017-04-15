@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.lucadev.mcprotocol.auth.AuthException;
-import com.lucadev.mcprotocol.auth.LoginProvider;
+import com.lucadev.mcprotocol.auth.SessionProvider;
 import com.lucadev.mcprotocol.auth.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,9 +20,9 @@ import java.net.URL;
  * Implementation for the Yggdrasil auth mechanism from mojang.
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  */
-public class YggdrasilLoginProvider extends LoginProvider {
+public class YggdrasilSessionProvider extends SessionProvider {
 
-    private static final Logger logger = LoggerFactory.getLogger(YggdrasilLoginProvider.class);
+    private static final Logger logger = LoggerFactory.getLogger(YggdrasilSessionProvider.class);
 
     /**
      * Base url for auth

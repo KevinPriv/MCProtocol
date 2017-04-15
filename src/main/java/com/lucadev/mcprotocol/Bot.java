@@ -1,8 +1,8 @@
 package com.lucadev.mcprotocol;
 
 import com.google.gson.Gson;
+import com.lucadev.mcprotocol.auth.SessionProvider;
 import com.lucadev.mcprotocol.game.entity.player.Player;
-import com.lucadev.mcprotocol.auth.LoginProvider;
 import com.lucadev.mcprotocol.auth.Session;
 import com.lucadev.mcprotocol.game.world.World;
 import com.lucadev.mcprotocol.protocol.network.connection.Connection;
@@ -53,7 +53,7 @@ public class Bot {
     /**
      * Login provider.
      */
-    private LoginProvider loginProvider;
+    private SessionProvider sessionProvider;
 
     /**
      * Auth information
@@ -79,7 +79,7 @@ public class Bot {
         this.connectionFactory = builder.getConnectionFactory();
         this.protocolFactory = builder.getProtocolFactory();
         this.netClientFactory = builder.getNetClientFactory();
-        this.loginProvider = builder.getLoginProvider();
+        this.sessionProvider = builder.getSessionProvider();
         if(builder.shouldAuthenticate()) {
             try {
                 authenticate(builder.getUsername(), builder.getPassword());
@@ -92,7 +92,7 @@ public class Bot {
 
     public void authenticate(String username, String password) throws IOException{
         logger.info("Authenticating user");
-        login = loginProvider.login(username, password);
+        login = sessionProvider.login(username, password);
         logger.info(login.toString());
     }
 
@@ -195,8 +195,8 @@ public class Bot {
         return login;
     }
 
-    public LoginProvider getLoginProvider() {
-        return loginProvider;
+    public SessionProvider getSessionProvider() {
+        return sessionProvider;
     }
 
     public Player getPlayer() {
