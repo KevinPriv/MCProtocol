@@ -13,37 +13,44 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 
 /**
- * Default implementation of Connection which simply uses the default socketfactory
+ * Default implementation of Connection uses the default socket factory.
  *
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
+ * @see Connection
  */
 public class DefaultConnection implements Connection {
 
     /**
-     * SLF4J logger
+     * System logger
      */
     private static final Logger logger = LoggerFactory.getLogger(Bot.class);
 
-    /* Standard java IO classes */
     private SocketFactory socketFactory;
     private Socket socket;
     private DataInputStream dataInputStream;
     private DataOutputStream dataOutputStream;
 
+    /**
+     * Constructor setting the socketfactory to use.
+     * @param socketFactory the SocketFactory to use for this connection.
+     */
     public DefaultConnection(SocketFactory socketFactory) {
         this.socketFactory = socketFactory;
     }
 
+    /**
+     * Default constructor setting up with the default socket factory.
+     */
     public DefaultConnection() {
         this(SocketFactory.getDefault());
     }
 
     /**
-     * Connect to a TCP proces on the specified host and port.
+     * Connect to a TCP process on the specified host and port.
      *
      * @param host IP address or host address
      * @param port TCP port
-     * @throws IOException
+     * @throws IOException gets thrown when something goes wrong trying to connect.
      */
     public void connect(String host, int port) throws IOException {
         logger.info("Connecting to {} on port {}", host, port);
@@ -54,9 +61,8 @@ public class DefaultConnection implements Connection {
     }
 
     /**
-     * Closes the socket after closing the streams.
-     *
-     * @throws IOException
+     * Closes the socket and streams immediately.
+     * @throws IOException when something goes wrong closing the connection.
      */
     public void close() throws IOException {
         logger.info("Closing streams and socket.");
@@ -67,8 +73,7 @@ public class DefaultConnection implements Connection {
 
     /**
      * Obtain a Data input stream from the connection
-     *
-     * @return
+     * @return data stream from the connection.
      */
     public DataInputStream getDataInputStream() {
         return dataInputStream;
@@ -76,45 +81,48 @@ public class DefaultConnection implements Connection {
 
     /**
      * Obtain the output stream from the connection
-     *
-     * @return
+     * @return data stream from the connection
      */
     public DataOutputStream getDataOutputStream() {
         return dataOutputStream;
     }
 
+    /**
+     * Set the input stream. Should be coming from the same connection(socket, etc...)
+     * @param dis data input stream.
+     */
     @Override
     public void setDataInputStream(DataInputStream dis) {
         this.dataInputStream = dis;
     }
 
+    /**
+     * Set the output stream. Should be coming from the same connection(socket, etc...)
+     * @param dos data output stream.
+     */
     @Override
     public void setDataOutputStream(DataOutputStream dos) {
         this.dataOutputStream = dos;
     }
 
     /**
-     * Obtain an instance of the SocketFactory that is used.
-     *
-     * @return
+     * Get the factory used to create the socket for the connection
+     * @return socket factory instance
      */
     public SocketFactory getSocketFactory() {
         return socketFactory;
     }
 
     /**
-     * Set the SocketFactory we should use when connecting.
-     *
-     * @param socketFactory
+     * Set the SocketFactory we should use when creating a socket.
+     * @param socketFactory the socket factory we will be using.
      */
     public void setSocketFactory(SocketFactory socketFactory) {
         this.socketFactory = socketFactory;
     }
 
     /**
-     * Obtain an instance of the raw TCP socket.
-     *
-     * @return
+     * @return the raw tcp connection as a socket.
      */
     public Socket getSocket() {
         return socket;

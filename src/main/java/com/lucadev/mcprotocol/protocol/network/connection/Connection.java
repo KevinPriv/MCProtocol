@@ -16,57 +16,58 @@ import java.net.Socket;
 public interface Connection {
 
     /**
-     * Connect to a TCP proces on the specified host and port.
+     * Connect to a TCP process on the specified host and port.
      *
      * @param host IP address or host address
      * @param port TCP port
-     * @throws IOException
+     * @throws IOException gets thrown when something goes wrong trying to connect.
      */
     void connect(String host, int port) throws IOException;
 
     /**
-     * Closes the socket.
-     *
-     * @throws IOException
+     * Closes the socket and streams immediately.
+     * @throws IOException when something goes wrong closing the connection.
      */
     void close() throws IOException;
 
     /**
      * Obtain a Data input stream from the connection
-     *
-     * @return
+     * @return data stream from the connection.
      */
     DataInputStream getDataInputStream();
 
     /**
      * Obtain the output stream from the connection
-     *
-     * @return
+     * @return data stream from the connection
      */
     DataOutputStream getDataOutputStream();
 
+    /**
+     * Set the input stream. Should be coming from the same connection(socket, etc...)
+     * @param dis data input stream.
+     */
     void setDataInputStream(DataInputStream dis);
 
+    /**
+     * Set the output stream. Should be coming from the same connection(socket, etc...)
+     * @param dos data output stream.
+     */
     void setDataOutputStream(DataOutputStream dos);
 
     /**
-     * Obtain an instance of the SocketFactory that is used.
-     *
-     * @return
+     * Get the factory used to create the socket for the connection
+     * @return socket factory instance
      */
     SocketFactory getSocketFactory();
 
     /**
-     * Set the SocketFactory we should use when connecting.
-     *
-     * @param socketFactory
+     * Set the SocketFactory we should use when creating a socket.
+     * @param socketFactory the socket factory we will be using.
      */
     void setSocketFactory(SocketFactory socketFactory);
 
     /**
-     * Obtain an instance of the raw TCP socket.
-     *
-     * @return
+     * @return the raw tcp connection as a socket.
      */
     Socket getSocket();
 }
