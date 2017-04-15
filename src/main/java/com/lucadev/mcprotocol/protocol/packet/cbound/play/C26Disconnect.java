@@ -34,7 +34,7 @@ public class C26Disconnect extends AbstractPacket implements ReadablePacket {
     @Override
     public void read(Bot bot, DataInputStream is, int totalSize) throws IOException {
         try {
-            reason = bot.getProtocol().getChatConverterFactory().createParser().parse(readString(is));
+            reason = bot.getProtocol().getChatConverterFactory().createConverter().parse(readString(is));
         } catch (ChatParseException e) {
             e.printStackTrace();
         }

@@ -1,6 +1,7 @@
 package com.lucadev.mcprotocol.game.chat;
 
 /**
+ * Simple custom exception that gets thrown whenever we cannot parse a chat component
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  */
 public class ChatParseException extends Exception {

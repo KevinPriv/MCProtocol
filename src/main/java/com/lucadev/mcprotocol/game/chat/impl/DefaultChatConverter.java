@@ -24,38 +24,41 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Default implementation of ChatConverter
+ *
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
+ * @see com.lucadev.mcprotocol.game.chat.ChatConverter
  */
 public class DefaultChatConverter implements ChatConverter {
 
     private static final Logger logger = LoggerFactory.getLogger(DefaultChatConverter.class);
 
     /**
-     * Parses the given objectnode into a valid chat component
+     * Parses the given json node into a valid chat component
      *
-     * @param node
-     * @return
-     * @throws ChatParseException
+     * @param jsonNode parsed json node
+     * @return chat component that was built from the jsonNode data
+     * @throws ChatParseException gets thrown when something goes wrong parsing the json.
      */
     @Override
-    public ChatComponent parse(JsonNode node) throws ChatParseException {
+    public ChatComponent parse(JsonNode jsonNode) throws ChatParseException {
         ChatComponent component;
-        if (node.has("text")) {
+        if (jsonNode.has("text")) {
             //text component
-            component = new TextComponent(node.get("text").textValue());
-        } else if (node.has("translate")) {
+            component = new TextComponent(jsonNode.get("text").textValue());
+        } else if (jsonNode.has("translate")) {
             //translate component
-            String key = node.get("translate").textValue();
+            String key = jsonNode.get("translate").textValue();
             List<ChatComponent> params = new ArrayList<>();
-            if (node.has("with")) {
-                for (JsonNode comp : node.get("with")) {
+            if (jsonNode.has("with")) {
+                for (JsonNode comp : jsonNode.get("with")) {
                     params.add(parse(comp));
                 }
             }
             component = new TranslationComponent(key, params.toArray(new ChatComponent[params.size()]));
-        } else if (node.has("score")) {
+        } else if (jsonNode.has("score")) {
             //score component
-            JsonNode score = node.get("score");
+            JsonNode score = jsonNode.get("score");
             String name = score.get("name").textValue();
             String objective = score.get("objective").textValue();
             String value = null;
@@ -72,36 +75,36 @@ public class DefaultChatConverter implements ChatConverter {
             };
         }
 
-        if (node.has("color")) {
-            component.setColor(ChatColor.getColor(node.get("color").textValue()));
+        if (jsonNode.has("color")) {
+            component.setColor(ChatColor.getColor(jsonNode.get("color").textValue()));
         }
 
         for (ChatStyle style : ChatStyle.values()) {
-            if (node.has(style.getName()) && Boolean.parseBoolean(node.get(style.getName()).textValue())) {
+            if (jsonNode.has(style.getName()) && Boolean.parseBoolean(jsonNode.get(style.getName()).textValue())) {
                 component.addStyle(style);
             }
         }
 
-        if (node.has("insertion")) {
-            component.setInsertion(node.get("insertion").textValue());
+        if (jsonNode.has("insertion")) {
+            component.setInsertion(jsonNode.get("insertion").textValue());
         }
 
-        if (node.has("clickEvent")) {
-            JsonNode clickNode = node.get("clickEvent");
+        if (jsonNode.has("clickEvent")) {
+            JsonNode clickNode = jsonNode.get("clickEvent");
             ClickAction action = ClickAction.getAction(clickNode.get("action").textValue());
             String value = clickNode.get("value").textValue();
             component.setClickEvent(new ClickEvent(action, value));
         }
 
-        if (node.has("hoverEvent")) {
-            JsonNode hoverNode = node.get("hoverEvent");
+        if (jsonNode.has("hoverEvent")) {
+            JsonNode hoverNode = jsonNode.get("hoverEvent");
             HoverAction action = HoverAction.getAction(hoverNode.get("action").textValue());
             String value = hoverNode.get("value").textValue();
             component.setHoverEvent(new HoverEvent(action, value));
         }
 
-        if (node.has("extra")) {
-            JsonNode extras = node.get("extra");
+        if (jsonNode.has("extra")) {
+            JsonNode extras = jsonNode.get("extra");
             for (JsonNode compNode : extras) {
                 ChatComponent ex = parse(compNode);
                 component.addExtra(ex);
@@ -113,11 +116,11 @@ public class DefaultChatConverter implements ChatConverter {
     }
 
     /**
-     * Parses the given json string to a chatnode.
+     * Parses the given json string to a chat component
      *
-     * @param json
-     * @return
-     * @throws ChatParseException
+     * @param json string that contains the json for a chatcomponent.
+     * @return a chatcomponent built from the data found in the given json.
+     * @throws ChatParseException gets thrown when something goes wrong parsing the json.
      */
     @Override
     public ChatComponent parse(String json) throws ChatParseException {
@@ -131,10 +134,10 @@ public class DefaultChatConverter implements ChatConverter {
     }
 
     /**
-     * Convert object to json
+     * Converts a chat component into their json formatted representation.
      *
-     * @param component
-     * @return
+     * @param component the component to parse to json.
+     * @return json node with the information of the given chat component.
      */
     @Override
     public JsonNode toJson(ChatComponent component) {
@@ -160,7 +163,7 @@ public class DefaultChatConverter implements ChatConverter {
                 scoreNode.put("value", score.getValue());
             }
         } else {
-            throw new IllegalStateException("Unknown chat component, cannot convert to json!");
+            throw new IllegalStateException("UWeenknown chat component, cannot convert to json!");
         }
         if (component.getColor() != ChatColor.NONE)
             node.put("color", component.getColor().getName());
@@ -196,10 +199,10 @@ public class DefaultChatConverter implements ChatConverter {
     }
 
     /**
-     * Convert object to json
+     * Converts a chat component into their json formatted representation.
      *
-     * @param chatComponent
-     * @return
+     * @param chatComponent the component to parse to json.
+     * @return json node with the information of the given chat component.
      */
     @Override
     public String toJsonString(ChatComponent chatComponent) {

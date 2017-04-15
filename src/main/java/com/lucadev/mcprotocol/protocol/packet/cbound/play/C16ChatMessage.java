@@ -36,7 +36,7 @@ public class C16ChatMessage extends AbstractPacket implements ReadablePacket {
     public void read(Bot bot, DataInputStream is, int totalSize) throws IOException {
         rawJson = readString(is);
         try {
-            chatComponent = bot.getProtocol().getChatConverterFactory().createParser().parse(rawJson);
+            chatComponent = bot.getProtocol().getChatConverterFactory().createConverter().parse(rawJson);
         } catch (ChatParseException e) {
             e.printStackTrace();
         }
