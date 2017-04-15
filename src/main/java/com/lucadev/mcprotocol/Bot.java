@@ -12,10 +12,10 @@ import com.lucadev.mcprotocol.protocol.network.client.NetClient;
 import com.lucadev.mcprotocol.protocol.network.client.NetClientFactory;
 import com.lucadev.mcprotocol.protocol.network.connection.Connection;
 import com.lucadev.mcprotocol.protocol.network.connection.ConnectionFactory;
-import com.lucadev.mcprotocol.protocol.packet.headers.PacketLengthHeader;
-import com.lucadev.mcprotocol.protocol.packet.sbound.handshake.S00Handshake;
-import com.lucadev.mcprotocol.protocol.packet.sbound.play.S02ChatMessage;
-import com.lucadev.mcprotocol.protocol.packet.sbound.status.S00Request;
+import com.lucadev.mcprotocol.protocol.packets.headers.PacketLengthHeader;
+import com.lucadev.mcprotocol.protocol.packets.sbound.handshake.S00Handshake;
+import com.lucadev.mcprotocol.protocol.packets.sbound.play.S02ChatMessage;
+import com.lucadev.mcprotocol.protocol.packets.sbound.status.S00Request;
 import com.lucadev.mcprotocol.util.model.MOTDResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -152,7 +152,7 @@ public class Bot {
                 getProtocol().getVersion(), State.STATUS));
         netClient.writePacket(new S00Request());
 
-        PacketLengthHeader respHead = netClient.readHeader();//since we're only expecting a confirmation we can skip using an actual packet
+        PacketLengthHeader respHead = netClient.readHeader();//since we're only expecting a confirmation we can skip using an actual packets
 
         byte[] response = netClient.readResponse();
         logger.info("Response from server: {}", new String(response));

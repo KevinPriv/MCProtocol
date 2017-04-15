@@ -1,10 +1,10 @@
 package com.lucadev.mcprotocol.protocol.network.client;
 
 import com.lucadev.mcprotocol.protocol.network.connection.Connection;
-import com.lucadev.mcprotocol.protocol.packet.Packet;
-import com.lucadev.mcprotocol.protocol.packet.ReadablePacket;
-import com.lucadev.mcprotocol.protocol.packet.WritablePacket;
-import com.lucadev.mcprotocol.protocol.packet.headers.PacketLengthHeader;
+import com.lucadev.mcprotocol.protocol.packets.Packet;
+import com.lucadev.mcprotocol.protocol.packets.ReadablePacket;
+import com.lucadev.mcprotocol.protocol.packets.WritablePacket;
+import com.lucadev.mcprotocol.protocol.packets.headers.PacketLengthHeader;
 
 import javax.crypto.SecretKey;
 import java.io.IOException;
@@ -24,7 +24,7 @@ public interface NetClient {
     Connection getConnection();
 
     /**
-     * Force writes a packet to the stream. No checking
+     * Force writes a packets to the stream. No checking
      *
      * @param packet
      * @throws IOException
@@ -32,14 +32,14 @@ public interface NetClient {
     void writePacket(WritablePacket packet) throws IOException;
 
     /**
-     * Write a packet to stream following any possible queue techniques
+     * Write a packets to stream following any possible queue techniques
      *
      * @param packet
      */
     void sendPacket(WritablePacket packet);
 
     /**
-     * Reads a packet directly from stream. No checking
+     * Reads a packets directly from stream. No checking
      *
      * @return
      * @throws IOException
@@ -47,7 +47,7 @@ public interface NetClient {
     ReadablePacket readPacket() throws IOException;
 
     /**
-     * Reads packet length and id from stream. No checking.
+     * Reads packets length and id from stream. No checking.
      *
      * @return
      * @throws IOException
@@ -55,7 +55,7 @@ public interface NetClient {
     PacketLengthHeader readHeader() throws IOException;
 
     /**
-     * Reads packet length as varint then returns byte array with the given length.
+     * Reads packets length as varint then returns byte array with the given length.
      *
      * @return
      * @throws IOException
@@ -63,7 +63,7 @@ public interface NetClient {
     byte[] readResponse() throws IOException;
 
     /**
-     * Create packet header
+     * Create packets header
      *
      * @param packet
      * @param data

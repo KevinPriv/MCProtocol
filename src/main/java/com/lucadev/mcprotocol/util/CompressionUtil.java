@@ -7,7 +7,7 @@ import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
 /**
- * Zlib packet compression.
+ * Zlib packets compression.
  * https://qupera.blogspot.nl/2013/02/howto-compress-and-uncompress-java-byte.html
  */
 public class CompressionUtil {

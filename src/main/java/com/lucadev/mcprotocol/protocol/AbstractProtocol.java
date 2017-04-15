@@ -2,8 +2,8 @@ package com.lucadev.mcprotocol.protocol;
 
 import com.lucadev.mcprotocol.game.chat.ChatConverterFactory;
 import com.lucadev.mcprotocol.game.chat.impl.DefaultChatConverterFactory;
-import com.lucadev.mcprotocol.protocol.packet.Packet;
-import com.lucadev.mcprotocol.protocol.packet.UndefinedPacket;
+import com.lucadev.mcprotocol.protocol.packets.Packet;
+import com.lucadev.mcprotocol.protocol.packets.UndefinedPacket;
 
 import java.util.HashMap;
 

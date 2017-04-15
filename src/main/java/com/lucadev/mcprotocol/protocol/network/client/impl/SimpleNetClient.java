@@ -5,11 +5,11 @@ import com.lucadev.mcprotocol.protocol.Protocol;
 import com.lucadev.mcprotocol.protocol.ProtocolException;
 import com.lucadev.mcprotocol.protocol.network.client.NetClient;
 import com.lucadev.mcprotocol.protocol.network.connection.Connection;
-import com.lucadev.mcprotocol.protocol.packet.Packet;
-import com.lucadev.mcprotocol.protocol.packet.ReadablePacket;
-import com.lucadev.mcprotocol.protocol.packet.UndefinedPacket;
-import com.lucadev.mcprotocol.protocol.packet.WritablePacket;
-import com.lucadev.mcprotocol.protocol.packet.headers.PacketLengthHeader;
+import com.lucadev.mcprotocol.protocol.packets.Packet;
+import com.lucadev.mcprotocol.protocol.packets.ReadablePacket;
+import com.lucadev.mcprotocol.protocol.packets.UndefinedPacket;
+import com.lucadev.mcprotocol.protocol.packets.WritablePacket;
+import com.lucadev.mcprotocol.protocol.packets.headers.PacketLengthHeader;
 import com.lucadev.mcprotocol.util.CompressionUtil;
 import com.lucadev.mcprotocol.util.EncryptionUtil;
 import org.slf4j.Logger;
@@ -57,7 +57,7 @@ public class SimpleNetClient implements NetClient {
     }
 
     /**
-     * Force writes a packet to the stream. No checking
+     * Force writes a packets to the stream. No checking
      *
      * @param packet
      * @throws IOException
@@ -90,7 +90,7 @@ public class SimpleNetClient implements NetClient {
                 //write data uncompressed
                 connection.getDataOutputStream().write(uncompressedData);
             } else {
-                logger.info("Writing packet compressed 0x{}", Integer.toHexString(packet.getId()).toUpperCase());
+                logger.info("Writing packets compressed 0x{}", Integer.toHexString(packet.getId()).toUpperCase());
                 //write uncompressed size
                 writeVarInt(connection.getDataOutputStream(), packetLength);
                 writeVarInt(connection.getDataOutputStream(), dataSize);
@@ -99,16 +99,16 @@ public class SimpleNetClient implements NetClient {
             }
         } else {
             //no compression
-            //write packet size
+            //write packets size
             writeVarInt(connection.getDataOutputStream(), dataSize);
             //WRITE PACKET DATA
             connection.getDataOutputStream().write(uncompressedData);
         }
-        //logger.info("Wrote packet {} to stream with length {}", "0x" + Integer.toHexString(packet.getId()).toUpperCase(), bytes.size());
+        //logger.info("Wrote packets {} to stream with length {}", "0x" + Integer.toHexString(packets.getId()).toUpperCase(), bytes.size());
     }
 
     /**
-     * Write a packet to stream following any possible queue techniques
+     * Write a packets to stream following any possible queue techniques
      *
      * @param packet
      */
@@ -122,7 +122,7 @@ public class SimpleNetClient implements NetClient {
     }
 
     /**
-     * Reads a packet directly from stream. No checking
+     * Reads a packets directly from stream. No checking
      *
      * @return
      * @throws IOException
@@ -142,11 +142,11 @@ public class SimpleNetClient implements NetClient {
             //LEngth of datalength bytes + compressed size
             int packetLength = readVarInt(is);
             int dataLength = readVarInt(is);//uncompressed length of packetid + data or 0
-            //Length of the remaining bytes from the packet.
+            //Length of the remaining bytes from the packets.
             int compressedLength = packetLength - varIntLength(dataLength);
 
             if (dataLength == 0) {
-                //rest of packet is uncompressed
+                //rest of packets is uncompressed
                 packetId = readVarInt(is);
                 data = new byte[compressedLength - varIntLength(packetId)];
                 is.readFully(data);
@@ -155,7 +155,7 @@ public class SimpleNetClient implements NetClient {
                     throw new ProtocolException("Compressed size under threshold! Minimum: "
                             + compressionThreshold + " received: " + dataLength);
                 }
-                //packet is compressed
+                //packets is compressed
                 byte[] compressedData = new byte[compressedLength];
                 is.readFully(compressedData);
                 byte[] uncompressed = CompressionUtil.decompress(compressedData);
@@ -171,7 +171,7 @@ public class SimpleNetClient implements NetClient {
         //logger.info("RECEIVED: {}", new PacketLengthHeader(packetId, data.length + 1));
         Packet packet = protocol.resolvePacket(packetId, protocol.getCurrentState());
         if (packet == null) {
-            //logger.info("Could not resolve packet: 0x{} Returning generic packet.", Integer.toHexString(packetId).toUpperCase());
+            //logger.info("Could not resolve packets: 0x{} Returning generic packets.", Integer.toHexString(packetId).toUpperCase());
             packet = new UndefinedPacket(packetId);
         }
         if (!(packet instanceof ReadablePacket)) {
@@ -190,7 +190,7 @@ public class SimpleNetClient implements NetClient {
     }
 
     /**
-     * Reads packet length and id from stream. No checking.
+     * Reads packets length and id from stream. No checking.
      *
      * @return
      * @throws IOException
@@ -205,7 +205,7 @@ public class SimpleNetClient implements NetClient {
     }
 
     /**
-     * Reads packet length as varint then returns byte array with the given length.
+     * Reads packets length as varint then returns byte array with the given length.
      *
      * @return
      * @throws IOException
@@ -219,7 +219,7 @@ public class SimpleNetClient implements NetClient {
     }
 
     /**
-     * Create packet header
+     * Create packets header
      *
      * @param packet
      * @param data
@@ -228,7 +228,7 @@ public class SimpleNetClient implements NetClient {
     @Override
     public PacketLengthHeader createHeader(Packet packet, byte[] data) {
         int id = packet.getId();
-        int size = data.length + 1;//+1 due to the fact that the packet id is also 1 byte long
+        int size = data.length + 1;//+1 due to the fact that the packets id is also 1 byte long
         return new PacketLengthHeader(id, size);
     }
 

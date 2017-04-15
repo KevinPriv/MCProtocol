@@ -9,26 +9,26 @@ import com.lucadev.mcprotocol.protocol.AbstractProtocol;
 import com.lucadev.mcprotocol.protocol.State;
 import com.lucadev.mcprotocol.protocol.network.client.NetClient;
 import com.lucadev.mcprotocol.protocol.network.client.util.ReadTask;
-import com.lucadev.mcprotocol.protocol.packet.PacketListener;
-import com.lucadev.mcprotocol.protocol.packet.ReadablePacket;
-import com.lucadev.mcprotocol.protocol.packet.cbound.login.C00Disconnect;
-import com.lucadev.mcprotocol.protocol.packet.cbound.login.C01EncryptionRequest;
-import com.lucadev.mcprotocol.protocol.packet.cbound.login.C02LoginSuccess;
-import com.lucadev.mcprotocol.protocol.packet.cbound.login.C03SetCompression;
-import com.lucadev.mcprotocol.protocol.packet.cbound.play.*;
-import com.lucadev.mcprotocol.protocol.packet.cbound.play.entity.*;
-import com.lucadev.mcprotocol.protocol.packet.cbound.play.entity.mob.C03SpawnMob;
-import com.lucadev.mcprotocol.protocol.packet.cbound.play.entity.player.*;
-import com.lucadev.mcprotocol.protocol.packet.cbound.play.world.chunk.C09UpdateBlockEntity;
-import com.lucadev.mcprotocol.protocol.packet.cbound.play.world.chunk.C32ChunkData;
-import com.lucadev.mcprotocol.protocol.packet.sbound.handshake.S00Handshake;
-import com.lucadev.mcprotocol.protocol.packet.sbound.login.S00LoginStart;
-import com.lucadev.mcprotocol.protocol.packet.sbound.login.S01EncryptionResponse;
-import com.lucadev.mcprotocol.protocol.packet.sbound.play.S10KeepAlive;
-import com.lucadev.mcprotocol.protocol.packet.sbound.play.client.S03ClientStatus;
-import com.lucadev.mcprotocol.protocol.packet.sbound.play.client.S04ClientSettings;
-import com.lucadev.mcprotocol.protocol.packet.sbound.play.entity.player.S00TeleportConfirm;
-import com.lucadev.mcprotocol.protocol.packet.sbound.play.entity.player.S13PlayerPositionLook;
+import com.lucadev.mcprotocol.protocol.packets.PacketListener;
+import com.lucadev.mcprotocol.protocol.packets.ReadablePacket;
+import com.lucadev.mcprotocol.protocol.packets.cbound.login.C00Disconnect;
+import com.lucadev.mcprotocol.protocol.packets.cbound.login.C01EncryptionRequest;
+import com.lucadev.mcprotocol.protocol.packets.cbound.login.C02LoginSuccess;
+import com.lucadev.mcprotocol.protocol.packets.cbound.login.C03SetCompression;
+import com.lucadev.mcprotocol.protocol.packets.cbound.play.*;
+import com.lucadev.mcprotocol.protocol.packets.cbound.play.entity.*;
+import com.lucadev.mcprotocol.protocol.packets.cbound.play.entity.mob.C03SpawnMob;
+import com.lucadev.mcprotocol.protocol.packets.cbound.play.entity.player.*;
+import com.lucadev.mcprotocol.protocol.packets.cbound.play.world.chunk.C09UpdateBlockEntity;
+import com.lucadev.mcprotocol.protocol.packets.cbound.play.world.chunk.C32ChunkData;
+import com.lucadev.mcprotocol.protocol.packets.sbound.handshake.S00Handshake;
+import com.lucadev.mcprotocol.protocol.packets.sbound.login.S00LoginStart;
+import com.lucadev.mcprotocol.protocol.packets.sbound.login.S01EncryptionResponse;
+import com.lucadev.mcprotocol.protocol.packets.sbound.play.S10KeepAlive;
+import com.lucadev.mcprotocol.protocol.packets.sbound.play.client.S03ClientStatus;
+import com.lucadev.mcprotocol.protocol.packets.sbound.play.client.S04ClientSettings;
+import com.lucadev.mcprotocol.protocol.packets.sbound.play.entity.player.S00TeleportConfirm;
+import com.lucadev.mcprotocol.protocol.packets.sbound.play.entity.player.S13PlayerPositionLook;
 import com.lucadev.mcprotocol.protocol.pluginchannel.PluginChannelManager;
 import com.lucadev.mcprotocol.protocol.pluginchannel.PluginChannelManagerFactory;
 import com.lucadev.mcprotocol.protocol.pluginchannel.channels.MCBrandPluginChannel;
@@ -115,7 +115,7 @@ public class Protocol316 extends AbstractProtocol {
     }
 
     /**
-     * Setup all packet listeners
+     * Setup all packets listeners
      */
     private void setupPacketListeners() {
         registerPacketListener(C24PluginMessage.class, (bot, packet) -> {
@@ -306,7 +306,7 @@ public class Protocol316 extends AbstractProtocol {
         NetClient client = bot.getNetClient();
         ReadablePacket readablePacket = client.readPacket();
         if (!(readablePacket instanceof C01EncryptionRequest)) {
-            throw new IllegalStateException("Expected C01EncryptionRequest but got other packet instead!");
+            throw new IllegalStateException("Expected C01EncryptionRequest but got other packets instead!");
         }
         logger.info("Enabling crypto");
         C01EncryptionRequest cryptoRequest = (C01EncryptionRequest) readablePacket;
