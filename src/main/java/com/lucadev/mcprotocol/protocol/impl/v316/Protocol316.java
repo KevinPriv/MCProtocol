@@ -186,11 +186,11 @@ public class Protocol316 extends AbstractProtocol {
     public void serverLogin() throws IOException {
         String host = bot.getConnection().getSocket().getInetAddress().getCanonicalHostName();
         int port = bot.getConnection().getSocket().getPort();
-        String username = bot.getLogin().getProfileName();
+        String username = bot.getSession().getProfileName();
         NetClient client = bot.getNetClient();
         client.writePacket(new S00Handshake(host, port, getVersion(), State.LOGIN));
         client.writePacket(new S00LoginStart(username));
-        if(bot.getLogin().isOnline()) {
+        if(bot.getSession().isOnline()) {
             setupCrypto();
         }
         ReadablePacket compOrLoginPacket = client.readPacket();
@@ -313,7 +313,7 @@ public class Protocol316 extends AbstractProtocol {
             PublicKey pubKey = EncryptionUtil.generatePublicKey(cryptoRequest.getPubKey());
             SecretKey secKey = EncryptionUtil.generateSecretKey();
             String hash = new BigInteger(EncryptionUtil.encrypt(cryptoRequest.getServerId(), pubKey, secKey)).toString(16);
-            bot.getLoginProvider().authenticateServer(bot.getLogin(), hash);
+            bot.getLoginProvider().authenticateServer(bot.getSession(), hash);
             client.writePacket(new S01EncryptionResponse(pubKey, secKey, cryptoRequest.getVerifyToken()));
             client.setSharedKey(secKey);
             client.enableEncryption();

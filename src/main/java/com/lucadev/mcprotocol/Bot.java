@@ -191,7 +191,7 @@ public class Bot {
         return netClient;
     }
 
-    public Session getLogin() {
+    public Session getSession() {
         return login;
     }
 
