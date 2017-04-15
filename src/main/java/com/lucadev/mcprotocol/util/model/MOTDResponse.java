@@ -34,13 +34,19 @@ public class MOTDResponse {
                 "description=" + description +
                 ", players=" + players +
                 ", version=" + version +
-                ", favicon='" + favicon + '\'' +
                 '}';
     }
 
-    public class Version {
+    public static class Version {
         private String name;
         private int protocol;
+
+        /**
+         * Default constructor for json
+         */
+        public Version() {
+
+        }
 
         public String getName() {
             return name;
@@ -49,20 +55,44 @@ public class MOTDResponse {
         public int getProtocol() {
             return protocol;
         }
+
+        @Override
+        public String toString() {
+            return getName() + " PROTOCOL: " + getProtocol();
+        }
     }
 
-    public class Description {
+    public static class Description {
         private String text;
+
+        /**
+         * Default constructor for json
+         */
+        public Description() {
+
+        }
 
         public String getText() {
             return text;
         }
+
+        @Override
+        public String toString() {
+            return getText();
+        }
     }
 
-    public class Players {
+    public static class Players {
         private int max;
         private int online;
         private List<Player> sample;
+
+        /**
+         * Default constructor for json
+         */
+        public Players() {
+
+        }
 
         public int getMax() {
             return max;
@@ -75,11 +105,23 @@ public class MOTDResponse {
         public List<Player> getSample() {
             return sample;
         }
+
+        @Override
+        public String toString() {
+            return max + "/" + online;
+        }
     }
 
-    public class Player {
+    public static class Player {
         private String name;
         private String id;
+
+        /**
+         * Default constructor for json
+         */
+        public Player() {
+
+        }
 
         public String getName() {
             return name;
@@ -87,6 +129,11 @@ public class MOTDResponse {
 
         public String getId() {
             return id;
+        }
+
+        @Override
+        public String toString() {
+            return getId() + " " + getName();
         }
     }
 

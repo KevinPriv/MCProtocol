@@ -1,6 +1,6 @@
 package com.lucadev.mcprotocol;
 
-import com.google.gson.Gson;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lucadev.mcprotocol.auth.Session;
 import com.lucadev.mcprotocol.auth.SessionProvider;
 import com.lucadev.mcprotocol.game.entity.player.Player;
@@ -150,17 +150,16 @@ public class Bot {
         if (!isConnected()) {
             connect();
         }
-        logger.info("Fetching MOTD");
-        protocol.setCurrentState(State.STATUS);
         netClient.writePacket(new S00Handshake(botBuilder.getHost(), botBuilder.getPort(),
                 getProtocol().getVersion(), State.STATUS));
+        protocol.setCurrentState(State.STATUS);
         netClient.writePacket(new S00Request());
 
         PacketLengthHeader respHead = netClient.readHeader();//since we're only expecting a confirmation we can skip using an actual packets
 
         byte[] response = netClient.readResponse();
-        logger.info("Response from server: {}", new String(response));
-        return new Gson().fromJson(new String(response), MOTDResponse.class);
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.readValue(response, MOTDResponse.class);
     }
 
     public ConnectionFactory getConnectionFactory() {

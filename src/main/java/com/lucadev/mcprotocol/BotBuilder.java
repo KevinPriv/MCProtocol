@@ -29,7 +29,7 @@ public class BotBuilder {
     private String username;
     private String password;
     //Should we authenticate?
-    private boolean authenticate = true;
+    private boolean authenticate = false;
 
     /**
      * Protocol version
