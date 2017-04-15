@@ -307,7 +307,7 @@ public class SimpleNetClient implements NetClient {
             ReadablePacket packet = readPacket();
             bot.getProtocol().handlePacket(packet);
         } catch (IOException e) {
-            bot.getProtocol().getTickEngine().stopTicking();
+            bot.getProtocol().getTickEngine().stop();
             try {
                 bot.getConnection().close();
             } catch (IOException e1) {

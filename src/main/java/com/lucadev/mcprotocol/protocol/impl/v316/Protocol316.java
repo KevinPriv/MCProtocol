@@ -3,6 +3,7 @@ package com.lucadev.mcprotocol.protocol.impl.v316;
 import com.lucadev.mcprotocol.Bot;
 import com.lucadev.mcprotocol.game.chat.components.ChatComponent;
 import com.lucadev.mcprotocol.game.entity.player.BotPlayer;
+import com.lucadev.mcprotocol.game.tick.TickEngineFactory;
 import com.lucadev.mcprotocol.game.world.World;
 import com.lucadev.mcprotocol.protocol.AbstractProtocol;
 import com.lucadev.mcprotocol.protocol.State;
@@ -68,7 +69,7 @@ public class Protocol316 extends AbstractProtocol {
     @Override
     public void setup(Bot bot) {
         this.bot = bot;
-        tickEngine = new TickEngine(bot);
+        tickEngine = TickEngineFactory.getDefaultFactory().createEngine(bot);
         pluginChannelManager = PluginChannelManagerFactory.createDefault();
         setupPluginChannels();
         setupPacketListeners();
@@ -229,7 +230,7 @@ public class Protocol316 extends AbstractProtocol {
         //start the tickengine
         bot.setWorld(new World());
         new ReadTask(bot).start();
-        tickEngine.start();
+        tickEngine.start(true);
     }
 
     @Override

@@ -1,37 +1,35 @@
 package com.lucadev.mcprotocol.game.tick;
 
-import com.lucadev.mcprotocol.Bot;
+import java.util.List;
 
 /**
+ * Interface for tick engines.
+ *
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  */
-public class TickEngine extends Thread {
+public interface TickEngine extends Runnable {
 
-    public static final long TPS = 20;
-    public static final long DELAY = 1000 / TPS;
+    /**
+     * Start the tickEngine
+     * @param thread should we run in a separate thread or the current thread?
+     */
+    void start(boolean thread);
 
-    private boolean running = false;
-    private Bot bot;
+    /**
+     * Stops the tick engine once the current tick has finished.
+     */
+    void stop();
 
-    public TickEngine(Bot bot) {
-        this.bot = bot;
-    }
+    /**
+     * @return list of tick workers registered to this engine.
+     */
+    List<TickWorker> getTickWorkers();
 
-    @Override
-    public void run() {
-        setName("TICK-ENGINE");
-        running = true;
-        while (bot.getConnection().getSocket().isConnected() && running) {
-            bot.getProtocol().tick();
-            try {
-                sleep(DELAY);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-    }
+    /**
+     * Register for the tick engine.
+     * @param delay every X ticks the listener will be executed.
+     * @param listener the listener
+     */
+    void register(int delay, TickListener listener);
 
-    public void stopTicking() {
-        running = false;
-    }
 }
