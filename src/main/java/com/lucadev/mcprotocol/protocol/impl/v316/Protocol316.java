@@ -67,9 +67,8 @@ public class Protocol316 extends AbstractProtocol {
     private TickEngine tickEngine;
 
     /**
-     * Setup everything in here
-     *
-     * @param bot
+     * Setup the protocol.
+     * @param bot instance of our bot
      */
     @Override
     public void setup(Bot bot) {
@@ -207,6 +206,7 @@ public class Protocol316 extends AbstractProtocol {
         String username = bot.getSession().getProfileName();
         NetClient client = bot.getNetClient();
         client.writePacket(new S00Handshake(host, port, getVersion(), State.LOGIN));
+        setCurrentState(State.LOGIN);
         client.writePacket(new S00LoginStart(username));
         if (bot.getSession().isOnline()) {
             setupCrypto();

@@ -102,7 +102,11 @@ public class Bot {
     }
 
     public void disconnect() {
-        getProtocol().disconnect();
+        try {
+            getProtocol().disconnect();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

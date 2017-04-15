@@ -8,29 +8,28 @@ import com.lucadev.mcprotocol.protocol.impl.v316.Protocol316;
  * Default implementation of the protocol factory.
  *
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
+ * @see ProtocolFactory
  */
 public class DefaultProtocolFactory extends ProtocolFactory {
 
     /**
-     * Returns new protocol implementation of the current version.
-     *
-     * @return
+     * Create protocol implementation of the latest supported protocol id.
+     * @return protocol implementation of latest supported protocol version.
      */
     @Override
-    public Protocol getCreateProtocol() {
+    public Protocol createProtocol() {
         return createProtocol(LATEST_VERSION);
     }
 
     /**
-     * Obtain the protocol for a specific version. May be null if not found.
-     *
-     * @param version
-     * @return
+     * Obtain the protocol for a specific version. May be null if not found/supported.
+     * @param version protocol ID
+     * @return protocol implementation of the given protocol id
      */
     @Override
     public Protocol createProtocol(int version) {
         switch (version) {
-            case V1_11_1:
+            case V1_11_1/*V1_11_1 is equal to V1_11_2 so we can ignore that*/:
                 return new Protocol316();
             default:
                 return null;

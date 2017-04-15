@@ -3,7 +3,10 @@ package com.lucadev.mcprotocol.protocol;
 import java.io.IOException;
 
 /**
+ * Exception that gets thrown when something in the protocol goes wrong.
+ *
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
+ * @see java.io.IOException
  */
 public class ProtocolException extends IOException {
 
