@@ -8,13 +8,14 @@ import com.lucadev.mcprotocol.protocol.packets.UndefinedPacket;
 import java.util.HashMap;
 
 /**
- * Abstract class for protocol which includes methods like varint and such.
+ * Abstract implementation of protocol which contains packet register&resolve, chat converters and state information.
  *
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
+ * @see Protocol
  */
 public abstract class AbstractProtocol implements Protocol {
 
-    /**
+    /*
      * PACKET ID -> PACKET CLASS
      */
     private HashMap<Integer, Class<? extends Packet>> packetMapStatus = new HashMap<>();
@@ -25,6 +26,12 @@ public abstract class AbstractProtocol implements Protocol {
 
     private ChatConverterFactory chatConverterFactory = new DefaultChatConverterFactory();
 
+    /**
+     * Register a packet which can later be resolved when read from stream.
+     * @param state state in which the packet functions(chat message only functions in PLAY for example).
+     * @param id the packet id
+     * @param packet the packet class
+     */
     public void register(State state, int id, Class<? extends Packet> packet) {
         switch (state) {
             case PLAY:
@@ -51,6 +58,13 @@ public abstract class AbstractProtocol implements Protocol {
         }
     }
 
+    /**
+     * Get a packet from its id and its state.
+     * @param id the id of the packet
+     * @param state the state that we look the packet in.
+     *              Packets can have equal id's but are seperated by the state the connection is in.
+     * @return the resolved packet.
+     */
     @Override
     public Packet resolvePacket(int id, State state) {
         try {
@@ -82,9 +96,8 @@ public abstract class AbstractProtocol implements Protocol {
     }
 
     /**
-     * Current state
-     *
-     * @return
+     * @return the state of the connection between server and client.
+     * @see State
      */
     @Override
     public State getCurrentState() {
@@ -92,9 +105,8 @@ public abstract class AbstractProtocol implements Protocol {
     }
 
     /**
-     * Set current state
-     *
-     * @param state
+     * Change the state to the given state.
+     * @param state new connection state.
      */
     @Override
     public void setCurrentState(State state) {
@@ -102,9 +114,7 @@ public abstract class AbstractProtocol implements Protocol {
     }
 
     /**
-     * Get the factory used to create chat parses.
-     *
-     * @return
+     * @return get the factory used to create the chat converters.
      */
     public ChatConverterFactory getChatConverterFactory() {
         return chatConverterFactory;

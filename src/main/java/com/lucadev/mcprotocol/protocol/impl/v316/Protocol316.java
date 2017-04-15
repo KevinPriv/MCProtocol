@@ -50,12 +50,18 @@ import java.util.List;
 
 
 /**
+ * Implementation of protocol id 316
+ *
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  */
 public class Protocol316 extends AbstractProtocol {
 
-    private Bot bot;
+    /**
+     * System logger
+     */
     private static final Logger logger = LoggerFactory.getLogger(Protocol316.class);
+
+    private Bot bot;
     private PluginChannelManager pluginChannelManager;
     private HashMap<Class<? extends ReadablePacket>, List<PacketListener>> listenerMap = new HashMap<>();
     private TickEngine tickEngine;
@@ -98,6 +104,9 @@ public class Protocol316 extends AbstractProtocol {
         register(State.PLAY, 0x09, C09UpdateBlockEntity.class);
     }
 
+    /**
+     * Register all tick workers for the protocol in this method.
+     */
     private void setupTickWorkers() {
         //Send player pos and look every 1 sec when not moving.
         getTickEngine().register(20, (bot) -> {
@@ -112,14 +121,14 @@ public class Protocol316 extends AbstractProtocol {
     }
 
     /**
-     * Setup all plugin channels required
+     * Register all the supported plugin channels in here.
      */
     private void setupPluginChannels() {
         pluginChannelManager.register(new MCBrandPluginChannel());
     }
 
     /**
-     * Setup all packets listeners
+     * Setup all packets listeners for this protocol.
      */
     private void setupPacketListeners() {
         registerPacketListener(C24PluginMessage.class, (bot, packet) -> {
@@ -178,13 +187,18 @@ public class Protocol316 extends AbstractProtocol {
         });
     }
 
+    /**
+     * Get the supported protocol version of the protocol.
+     * @return protocol id
+     */
     @Override
     public int getVersion() {
         return 316;
     }
 
     /**
-     * Handshake step to join the server.
+     * This method will handle all packets from the handshake state until the play state which means you've logged in.
+     * @throws IOException when something goes wrong with the stream or login.
      */
     @Override
     public void serverLogin() throws IOException {
@@ -237,6 +251,10 @@ public class Protocol316 extends AbstractProtocol {
         tickEngine.start(true);
     }
 
+    /**
+     * Packet handle method.
+     * @param packet the read packet from stream.
+     */
     @Override
     public void handlePacket(ReadablePacket packet) {
         if (listenerMap.containsKey(packet.getClass())) {
@@ -244,6 +262,11 @@ public class Protocol316 extends AbstractProtocol {
         }
     }
 
+    /**
+     * Register a listener for when a specified packet is read.
+     * @param clazz the class of the packet we want to listen for.
+     * @param listener the listener to run when we come across the specified packet.
+     */
     @Override
     public void registerPacketListener(Class<? extends ReadablePacket> clazz, PacketListener listener) {
         if (!listenerMap.containsKey(clazz)) {
@@ -253,6 +276,11 @@ public class Protocol316 extends AbstractProtocol {
         listenerMap.get(clazz).add(listener);
     }
 
+    /**
+     * Unregister a listener from a packet.
+     * @param clazz the class of the packet we want to unregister.
+     * @param listener the listener that was listening to the specified packet.
+     */
     @Override
     public void unregisterPacketListener(Class<? extends ReadablePacket> clazz, PacketListener listener) {
         if (!listenerMap.containsKey(clazz)) {
@@ -265,15 +293,18 @@ public class Protocol316 extends AbstractProtocol {
         }
     }
 
+    /**
+     * Handle a tick from the tick engine.
+     */
     @Override
     public void tick() {
     }
 
     /**
-     * Chat message
-     *
-     * @param component the chat component
-     * @param position  0=chatbox, 1=system message, 2=above hotbar
+     * Handle an incoming chat message
+     * @param component the chat component that was received.
+     * @param position chat components aren't only for the chat box.
+     *                 0=chatbox, 1=system message, 2=above hotbar
      */
     @Override
     public void onChatMessage(ChatComponent component, byte position) {
@@ -282,24 +313,35 @@ public class Protocol316 extends AbstractProtocol {
         }
     }
 
+    /**
+     * Disconnect from the server.
+     */
     @Override
     public void disconnect() {
-
+        //TODO: implement correct disconnect
     }
 
+    /**
+     * @return instance of our tick engine.
+     */
     @Override
     public TickEngine getTickEngine() {
         return tickEngine;
     }
 
+    /**
+     * Enable compression on the way packets are communicated both ways.
+     * @param threshold min packet size before compression is done to that packet.
+     * @see com.lucadev.mcprotocol.protocol.network.client.impl.SimpleNetClient for an example
+     */
     private void enableCompression(int threshold) {
-        if (threshold < 0) {
-            //skip since we need a positive integer
-            return;
-        }
         bot.getNetClient().enableCompression(threshold);
     }
 
+    /**
+     * Sets up the cryptography requirements sent by the server.
+     * @throws IOException when something goes wrong setting up crypto
+     */
     private void setupCrypto() throws IOException {
         NetClient client = bot.getNetClient();
         ReadablePacket readablePacket = client.readPacket();
