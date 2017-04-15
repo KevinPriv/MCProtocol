@@ -1,37 +1,39 @@
 package com.lucadev.mcprotocol.auth.yggdrasil;
 
 /**
- * Object with error info if something fails
+ * Model of the json returned by Mojang auth servers if an error occurs during authentication.
  *
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  */
 public class AuthError {
 
-    /**
-     * Short error description.
-     */
-    private String message;
-    /**
-     * Longer description meant for the user
-     */
+    private String error;
     private String errorMessage;
-
-    /**
-     * Optional cause
-     */
     private String cause;
 
+    /**
+     * Default constructor added to be sure that the json library we're using can create this object.
+     */
     public AuthError() {
     }
 
-    public String getMessage() {
-        return message;
+    /**
+     * @return Short description of the error.
+     */
+    public String getError() {
+        return error;
     }
 
+    /**
+     * @return Longer description which can be shown to the user.
+     */
     public String getErrorMessage() {
         return errorMessage;
     }
 
+    /**
+     * @return Optional cause of the error. This string may be null or empty.
+     */
     public String getCause() {
         return cause;
     }

@@ -17,26 +17,59 @@ import java.io.OutputStream;
 import java.net.URL;
 
 /**
- * Implementation for the Yggdrasil auth mechanism from mojang.
+ * Implementation for the Yggdrasil auth mechanism from Mojang.
+ * This is the current method of authenticating users in Minecraft.
  *
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
+ * @see com.lucadev.mcprotocol.auth.SessionProvider
  */
 public class YggdrasilSessionProvider extends SessionProvider {
 
+    /**
+     * System logger
+     */
     private static final Logger logger = LoggerFactory.getLogger(YggdrasilSessionProvider.class);
 
     /**
-     * Base url for auth
+     * Base url of the Yggdrasil auth server
      */
     private static final String BASE_URL = "https://authserver.mojang.com";
-    private static final String SERVER_AUTH_URL = "https://sessionserver.mojang.com/session/minecraft/join";
-    private static final String CONTENT_TYPE = "application/json";
+
+    /**
+     * Agent name that will be used in the authentication payload.
+     */
     private static final String AGENT = "Minecraft";
+
+    /**
+     * Authentication mechanism version that will be used in the authentication payload.
+     */
     private static final int AGENT_VERSION = 1;
+
+    /**
+     * Server auth url used for verifying server joins. Has nothing to do with logging an user in.
+     */
+    private static final String SERVER_AUTH_URL = "https://sessionserver.mojang.com/session/minecraft/join";
+
+    /**
+     * Content type that will be sent in the request to the auth servers. In this case it's the json mime type.
+     */
+    private static final String CONTENT_TYPE = "application/json";
+
+    /**
+     * Charset to encode and decode with. In this case the widely used UTF-8
+     */
     private static final String CHARSET = "UTF-8";
 
+    /**
+     * Authenticate with the given credentials and obtain a Session object.
+     * @param email account email or username(depends on migrated account, online/offline-mode etc...)
+     * @param password the password used to authenticate the given email/username
+     * @return the session obtained from trying to authenticating with the given credentials.
+     * @throws IOException will be thrown when something unexpected happens during authentication.
+     *                      An example would be that the auth servers could be down or you lost your internet connection.
+     */
     @Override
-    public Session login(String email, String password) throws IOException {
+    public Session authenticate(String email, String password) throws IOException {
         logger.info("Authenticating user through yggdrasil");
         AuthPayload authPayload = new AuthPayload(AGENT, AGENT_VERSION, email, password);
         URL url = new URL(BASE_URL + "/authenticate");
@@ -76,20 +109,20 @@ public class YggdrasilSessionProvider extends SessionProvider {
     }
 
     /**
-     * Authenticate to mojang auth servers.
+     * Authenticate to a service so that we are able to join servers. This is mostly used for online-mode
      *
-     * @param login
-     * @param hash
+     * @param session the user session
+     * @param hash the hash generated from earlier steps. This hash is used to verify the user.
      */
     @Override
-    public void authenticateServer(Session login, String hash) throws IOException {
+    public void authenticateServer(Session session, String hash) throws IOException {
         logger.info("Authenticating to mojang session servers.");
         URL url = new URL(SERVER_AUTH_URL);
         ObjectMapper objectMapper = new ObjectMapper();
         //TODO MAKE CORRECT JSON OBJECT
         ObjectNode objectNode = objectMapper.createObjectNode();
-        objectNode.put("accessToken", login.getAccessToken());
-        objectNode.put("selectedProfile", login.getProfileId().replace("-", ""));
+        objectNode.put("accessToken", session.getAccessToken());
+        objectNode.put("selectedProfile", session.getProfileId().replace("-", ""));
         objectNode.put("serverId", hash);
 
         String encodedPayload = objectMapper.writeValueAsString(objectNode);

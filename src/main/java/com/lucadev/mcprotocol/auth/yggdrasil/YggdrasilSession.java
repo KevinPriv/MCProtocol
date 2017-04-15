@@ -5,6 +5,8 @@ import com.lucadev.mcprotocol.auth.Session;
 import static com.lucadev.mcprotocol.util.StringUtil.isNotNullOrEmpty;
 
 /**
+ * Session implementation for Yggdrasil authentication.
+ *
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  */
 public class YggdrasilSession extends Session {

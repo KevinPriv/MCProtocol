@@ -93,7 +93,7 @@ public class Bot {
 
     public void authenticate(String username, String password) throws IOException {
         logger.info("Authenticating user");
-        login = sessionProvider.login(username, password);
+        login = sessionProvider.authenticate(username, password);
         logger.info(login.toString());
     }
 

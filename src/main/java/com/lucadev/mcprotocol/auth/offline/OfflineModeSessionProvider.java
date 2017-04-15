@@ -6,25 +6,25 @@ import com.lucadev.mcprotocol.auth.SessionProvider;
 import java.io.IOException;
 
 /**
- * Login provider for offline mode
+ * SessionProvider that can be used for offline-mode servers.
  *
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  */
 public class OfflineModeSessionProvider extends SessionProvider {
 
     @Override
-    public Session login(String email, String password) throws IOException {
+    public Session authenticate(String email, String password) throws IOException {
         return new OfflineSession(email);
     }
 
     /**
      * Authenticate to mojang auth servers.
      *
-     * @param login
+     * @param session
      * @param hash
      */
     @Override
-    public void authenticateServer(Session login, String hash) {
+    public void authenticateServer(Session session, String hash) {
 
     }
 }

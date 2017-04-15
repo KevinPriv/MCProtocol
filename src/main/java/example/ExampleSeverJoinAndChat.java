@@ -18,9 +18,9 @@ public class ExampleSeverJoinAndChat {
     public static void main(String[] args) {
         //init builder w some info in params
         BotBuilder builder = new BotBuilder("localhost", 25565);
-        //Set authenticate to offline mode and login with username and password.
+        //Set authenticate to offline mode and authenticate with username and password.
         //Since we use the offline provider it does not check username and password and returns an offline session.
-        //This allows us to only join offline mode servers. To also join online mode use the default online login provider.
+        //This allows us to only join offline mode servers. To also join online mode use the default online authenticate provider.
         builder.loginProvider(SessionProvider.getDefaultOfflineProvider()).username("Steve").password("").authenticate();
         //build to bot
         Bot bot = builder.build();

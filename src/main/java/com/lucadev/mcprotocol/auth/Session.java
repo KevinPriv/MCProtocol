@@ -11,6 +11,13 @@ public abstract class Session {
     private String profileId;
     private String profileName;
 
+    /**
+     * Constructor that sets up the session information.
+     * @param accessToken random hex string used to authenticate the user without password(just like a web cookie)
+     * @param clientToken random generated UUID(need to read more documentation about this)
+     * @param profileId player uuid
+     * @param profileName player username
+     */
     public Session(String accessToken, String clientToken, String profileId, String profileName) {
         this.accessToken = accessToken;
         this.clientToken = clientToken;
@@ -18,18 +25,30 @@ public abstract class Session {
         this.profileName = profileName;
     }
 
+    /**
+     * @return random hex string used to authenticate the user without password(just like a web cookie)
+     */
     public String getAccessToken() {
         return accessToken;
     }
 
+    /**
+     * @return random generated UUID(need to read more documentation about this)
+     */
     public String getClientToken() {
         return clientToken;
     }
 
+    /**
+     * @return uuid of the player that was authenticated
+     */
     public String getProfileId() {
         return profileId;
     }
 
+    /**
+     * @return username of the player that was authenticated
+     */
     public String getProfileName() {
         return profileName;
     }
@@ -45,9 +64,9 @@ public abstract class Session {
     }
 
     /**
-     * Simple online mode check
+     * Check if the session is able to join online-mode servers.
      *
-     * @return
+     * @return the state of being able to join online-mode servers
      */
     public abstract boolean isOnline();
 }
