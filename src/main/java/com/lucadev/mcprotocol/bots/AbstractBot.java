@@ -33,10 +33,9 @@ public abstract class AbstractBot implements Bot {
         //Create protocol from builder config.
         protocol = botBuilder.getProtocolFactory().createProtocol(botBuilder.getProtocolVersion());
         protocol.setup(this);
-        connection = protocol.getConnectionFactory().createSecureConnection(botBuilder.getSocketFactory());
+        connection = protocol.getConnectionFactory().createConnection(botBuilder.getSocketFactory());
         //netClient comes after connection since NetClient depends heavily on Connection
         netClient = protocol.getNetClientFactory().createClient(this);
-
     }
 
     /**

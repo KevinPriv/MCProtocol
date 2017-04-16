@@ -14,7 +14,7 @@ import javax.net.SocketFactory;
  * @see ConnectionFactory
  * @see KeySecuredConnection
  */
-public class MCConnectionFactory extends ConnectionFactory {
+public class UnsecuredConnectionFactory extends ConnectionFactory<Connection> {
 
     /**
      * Creates a new connection that cannot be secured.
@@ -31,25 +31,5 @@ public class MCConnectionFactory extends ConnectionFactory {
      */
     public Connection createConnection(SocketFactory socketFactory) {
         return new UnsecuredConnection(socketFactory);
-    }
-
-    /**
-     * Creates a new connection that can be secured.
-     * Also makes use of the default socket factory.
-     * @return a new connection that can be secured.
-     */
-    @Override
-    public SecuredConnection createSecureConnection() {
-        return createSecureConnection(SocketFactory.getDefault());
-    }
-
-    /**
-     * Create a new connection that can be secured with the specified socket factory.
-     * @param socketFactory the socketfactory to use for the connection being created.
-     * @return a new connection that will use the specified socket factory.
-     */
-    @Override
-    public SecuredConnection createSecureConnection(SocketFactory socketFactory) {
-        return new KeySecuredConnection(socketFactory);
     }
 }

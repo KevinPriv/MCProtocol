@@ -1,6 +1,7 @@
 package com.lucadev.mcprotocol.protocol.network.connection;
 
-import com.lucadev.mcprotocol.protocol.network.connection.impl.MCConnectionFactory;
+import com.lucadev.mcprotocol.protocol.network.connection.impl.SecuredConnectionFactory;
+import com.lucadev.mcprotocol.protocol.network.connection.impl.UnsecuredConnectionFactory;
 
 import javax.net.SocketFactory;
 
@@ -9,7 +10,7 @@ import javax.net.SocketFactory;
  *
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  */
-public abstract class ConnectionFactory {
+public abstract class ConnectionFactory<T extends Connection> {
 
     private static ConnectionFactory defaultFactory;
 
@@ -17,27 +18,14 @@ public abstract class ConnectionFactory {
      * Creates a new connection that cannot be secured.
      * @return a new connection.
      */
-    public abstract Connection createConnection();
+    public abstract T createConnection();
 
     /**
      * Create a new connection with the specified socket factory.
      * @param socketFactory the socketfactory to use for the connection being created.
      * @return
      */
-    public abstract Connection createConnection(SocketFactory socketFactory);
-
-    /**
-     * Creates a new connection that can be secured.
-     * @return a new connection.
-     */
-    public abstract SecuredConnection createSecureConnection();
-
-    /**
-     * Create a new connection that can be secured with the specified socket factory.
-     * @param socketFactory the socketfactory to use for the connection being created.
-     * @return a new connection that will use the specified socket factory.
-     */
-    public abstract SecuredConnection createSecureConnection(SocketFactory socketFactory);
+    public abstract T createConnection(SocketFactory socketFactory);
 
 
     /**
@@ -47,7 +35,7 @@ public abstract class ConnectionFactory {
      */
     public static ConnectionFactory getDefault() {
         if(defaultFactory == null) {
-            defaultFactory = new MCConnectionFactory();
+            defaultFactory = new SecuredConnectionFactory();
         }
         return defaultFactory;
     }
