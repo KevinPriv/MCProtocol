@@ -3,7 +3,11 @@ package com.lucadev.mcprotocol.protocol.network.client.util;
 import com.lucadev.mcprotocol.Bot;
 import com.lucadev.mcprotocol.protocol.network.client.NetClient;
 
+import java.io.IOException;
+
 /**
+ * Thread that is used to read from the input stream.
+ *
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  */
 public class ReadTask extends Thread {
@@ -20,7 +24,11 @@ public class ReadTask extends Thread {
     public void run() {
         setName("READ");
         while (bot.getConnection().getSocket().isConnected()) {
-            netClient.read();
+            try {
+                netClient.read();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

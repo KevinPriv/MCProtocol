@@ -88,7 +88,7 @@ public class DefaultPluginChannelManager implements PluginChannelManager {
                 DataOutputStream dos = new DataOutputStream(ba);
                 pluginChannel.registerToServer(dos);
                 dos.close();
-                client.writePacket(new S09PluginMessage(pluginChannel.getName(), ba.toByteArray()));
+                client.sendPacket(new S09PluginMessage(pluginChannel.getName(), ba.toByteArray()));
             } catch (IOException e) {
                 e.printStackTrace();
             }

@@ -1,6 +1,6 @@
 package com.lucadev.mcprotocol.protocol;
 
-import com.lucadev.mcprotocol.protocol.impl.DefaultProtocolFactory;
+import com.lucadev.mcprotocol.protocol.impl.ModernProtocolFactory;
 
 /**
  * ProtocolFactory makes it easier to find the required protocol implementation to use.
@@ -46,7 +46,7 @@ public abstract class ProtocolFactory {
      * @return default protocol factory
      */
     public static ProtocolFactory getDefault() {
-        return new DefaultProtocolFactory();
+        return new ModernProtocolFactory();
     }
 
 }

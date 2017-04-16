@@ -43,18 +43,6 @@ public interface Connection {
     DataOutputStream getDataOutputStream();
 
     /**
-     * Set the input stream. Should be coming from the same connection(socket, etc...)
-     * @param dis data input stream.
-     */
-    void setDataInputStream(DataInputStream dis);
-
-    /**
-     * Set the output stream. Should be coming from the same connection(socket, etc...)
-     * @param dos data output stream.
-     */
-    void setDataOutputStream(DataOutputStream dos);
-
-    /**
      * Get the factory used to create the socket for the connection
      * @return socket factory instance
      */
@@ -70,4 +58,9 @@ public interface Connection {
      * @return the raw tcp connection as a socket.
      */
     Socket getSocket();
+
+    /**
+     * @return state of the connection, requires all streams and sockets to be connected.
+     */
+    boolean isConnected();
 }

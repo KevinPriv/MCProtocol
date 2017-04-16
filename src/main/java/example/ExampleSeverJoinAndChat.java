@@ -33,7 +33,7 @@ public class ExampleSeverJoinAndChat {
             Scanner scanner = new Scanner(System.in);
             while(bot.getConnection().getSocket().isConnected()) {
                 String msg = scanner.nextLine();
-                bot.sendChatMessage(msg);
+                bot.getProtocol().sendChatMessage(msg);
             }
             System.out.println("BOT FINISHED BLOCKING!");
             bot.getConnection().close();

@@ -3,61 +3,43 @@ package com.lucadev.mcprotocol.protocol.network.client.impl;
 import com.lucadev.mcprotocol.Bot;
 import com.lucadev.mcprotocol.protocol.Protocol;
 import com.lucadev.mcprotocol.protocol.ProtocolException;
-import com.lucadev.mcprotocol.protocol.network.client.NetClient;
-import com.lucadev.mcprotocol.protocol.network.connection.Connection;
+import com.lucadev.mcprotocol.protocol.network.client.AbstractNetClient;
 import com.lucadev.mcprotocol.protocol.packets.Packet;
 import com.lucadev.mcprotocol.protocol.packets.ReadablePacket;
 import com.lucadev.mcprotocol.protocol.packets.UndefinedPacket;
 import com.lucadev.mcprotocol.protocol.packets.WritablePacket;
 import com.lucadev.mcprotocol.protocol.packets.headers.PacketLengthHeader;
 import com.lucadev.mcprotocol.util.CompressionUtil;
-import com.lucadev.mcprotocol.util.EncryptionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.crypto.SecretKey;
 import java.io.*;
 
 import static com.lucadev.mcprotocol.protocol.VarHelper.*;
 
 /**
- * Most basic net client there is.
+ * Most basic net client implementation.
  *
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  */
-public class DefaultNetClient implements NetClient {
+public class DefaultNetClient extends AbstractNetClient {
 
-    private Bot bot;
-    private Connection connection;
     private static final Logger logger = LoggerFactory.getLogger(DefaultNetClient.class);
-
-    private SecretKey sharedKey;
-    private boolean encrypting;
-    private boolean decrypting;
 
     private boolean compression;
     private int compressionThreshold;
 
     private static final boolean PRINT_TRAFFIC = false;
 
-    public DefaultNetClient(Bot bot, Connection connection) {
-        this.connection = connection;
-        this.bot = bot;
+    public DefaultNetClient(Bot bot) {
+        super(bot);
         logger.info("Initialized DefaultNetClient");
     }
 
     /**
-     * @return connection to wrap around.
-     */
-    @Override
-    public Connection getConnection() {
-        return connection;
-    }
-
-    /**
-     * Force write packet to the connection.
-     * @param packet packet to write to the connection.
-     * @throws IOException when something goes wrong while writing the packet to the connection.
+     * Force write packet to the getConnection().
+     * @param packet packet to write to the getConnection().
+     * @throws IOException when something goes wrong while writing the packet to the getConnection().
      */
     @Override
     public synchronized void writePacket(WritablePacket packet) throws IOException {
@@ -82,30 +64,30 @@ public class DefaultNetClient implements NetClient {
             //specs say if datalength = 0 or under threshold then send uncompressed
             if (dataSize == 0 || dataSize <= compressionThreshold) {
                 //write data length which is 0 in this case
-                writeVarInt(connection.getDataOutputStream(), varIntLength(0) + dataSize);
-                writeVarInt(connection.getDataOutputStream(), 0);
+                writeVarInt(getConnection().getDataOutputStream(), varIntLength(0) + dataSize);
+                writeVarInt(getConnection().getDataOutputStream(), 0);
                 //write data uncompressed
-                connection.getDataOutputStream().write(uncompressedData);
+                getConnection().getDataOutputStream().write(uncompressedData);
             } else {
                 logger.info("Writing packets compressed 0x{}", Integer.toHexString(packet.getId()).toUpperCase());
                 //write uncompressed size
-                writeVarInt(connection.getDataOutputStream(), packetLength);
-                writeVarInt(connection.getDataOutputStream(), dataSize);
+                writeVarInt(getConnection().getDataOutputStream(), packetLength);
+                writeVarInt(getConnection().getDataOutputStream(), dataSize);
                 //write compressed data
-                connection.getDataOutputStream().write(compressedData);
+                getConnection().getDataOutputStream().write(compressedData);
             }
         } else {
             //no compression
             //write packets size
-            writeVarInt(connection.getDataOutputStream(), dataSize);
+            writeVarInt(getConnection().getDataOutputStream(), dataSize);
             //WRITE PACKET DATA
-            connection.getDataOutputStream().write(uncompressedData);
+            getConnection().getDataOutputStream().write(uncompressedData);
         }
         //logger.info("Wrote packets {} to stream with length {}", "0x" + Integer.toHexString(packets.getId()).toUpperCase(), bytes.size());
     }
 
     /**
-     * Sends a packet to the connection.
+     * Sends a packet to the getConnection().
      * This implementation does not enable queues.
      * @param packet the packet to write.
      * @throws IOException gets thrown when something goes wrong while trying to send the packet.
@@ -116,7 +98,7 @@ public class DefaultNetClient implements NetClient {
     }
 
     /**
-     * Directly read a packet from the connection.
+     * Directly read a packet from the getConnection().
      * @return the read packet.
      * @throws IOException when something goes wrong while trying to read the packet.
      */
@@ -128,9 +110,9 @@ public class DefaultNetClient implements NetClient {
             PacketLengthHeader header = readHeader();
             packetId = header.getId();
             data = new byte[header.getLength() - varIntLength(header.getId())];
-            connection.getDataInputStream().readFully(data);
+            getConnection().getDataInputStream().readFully(data);
         } else {
-            DataInputStream is = connection.getDataInputStream();
+            DataInputStream is = getConnection().getDataInputStream();
 
             //LEngth of datalength bytes + compressed size
             int packetLength = readVarInt(is);
@@ -160,7 +142,7 @@ public class DefaultNetClient implements NetClient {
             }
         }
 
-        Protocol protocol = bot.getProtocol();
+        Protocol protocol = getBot().getProtocol();
         //logger.info("RECEIVED: {}", new PacketLengthHeader(packetId, data.length + 1));
         Packet packet = protocol.resolvePacket(packetId, protocol.getCurrentState());
         if (packet == null) {
@@ -174,7 +156,7 @@ public class DefaultNetClient implements NetClient {
         ReadablePacket readablePacket = (ReadablePacket) packet;
         ByteArrayInputStream b = new ByteArrayInputStream(data);
         DataInputStream dis = new DataInputStream(b);
-        readablePacket.read(bot, dis, data.length);
+        readablePacket.read(getBot(), dis, data.length);
         dis.close();
         if (PRINT_TRAFFIC) {
             logger.info("RECEIVE: 0x{}", Integer.toHexString(readablePacket.getId()).toUpperCase());
@@ -189,10 +171,10 @@ public class DefaultNetClient implements NetClient {
      */
     @Override
     public PacketLengthHeader readHeader() throws IOException {
-        int length = readVarInt(connection.getDataInputStream());
+        int length = readVarInt(getConnection().getDataInputStream());
         if (length == -1) throw new IOException("Server prematurely closed stream!");
 
-        int id = readVarInt(connection.getDataInputStream());
+        int id = readVarInt(getConnection().getDataInputStream());
         return new PacketLengthHeader(id, length);
     }
 
@@ -210,75 +192,6 @@ public class DefaultNetClient implements NetClient {
     }
 
     /**
-     * @return crypto key used for secure communications between both hosts.
-     */
-    @Override
-    public SecretKey getSharedKey() {
-        return sharedKey;
-    }
-
-    /**
-     * @param secretKey the crypto key to secure the connection between hosts.
-     */
-    @Override
-    public void setSharedKey(SecretKey secretKey) {
-        if (this.sharedKey != null) {
-            throw new IllegalStateException("May not set shared key more than once.");
-        }
-        this.sharedKey = secretKey;
-    }
-
-    /**
-     * @return enabled encryption for connection output(outgoing, serverbound).
-     */
-    @Override
-    public boolean isEncrypting() {
-        return encrypting;
-    }
-
-    /**
-     * @return enabled decryption for connection input(incoming, clientbound).
-     */
-    @Override
-    public boolean isDecrypting() {
-        return decrypting;
-    }
-
-    /**
-     * Enable encryption on the connection output streams.
-     */
-    @Override
-    public void enableEncryption() {
-        if (isEncrypting()) {
-            throw new IllegalStateException("Already encrypting.");
-        }
-        if (sharedKey == null) {
-            throw new IllegalStateException("Shared key is required!");
-        }
-        Connection con = bot.getConnection();
-        con.setDataOutputStream(new DataOutputStream(EncryptionUtil.encryptOutputStream(con.getDataOutputStream(), sharedKey)));
-        encrypting = true;
-        logger.info("Enabled encryption");
-    }
-
-    /**
-     * Enable decryption on the connection input streams.
-     */
-    @Override
-    public void enableDecryption() {
-        if (isDecrypting()) {
-            throw new IllegalStateException("Already decrypting");
-        }
-        if (sharedKey == null) {
-            throw new IllegalStateException("Shared key is required!");
-        }
-        Connection con = bot.getConnection();
-        con.setDataInputStream(new DataInputStream(EncryptionUtil.decryptInputStream(con.getDataInputStream(), sharedKey)));
-        decrypting = true;
-        logger.info("Enabled decryption");
-    }
-
-    /**
      * Enables packet compression.
      * @param threshold minimal packet size before packets are compressed into stream.
      */
@@ -293,26 +206,26 @@ public class DefaultNetClient implements NetClient {
     }
 
     /**
-     * Shuts down the networking client by closing streams, connections etc..
+     * Shuts down/closes the networking client by closing streams, connections etc..
      */
     @Override
-    public void shutdown() {
-        //TODO: implement
+    public void close() throws IOException {
+        getConnection().close();
     }
 
     /**
      * Method that gets called externally when we are free to read and process an incoming packet.
-     * @throws IOException when something goes wrong reading from the connection.
+     * @throws IOException when something goes wrong reading from the getConnection().
      */
     @Override
     public void read() {
         try {
             ReadablePacket packet = readPacket();
-            bot.getProtocol().handlePacket(packet);
+            getBot().getProtocol().handlePacket(packet);
         } catch (IOException e) {
-            bot.getProtocol().getTickEngine().stop();
+            getBot().getProtocol().getTickEngine().stop();
             try {
-                bot.getConnection().close();
+                getBot().getConnection().close();
             } catch (IOException e1) {
                 e1.printStackTrace();
             }

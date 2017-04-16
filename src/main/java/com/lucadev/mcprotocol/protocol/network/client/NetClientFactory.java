@@ -2,7 +2,6 @@ package com.lucadev.mcprotocol.protocol.network.client;
 
 import com.lucadev.mcprotocol.Bot;
 import com.lucadev.mcprotocol.protocol.network.client.impl.DefaultNetClientFactory;
-import com.lucadev.mcprotocol.protocol.network.connection.Connection;
 
 /**
  * Factory used to create packet-based networking clients.
@@ -12,19 +11,23 @@ import com.lucadev.mcprotocol.protocol.network.connection.Connection;
  */
 public abstract class NetClientFactory {
 
+    private static NetClientFactory defaultFactory;
+
     /**
      * Create default networking client.
      * @param bot the bot instance.
-     * @param connection the connection to wrap around.
      * @return newly created networking client.
      */
-    public abstract NetClient createClient(Bot bot, Connection connection);
+    public abstract NetClient createClient(Bot bot);
 
     /**
-     * @return default factory implementation.
+     * @return lazy initiated singleton instance of the default factory implementation.
      */
     public static NetClientFactory getDefault() {
-        return new DefaultNetClientFactory();
+        if(defaultFactory == null) {
+            defaultFactory = new DefaultNetClientFactory();
+        }
+        return defaultFactory;
     }
 
 }

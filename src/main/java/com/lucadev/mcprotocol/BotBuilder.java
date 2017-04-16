@@ -5,6 +5,8 @@ import com.lucadev.mcprotocol.protocol.ProtocolFactory;
 import com.lucadev.mcprotocol.protocol.network.client.NetClientFactory;
 import com.lucadev.mcprotocol.protocol.network.connection.ConnectionFactory;
 
+import javax.net.SocketFactory;
+
 /**
  * Builder that is used to create a bot.
  * By using a separate builder class we can manage advanced bot configurations.
@@ -21,9 +23,8 @@ public class BotBuilder {
     private String host;
     private int port;
 
-    private ConnectionFactory connectionFactory = ConnectionFactory.getDefault();
+    private SocketFactory socketFactory = SocketFactory.getDefault();
     private ProtocolFactory protocolFactory = ProtocolFactory.getDefault();
-    private NetClientFactory netClientFactory = NetClientFactory.getDefault();
 
     private SessionProvider sessionProvider = SessionProvider.getDefaultOnlineProvider();
     private String username;
@@ -76,15 +77,6 @@ public class BotBuilder {
     }
 
     /**
-     * @param connectionFactory factory used to create the raw tcp socket and data streams.
-     * @return instance of this builder.
-     */
-    public BotBuilder connectionFactory(ConnectionFactory connectionFactory) {
-        this.connectionFactory = connectionFactory;
-        return this;
-    }
-
-    /**
      * @param protocolFactory factory used to create the protocol implementation of the specified version.
      * @return instance of this builder.
      */
@@ -112,13 +104,6 @@ public class BotBuilder {
      */
     public int getPort() {
         return port;
-    }
-
-    /**
-     * @return factory used to create a tcp connection together with their input and output streams.
-     */
-    public ConnectionFactory getConnectionFactory() {
-        return connectionFactory;
     }
 
     /**
@@ -212,18 +197,18 @@ public class BotBuilder {
     }
 
     /**
-     * @return factory used to create NetClient instances which can manage packet based networking.
+     * @return Factory used to create socket instances
      */
-    public NetClientFactory getNetClientFactory() {
-        return netClientFactory;
+    public SocketFactory getSocketFactory() {
+        return socketFactory;
     }
 
     /**
-     * @param netClientFactory factory used to create a networking client that is capable of handling Packet objects.
+     * @param socketFactory socket factory to use when creating a socket.
      * @return instance of this builder.
      */
-    public BotBuilder netClientFactory(NetClientFactory netClientFactory) {
-        this.netClientFactory = netClientFactory;
+    public BotBuilder socketFactory(SocketFactory socketFactory) {
+        this.socketFactory = socketFactory;
         return this;
     }
 }

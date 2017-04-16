@@ -17,11 +17,6 @@ import java.io.IOException;
 public interface NetClient {
 
     /**
-     * @return connection to wrap around.
-     */
-    Connection getConnection();
-
-    /**
      * Force write packet to the connection.
      * @param packet packet to write to the connection.
      * @throws IOException when something goes wrong while writing the packet to the connection.
@@ -59,45 +54,15 @@ public interface NetClient {
     PacketLengthHeader createHeader(Packet packet, byte[] data);
 
     /**
-     * @return crypto key used for secure communications between both hosts.
-     */
-    SecretKey getSharedKey();
-
-    /**
-     * @param secretKey the crypto key to secure the connection between hosts.
-     */
-    void setSharedKey(SecretKey secretKey);
-
-    /**
-     * @return enabled encryption for connection output(outgoing, serverbound).
-     */
-    boolean isEncrypting();
-
-    /**
-     * @return enabled decryption for connection input(incoming, clientbound).
-     */
-    boolean isDecrypting();
-
-    /**
-     * Enable encryption on the connection output streams.
-     */
-    void enableEncryption();
-
-    /**
-     * Enable decryption on the connection input streams.
-     */
-    void enableDecryption();
-
-    /**
      * Enables packet compression.
      * @param threshold minimal packet size before packets are compressed into stream.
      */
     void enableCompression(int threshold);
 
     /**
-     * Shuts down the networking client by closing streams, connections etc..
+     * Shuts down/closes the networking client by closing streams, connections etc..
      */
-    void shutdown();
+    void close() throws IOException;
 
     /**
      * Method that gets called externally when we are free to read and process an incoming packet.

@@ -5,12 +5,12 @@ import com.lucadev.mcprotocol.protocol.ProtocolFactory;
 import com.lucadev.mcprotocol.protocol.impl.v316.Protocol316;
 
 /**
- * Default implementation of the protocol factory.
+ * Protocol factory implementation for modern minecraft versions.
  *
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  * @see ProtocolFactory
  */
-public class DefaultProtocolFactory extends ProtocolFactory {
+public class ModernProtocolFactory extends ProtocolFactory {
 
     /**
      * Create protocol implementation of the latest supported protocol id.

@@ -9,7 +9,6 @@ import com.lucadev.mcprotocol.protocol.Protocol;
 import com.lucadev.mcprotocol.protocol.ProtocolFactory;
 import com.lucadev.mcprotocol.protocol.State;
 import com.lucadev.mcprotocol.protocol.network.client.NetClient;
-import com.lucadev.mcprotocol.protocol.network.client.NetClientFactory;
 import com.lucadev.mcprotocol.protocol.network.connection.Connection;
 import com.lucadev.mcprotocol.protocol.network.connection.ConnectionFactory;
 import com.lucadev.mcprotocol.protocol.packets.headers.PacketLengthHeader;
@@ -20,7 +19,6 @@ import com.lucadev.mcprotocol.util.model.MOTDResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.DataInputStream;
 import java.io.IOException;
 
 import static com.lucadev.mcprotocol.protocol.VarHelper.readString;
@@ -38,165 +36,113 @@ public class Bot {
      */
     private static final Logger logger = LoggerFactory.getLogger(Bot.class);
 
-    /* Handles raw data streams */
-    private ConnectionFactory connectionFactory;
-
-    /* Handles protocol specification */
-    private ProtocolFactory protocolFactory;
-    private Protocol protocol;
-
-    /* Handles communication between client and server */
-    private NetClientFactory netClientFactory;
+    /* Handles the mc protocol */
+    private final Protocol protocol;
+    /* Handles IO between hosts */
     private NetClient netClient;
+    private Connection connection;
 
-    /**
-     * Builder that was used to setup this class.
-     */
-    private BotBuilder botBuilder;
+    /* Handles authentication */
+    private final SessionProvider sessionProvider;
 
-    /**
-     * Login provider.
-     */
-    private SessionProvider sessionProvider;
+    /* Session in use by the bot */
+    private Session session;
 
-    /**
-     * Auth information
-     */
-    private Session login;
-
-    /**
-     * State of the connection
-     */
-    private boolean connected = false;
-
-    /**
-     * The player himself.
-     */
+    /* Player and world information are stored in here */
     private Player player;
-
     private World world;
 
+    /* Builder that contains config for the bot */
+    private final BotBuilder botBuilder;
+
     /**
-     * Constructs a bot from information through the botBuilder class.
+     * Constructs a bot object from the given builder configuration.
+     * @param builder bot configuration.
      */
     public Bot(BotBuilder builder) {
-        this.connectionFactory = builder.getConnectionFactory();
-        this.protocolFactory = builder.getProtocolFactory();
-        this.netClientFactory = builder.getNetClientFactory();
+        this.botBuilder = builder;
         this.sessionProvider = builder.getSessionProvider();
+        this.protocol = builder.getProtocolFactory().createProtocol(botBuilder.getProtocolVersion());
+
         if (builder.shouldAuthenticate()) {
+            if(sessionProvider == null) {
+                throw new IllegalStateException("Cannot authenticate without available SessionProvider(it is null)");
+            }
             try {
-                authenticate(builder.getUsername(), builder.getPassword());
+                session = sessionProvider.authenticate(builder.getUsername(), builder.getPassword());
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        this.botBuilder = builder;
+
+        protocol.setup(this);
+        //We always want a secured connection even though we might not use it.
+        connection = protocol.getConnectionFactory().createSecureConnection(botBuilder.getSocketFactory());
+        netClient = protocol.getNetClientFactory().createClient(this);
     }
 
-    public void authenticate(String username, String password) throws IOException {
-        logger.info("Authenticating user");
-        login = sessionProvider.authenticate(username, password);
-        logger.info(login.toString());
-    }
-
+    /**
+     * Setup all connection objects and opens the streams.
+     * The configured bot address and port are used.
+     * @throws IOException when something goes wrong while connecting.
+     */
     public void connect() throws IOException {
         connect(botBuilder.getHost(), botBuilder.getPort());
     }
 
-    public void disconnect() {
-        try {
-            getProtocol().disconnect();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    /**
+     * Disconnect from the server
+     * @throws IOException when something goes wrong disconnecting.
+     */
+    private void disconnect() throws IOException {
+        getProtocol().disconnect();
     }
 
     /**
-     * Connects to the server.
-     *
-     * @param host
-     * @param port
+     * Connects to the given host and port.
+     * @param host hostname/ip address of the server
+     * @param port port that the server is listening on.
+     * @throws IOException when we cannot connect or something goes wrong.
      */
-    public void connect(String host, int port) throws IOException {
+    private void connect(String host, int port) throws IOException {
         if (isConnected()) {
             throw new IllegalStateException("Already connected!");
         }
-        Connection connection = connectionFactory.createConnection();
-        protocol = protocolFactory.createProtocol(botBuilder.getProtocolVersion());
-        protocol.setup(this);
         connection.connect(host, port);
-        netClient = netClientFactory.createClient(this, connection);
-        connected = true;
     }
 
     /**
-     * Joins the server by following the serverLogin and whatnot.
-     *
-     * @throws IOException
+     * Joins the server at the given hostname/ip address and port.
+     * @throws IOException gets thrown when something goes wrong joining the server
      */
     public void joinServer() throws IOException {
-        if (!isConnected()) {
-            connect();
-        }
         logger.info("Joining server as player...");
         protocol.serverLogin();
     }
 
     /**
-     * Fetches motd
-     *
-     * @return
+     * Fetches MOTD
+     * @return MOTD response containing the motd of the server
      * @throws IOException
      */
     public MOTDResponse fetchMOTD() throws IOException {
-        if (!isConnected()) {
-            connect();
-        }
-        netClient.writePacket(new S00Handshake(botBuilder.getHost(), botBuilder.getPort(),
-                getProtocol().getVersion(), State.STATUS));
-        protocol.setCurrentState(State.STATUS);
-        netClient.writePacket(new S00Request());
-
-        PacketLengthHeader respHead = netClient.readHeader();//since we're only expecting a confirmation we can skip using an actual packets
-
-        String response = readString(getConnection().getDataInputStream());
-        ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.readValue(response, MOTDResponse.class);
-    }
-
-
-
-    public ConnectionFactory getConnectionFactory() {
-        return connectionFactory;
-    }
-
-    public void setConnectionFactory(ConnectionFactory connectionFactory) {
-        this.connectionFactory = connectionFactory;
+        return protocol.getMOTD();
     }
 
     public ProtocolFactory getProtocolFactory() {
-        return protocolFactory;
-    }
-
-    public void setProtocolFactory(ProtocolFactory protocolFactory) {
-        this.protocolFactory = protocolFactory;
+        return botBuilder.getProtocolFactory();
     }
 
     public Protocol getProtocol() {
         return protocol;
     }
 
-    public void setProtocol(Protocol protocol) {
-        this.protocol = protocol;
-    }
-
     public boolean isConnected() {
-        return connected && getConnection().getSocket().isConnected();
+        return connection != null && connection.isConnected();
     }
 
     public Connection getConnection() {
-        return netClient.getConnection();
+        return connection;
     }
 
     public NetClient getNetClient() {
@@ -204,7 +150,7 @@ public class Bot {
     }
 
     public Session getSession() {
-        return login;
+        return session;
     }
 
     public SessionProvider getSessionProvider() {
@@ -220,15 +166,7 @@ public class Bot {
     }
 
     public void blockUntilFinished() {
-        while (getConnection().getSocket().isConnected()) {
-        }
-    }
-
-    public void sendChatMessage(String message) {
-        try {
-            getNetClient().sendPacket(new S02ChatMessage(message));
-        } catch (IOException e) {
-            e.printStackTrace();
+        while (getConnection().isConnected()) {
         }
     }
 
@@ -238,5 +176,12 @@ public class Bot {
 
     public void setWorld(World world) {
         this.world = world;
+    }
+
+    /**
+     * @return builder used to configure this bot.
+     */
+    public BotBuilder getBuilder() {
+        return botBuilder;
     }
 }

@@ -2,6 +2,9 @@ package com.lucadev.mcprotocol.protocol;
 
 import com.lucadev.mcprotocol.game.chat.ChatConverterFactory;
 import com.lucadev.mcprotocol.game.chat.impl.DefaultChatConverterFactory;
+import com.lucadev.mcprotocol.protocol.network.client.NetClient;
+import com.lucadev.mcprotocol.protocol.network.client.NetClientFactory;
+import com.lucadev.mcprotocol.protocol.network.connection.ConnectionFactory;
 import com.lucadev.mcprotocol.protocol.packets.Packet;
 import com.lucadev.mcprotocol.protocol.packets.UndefinedPacket;
 
@@ -65,6 +68,24 @@ public abstract class AbstractProtocol implements Protocol {
      */
     public ChatConverterFactory getChatConverterFactory() {
         return chatConverterFactory;
+    }
+
+    /**
+     * Implemented in the abstract class since we do not expect much change. Can always be overriden by a protocol implementation.
+     * @return protocol specific NetClient factory implementation.
+     */
+    @Override
+    public NetClientFactory getNetClientFactory() {
+        return NetClientFactory.getDefault();
+    }
+
+    /**
+     * Implemented in the abstract class since we do not expect much change. Can always be override by a protocol implementation.
+     * @return protocol specific Connection factory implementation.
+     */
+    @Override
+    public ConnectionFactory getConnectionFactory() {
+        return ConnectionFactory.getDefault();
     }
 
 }

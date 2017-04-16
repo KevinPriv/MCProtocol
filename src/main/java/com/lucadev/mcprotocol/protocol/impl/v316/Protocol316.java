@@ -1,15 +1,19 @@
 package com.lucadev.mcprotocol.protocol.impl.v316;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lucadev.mcprotocol.Bot;
 import com.lucadev.mcprotocol.game.chat.components.ChatComponent;
 import com.lucadev.mcprotocol.game.entity.player.BotPlayer;
 import com.lucadev.mcprotocol.game.tick.TickEngineFactory;
 import com.lucadev.mcprotocol.game.world.World;
 import com.lucadev.mcprotocol.protocol.AbstractProtocol;
+import com.lucadev.mcprotocol.protocol.ProtocolException;
 import com.lucadev.mcprotocol.protocol.State;
 import com.lucadev.mcprotocol.protocol.network.client.NetClient;
 import com.lucadev.mcprotocol.protocol.network.client.impl.DefaultNetClient;
 import com.lucadev.mcprotocol.protocol.network.client.util.ReadTask;
+import com.lucadev.mcprotocol.protocol.network.connection.Connection;
+import com.lucadev.mcprotocol.protocol.network.connection.impl.KeySecuredConnection;
 import com.lucadev.mcprotocol.protocol.packets.PacketListener;
 import com.lucadev.mcprotocol.protocol.packets.ReadablePacket;
 import com.lucadev.mcprotocol.protocol.packets.cbound.login.C00Disconnect;
@@ -22,19 +26,23 @@ import com.lucadev.mcprotocol.protocol.packets.cbound.play.entity.mob.C03SpawnMo
 import com.lucadev.mcprotocol.protocol.packets.cbound.play.entity.player.*;
 import com.lucadev.mcprotocol.protocol.packets.cbound.play.world.chunk.C09UpdateBlockEntity;
 import com.lucadev.mcprotocol.protocol.packets.cbound.play.world.chunk.C32ChunkData;
+import com.lucadev.mcprotocol.protocol.packets.headers.PacketLengthHeader;
 import com.lucadev.mcprotocol.protocol.packets.sbound.handshake.S00Handshake;
 import com.lucadev.mcprotocol.protocol.packets.sbound.login.S00LoginStart;
 import com.lucadev.mcprotocol.protocol.packets.sbound.login.S01EncryptionResponse;
+import com.lucadev.mcprotocol.protocol.packets.sbound.play.S02ChatMessage;
 import com.lucadev.mcprotocol.protocol.packets.sbound.play.S10KeepAlive;
 import com.lucadev.mcprotocol.protocol.packets.sbound.play.client.S03ClientStatus;
 import com.lucadev.mcprotocol.protocol.packets.sbound.play.client.S04ClientSettings;
 import com.lucadev.mcprotocol.protocol.packets.sbound.play.entity.player.S00TeleportConfirm;
 import com.lucadev.mcprotocol.protocol.packets.sbound.play.entity.player.S13PlayerPositionLook;
+import com.lucadev.mcprotocol.protocol.packets.sbound.status.S00Request;
 import com.lucadev.mcprotocol.protocol.pluginchannel.PluginChannelManager;
 import com.lucadev.mcprotocol.protocol.pluginchannel.PluginChannelManagerFactory;
 import com.lucadev.mcprotocol.protocol.pluginchannel.channels.MCBrandPluginChannel;
 import com.lucadev.mcprotocol.game.tick.TickEngine;
 import com.lucadev.mcprotocol.util.EncryptionUtil;
+import com.lucadev.mcprotocol.util.model.MOTDResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,6 +54,8 @@ import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import static com.lucadev.mcprotocol.protocol.VarHelper.readString;
 
 
 /**
@@ -108,7 +118,11 @@ public class Protocol316 extends AbstractProtocol {
     private void setupTickWorkers() {
         //Send player pos and look every 1 sec when not moving.
         getTickEngine().register(20, (bot) -> {
-            bot.getNetClient().sendPacket(new S13PlayerPositionLook(bot.getPlayer()));
+            try {
+                bot.getNetClient().sendPacket(new S13PlayerPositionLook(bot.getPlayer()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
 
         //tick method for protocol class itself.
@@ -160,7 +174,11 @@ public class Protocol316 extends AbstractProtocol {
             bot.getPlayer().setYawPitch(positionLook.getYaw(), positionLook.getPitch());
             //send tp confirmation
             //logger.info("Updating player pos from server");
-            bot.getNetClient().sendPacket(new S00TeleportConfirm(positionLook.getTeleportId()));
+            try {
+                bot.getNetClient().sendPacket(new S00TeleportConfirm(positionLook.getTeleportId()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
 
         registerPacketListener(C16ChatMessage.class, (bot, packet) -> {
@@ -171,14 +189,18 @@ public class Protocol316 extends AbstractProtocol {
         registerPacketListener(C31KeepAlive.class, (bot, packet) -> {
             C31KeepAlive keepAlive = (C31KeepAlive) packet;
             //logger.info("KeepAlive received");
-            bot.getNetClient().sendPacket(new S10KeepAlive(keepAlive.getKeepAliveId()));
+            try {
+                bot.getNetClient().sendPacket(new S10KeepAlive(keepAlive.getKeepAliveId()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
 
         registerPacketListener(C26Disconnect.class, (bot, packet) -> {
             logger.info("SERVER DISCONNECTED REASON: " + ((C26Disconnect) packet).getReason().getCompleteText());
             try {
                 bot.getConnection().close();
-                bot.getNetClient().shutdown();
+                bot.getNetClient().close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -190,7 +212,7 @@ public class Protocol316 extends AbstractProtocol {
      * @return protocol id
      */
     @Override
-    public int getVersion() {
+    public int getProtocolID() {
         return 316;
     }
 
@@ -204,22 +226,31 @@ public class Protocol316 extends AbstractProtocol {
         int port = bot.getConnection().getSocket().getPort();
         String username = bot.getSession().getProfileName();
         NetClient client = bot.getNetClient();
-        client.writePacket(new S00Handshake(host, port, getVersion(), State.LOGIN));
+        client.writePacket(new S00Handshake(host, port, getProtocolID(), State.LOGIN));
         setCurrentState(State.LOGIN);
         client.writePacket(new S00LoginStart(username));
-        if (bot.getSession().isOnline()) {
-            setupCrypto();
+        ReadablePacket read = client.readPacket();
+        if(checkLoginFailure(read)) {
+            return;
         }
-        ReadablePacket compOrLoginPacket = client.readPacket();
-        if (compOrLoginPacket instanceof C03SetCompression) {
-            C03SetCompression comp = (C03SetCompression) compOrLoginPacket;
-            enableCompression(comp.getThreshold());
-            compOrLoginPacket = client.readPacket();
+        if(read instanceof C01EncryptionRequest) {
+            setupCrypto((C01EncryptionRequest)read);
+            read = client.readPacket();
         }
 
-        if (compOrLoginPacket instanceof C02LoginSuccess) {
+        if(checkLoginFailure(read)) {
+            return;
+        }
+
+        if (read instanceof C03SetCompression) {
+            C03SetCompression comp = (C03SetCompression) read;
+            enableCompression(comp.getThreshold());
+            read = client.readPacket();
+        }
+
+        if (read instanceof C02LoginSuccess) {
             logger.info("Login success!!!");
-            logger.info(compOrLoginPacket.toString());
+            logger.info(read.toString());
         }
 
         setCurrentState(State.PLAY);
@@ -227,7 +258,7 @@ public class Protocol316 extends AbstractProtocol {
         logger.info(joingamePacket.toString());
         if (joingamePacket instanceof C35JoinGame) {
             C35JoinGame joinGame = (C35JoinGame) joingamePacket;
-            C02LoginSuccess loginSuccess = (C02LoginSuccess) compOrLoginPacket;
+            C02LoginSuccess loginSuccess = (C02LoginSuccess) read;
             bot.setPlayer(new BotPlayer(joinGame.getEntityId(), loginSuccess.getUuid(), loginSuccess.getUsername(), joinGame.getGameMode(), joinGame.getDimension(),
                     joinGame.getDifficulty(), joinGame.getLevelType(), joinGame.isReducedDebug()));
         }
@@ -248,6 +279,46 @@ public class Protocol316 extends AbstractProtocol {
         bot.setWorld(new World());
         new ReadTask(bot).start();
         tickEngine.start(true);
+    }
+
+    /**
+     * Checks if the packet is a disconnect packet sent. If it is it will disconnect us too and return.
+     * @param packet
+     */
+    private boolean checkLoginFailure(ReadablePacket packet) throws IOException {
+        if(packet instanceof C00Disconnect) {
+            logger.info("Server sent disconnect while logging in. Reason given: " + ((C00Disconnect)packet).getTextReason());
+            disconnect();
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Obtain the server's MOTD and disconnects afterwards. Should only function if serverLogin has not been called/we aren't logged in.
+     *
+     * @return server MOTD response in a POJO
+     * @throws IOException thrown if we fail to obtain the MOTD
+     */
+    @Override
+    public MOTDResponse getMOTD() throws IOException {
+        if (bot.isConnected()) {
+            throw new IllegalStateException("May only get MOTD if not yet connected!");
+        }
+        bot.connect();
+        //Send handshake with request to change state to STATUS
+        getNetClient().writePacket(new S00Handshake(bot.getBuilder().getHost(), bot.getBuilder().getPort(),
+                getProtocolID(), State.STATUS));
+        //Handle internal state
+        setCurrentState(State.STATUS);
+        //write request
+        getNetClient().writePacket(new S00Request());
+        PacketLengthHeader respHead = getNetClient().readHeader();//since we're only expecting a confirmation we can skip using an actual packets
+
+        String response = readString(getConnection().getDataInputStream());
+        ObjectMapper objectMapper = new ObjectMapper();
+        disconnect();
+        return objectMapper.readValue(response, MOTDResponse.class);
     }
 
     /**
@@ -316,8 +387,10 @@ public class Protocol316 extends AbstractProtocol {
      * Disconnect from the server.
      */
     @Override
-    public void disconnect() {
+    public void disconnect() throws IOException {
         //TODO: implement correct disconnect
+        getTickEngine().stop();
+        getNetClient().close();
     }
 
     /**
@@ -326,6 +399,16 @@ public class Protocol316 extends AbstractProtocol {
     @Override
     public TickEngine getTickEngine() {
         return tickEngine;
+    }
+
+    /**
+     * Send a chat message to the server.
+     *
+     * @param msg the message contents. No json.
+     */
+    @Override
+    public void sendChatMessage(String msg) throws IOException {
+        getNetClient().sendPacket(new S02ChatMessage(msg));
     }
 
     /**
@@ -339,28 +422,42 @@ public class Protocol316 extends AbstractProtocol {
 
     /**
      * Sets up the cryptography requirements sent by the server.
+     * @param cryptoRequest the packet from the server that requests crypto
      * @throws IOException when something goes wrong setting up crypto
      */
-    private void setupCrypto() throws IOException {
-        NetClient client = bot.getNetClient();
-        ReadablePacket readablePacket = client.readPacket();
-        if (!(readablePacket instanceof C01EncryptionRequest)) {
-            throw new IllegalStateException("Expected C01EncryptionRequest but got other packets instead!");
+    private void setupCrypto(C01EncryptionRequest cryptoRequest) throws IOException {
+        if(!(getConnection() instanceof KeySecuredConnection)) {
+            throw new ProtocolException("Protocol " + getProtocolID() + " only accepts connections of type " + KeySecuredConnection.class.getName() + "\r\n" +
+                                        "But connection is of type " + getConnection().getClass().getName());
         }
+        KeySecuredConnection secureConnection = (KeySecuredConnection) getConnection();
         logger.info("Enabling crypto");
-        C01EncryptionRequest cryptoRequest = (C01EncryptionRequest) readablePacket;
         try {
             PublicKey pubKey = EncryptionUtil.generatePublicKey(cryptoRequest.getPubKey());
             SecretKey secKey = EncryptionUtil.generateSecretKey();
             String hash = new BigInteger(EncryptionUtil.encrypt(cryptoRequest.getServerId(), pubKey, secKey)).toString(16);
             bot.getSessionProvider().authenticateServer(bot.getSession(), hash);
-            client.writePacket(new S01EncryptionResponse(pubKey, secKey, cryptoRequest.getVerifyToken()));
-            client.setSharedKey(secKey);
-            client.enableEncryption();
-            client.enableDecryption();
+            getNetClient().writePacket(new S01EncryptionResponse(pubKey, secKey, cryptoRequest.getVerifyToken()));
+            secureConnection.setSharedKey(secKey);
+            secureConnection.secure();
         } catch (GeneralSecurityException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * Easier access
+     * @return the NetClient used by the bot
+     */
+    private NetClient getNetClient() {
+        return bot.getNetClient();
+    }
+
+    /**
+     * Easier access
+     * @return the Connection being used by the bot.
+     */
+    private Connection getConnection() {
+        return bot.getConnection();
+    }
 }

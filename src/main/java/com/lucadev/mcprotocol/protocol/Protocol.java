@@ -3,11 +3,14 @@ package com.lucadev.mcprotocol.protocol;
 import com.lucadev.mcprotocol.Bot;
 import com.lucadev.mcprotocol.game.chat.ChatConverterFactory;
 import com.lucadev.mcprotocol.game.chat.components.ChatComponent;
+import com.lucadev.mcprotocol.protocol.network.client.NetClientFactory;
+import com.lucadev.mcprotocol.protocol.network.connection.ConnectionFactory;
 import com.lucadev.mcprotocol.protocol.packets.Packet;
 import com.lucadev.mcprotocol.protocol.packets.PacketListener;
 import com.lucadev.mcprotocol.protocol.packets.ReadablePacket;
 import com.lucadev.mcprotocol.game.tick.TickEngine;
 import com.lucadev.mcprotocol.game.tick.TickListener;
+import com.lucadev.mcprotocol.util.model.MOTDResponse;
 
 import java.io.IOException;
 
@@ -28,13 +31,20 @@ public interface Protocol {
      * Get the supported protocol protocolVersion of the protocol.
      * @return protocol id
      */
-    int getVersion();
+    int getProtocolID();
 
     /**
      * This method will handle all packets from the handshake state until the play state which means you've logged in.
      * @throws IOException when something goes wrong with the stream or login.
      */
     void serverLogin() throws IOException;
+
+    /**
+     * Obtain the server's MOTD. Should only function if serverLogin has not been called/we aren't logged in.
+     * @return server MOTD response in a POJO
+     * @throws IOException thrown if we fail to obtain the MOTD
+     */
+    MOTDResponse getMOTD() throws IOException;
 
     /**
      * Get a packet from its id and its state.
@@ -56,11 +66,6 @@ public interface Protocol {
      * @param state new connection state.
      */
     void setCurrentState(State state);
-
-    /**
-     * @return get the factory used to create the chat converters.
-     */
-    ChatConverterFactory getChatConverterFactory();
 
     /**
      * Packet handle method.
@@ -104,4 +109,27 @@ public interface Protocol {
      * @return instance of our tick engine.
      */
     TickEngine getTickEngine();
+
+    /**
+     * @return protocol specific chat converter factory.
+     *          These converters will be used to parse and encode all types of chat components.
+     */
+    ChatConverterFactory getChatConverterFactory();
+
+    /**
+     * @return protocol specific NetClient factory implementation.
+     */
+    NetClientFactory getNetClientFactory();
+
+    /**
+     * @return protocol specific Connection factory implementation.
+     */
+    ConnectionFactory getConnectionFactory();
+
+    /**
+     * Send a chat message to the server.
+     * @param msg the message contents. No json.
+     */
+    void sendChatMessage(String msg) throws IOException;
+
 }
