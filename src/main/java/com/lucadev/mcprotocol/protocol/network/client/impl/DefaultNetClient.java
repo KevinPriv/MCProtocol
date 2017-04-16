@@ -42,7 +42,7 @@ public class DefaultNetClient extends AbstractNetClient {
      * @throws IOException when something goes wrong while writing the packet to the getConnection().
      */
     @Override
-    public synchronized void writePacket(WritablePacket packet) throws IOException {
+    protected synchronized void writePacket(WritablePacket packet) throws IOException {
         if (PRINT_TRAFFIC) {
             logger.info("SEND 0x{}", Integer.toHexString(packet.getId()).toUpperCase());
         }
@@ -94,6 +94,7 @@ public class DefaultNetClient extends AbstractNetClient {
      */
     @Override
     public void sendPacket(WritablePacket packet) throws IOException {
+        //TODO: optional queue management. Only if connection state is PLAY
         writePacket(packet);
     }
 

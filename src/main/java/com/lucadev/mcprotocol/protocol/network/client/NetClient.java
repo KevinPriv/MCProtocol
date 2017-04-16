@@ -17,13 +17,6 @@ import java.io.IOException;
 public interface NetClient {
 
     /**
-     * Force write packet to the connection.
-     * @param packet packet to write to the connection.
-     * @throws IOException when something goes wrong while writing the packet to the connection.
-     */
-    void writePacket(WritablePacket packet) throws IOException;
-
-    /**
      * Sends a packet to the connection.
      * This implementation may enable queueing and other techniques.
      * @param packet the packet to write.

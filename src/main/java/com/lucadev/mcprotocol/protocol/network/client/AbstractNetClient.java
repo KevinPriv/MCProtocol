@@ -2,6 +2,9 @@ package com.lucadev.mcprotocol.protocol.network.client;
 
 import com.lucadev.mcprotocol.bots.Bot;
 import com.lucadev.mcprotocol.protocol.network.connection.Connection;
+import com.lucadev.mcprotocol.protocol.packets.WritablePacket;
+
+import java.io.IOException;
 
 /**
  * Abstract net client which implements some basic net client functionality.
@@ -19,6 +22,13 @@ public abstract class AbstractNetClient implements NetClient {
     public AbstractNetClient(Bot bot) {
         this.bot = bot;
     }
+
+    /**
+     * Force write packet to the connection.
+     * @param packet packet to write to the connection.
+     * @throws IOException when something goes wrong while writing the packet to the connection.
+     */
+    protected abstract void writePacket(WritablePacket packet) throws IOException;
 
     /**
      * @return connection to wrap around.

@@ -195,9 +195,9 @@ public class Protocol316 extends AbstractProtocol {
         AbstractPlayBot bot = (AbstractPlayBot)this.bot;
         String username = bot.getSession().getProfileName();
         NetClient client = bot.getNetClient();
-        client.writePacket(new S00Handshake(host, port, getProtocolID(), State.LOGIN));
+        client.sendPacket(new S00Handshake(host, port, getProtocolID(), State.LOGIN));
         setCurrentState(State.LOGIN);
-        client.writePacket(new S00LoginStart(username));
+        client.sendPacket(new S00LoginStart(username));
         ReadablePacket read = client.readPacket();
         if(checkLoginFailure(read)) {
             return;
@@ -240,10 +240,10 @@ public class Protocol316 extends AbstractProtocol {
         handlePacket(packet);
         pluginChannelManager.registerToServer(bot, client);
 
-        client.writePacket(new S04ClientSettings());
+        client.sendPacket(new S04ClientSettings());
         packet = client.readPacket();
         handlePacket(packet);
-        client.writePacket(new S03ClientStatus(S03ClientStatus.ClientAction.PERFORM_RESPAWN));
+        client.sendPacket(new S03ClientStatus(S03ClientStatus.ClientAction.PERFORM_RESPAWN));
         //start the tickengine
         new ReadTask(bot).start();
         tickEngine.start(true);
@@ -278,12 +278,12 @@ public class Protocol316 extends AbstractProtocol {
             throw new IllegalStateException("May only get MOTD if not yet connected!");
         }
         //Send handshake with request to change state to STATUS
-        getNetClient().writePacket(new S00Handshake(bot.getBotBuilder().getHost(), bot.getBotBuilder().getPort(),
+        getNetClient().sendPacket(new S00Handshake(bot.getBotBuilder().getHost(), bot.getBotBuilder().getPort(),
                 getProtocolID(), State.STATUS));
         //Handle internal state
         setCurrentState(State.STATUS);
         //write request
-        getNetClient().writePacket(new S00Request());
+        getNetClient().sendPacket(new S00Request());
         PacketLengthHeader respHead = getNetClient().readHeader();//since we're only expecting a confirmation we can skip using an actual packets
 
         String response = readString(getConnection().getDataInputStream());
@@ -407,7 +407,7 @@ public class Protocol316 extends AbstractProtocol {
             SecretKey secKey = EncryptionUtil.generateSecretKey();
             String hash = new BigInteger(EncryptionUtil.encrypt(cryptoRequest.getServerId(), pubKey, secKey)).toString(16);
             bot.getSessionProvider().authenticateServer(bot.getSession(), hash);
-            getNetClient().writePacket(new S01EncryptionResponse(pubKey, secKey, cryptoRequest.getVerifyToken()));
+            getNetClient().sendPacket(new S01EncryptionResponse(pubKey, secKey, cryptoRequest.getVerifyToken()));
             secureConnection.setSharedKey(secKey);
             secureConnection.secure();
         } catch (GeneralSecurityException e) {
