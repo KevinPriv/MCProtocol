@@ -21,7 +21,7 @@ import java.util.HashMap;
 public abstract class AbstractProtocol implements Protocol {
 
     private State state = State.HANDSHAKE;
-    private ChatConverterFactory chatConverterFactory = new DefaultChatConverterFactory();
+    private final ChatConverterFactory chatConverterFactory = new DefaultChatConverterFactory();
 
     /**
      * Register a packet which can later be resolved when read from stream.

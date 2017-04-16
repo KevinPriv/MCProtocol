@@ -13,7 +13,7 @@ public enum ChatStyle {
     ITALIC("o"),
     RESET("r");
 
-    private String code;
+    private final String code;
 
     ChatStyle(String code) {
         this.code = code;

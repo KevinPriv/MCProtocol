@@ -11,8 +11,8 @@ import java.util.List;
  */
 public abstract class AbstractTickEngine implements TickEngine {
 
-    private Bot bot;
-    private List<TickWorker> workers;
+    private final Bot bot;
+    private final List<TickWorker> workers;
 
     /**
      * Constructor that requires an instance of our bot

@@ -19,8 +19,8 @@ public class FileYggdrasilSessionStorage implements YggdrasilSessionStorage {
      */
     private static final String DEFAULT_FILENAME = "session.json";
 
-    private ObjectMapper jsonMapper = new ObjectMapper();
-    private File file;
+    private final ObjectMapper jsonMapper = new ObjectMapper();
+    private final File file;
 
     /**
      * Default constructor uses a file named "session.json" in the current working directory.

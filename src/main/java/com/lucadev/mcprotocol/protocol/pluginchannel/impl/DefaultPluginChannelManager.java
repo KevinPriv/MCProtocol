@@ -18,7 +18,7 @@ import java.util.HashMap;
  */
 public class DefaultPluginChannelManager implements PluginChannelManager {
 
-    private HashMap<String, PluginChannel> map = new HashMap<>();
+    private final HashMap<String, PluginChannel> map = new HashMap<>();
 
     /**
      * System logger

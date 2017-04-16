@@ -17,14 +17,12 @@ import static com.lucadev.mcprotocol.protocol.VarHelper.writeVarInt;
  */
 public class S01EncryptionResponse extends AbstractPacket implements WritablePacket {
 
-    private SecretKey sharedKey;
     private byte[] sharedSecret;
     private byte[] verifyToken;
 
     public S01EncryptionResponse(PublicKey pubKey, SecretKey secKey, byte[] verifyToken) {
-        this.sharedKey = secKey;
         try {
-            sharedSecret = EncryptionUtil.cipher(1, pubKey, sharedKey.getEncoded());
+            sharedSecret = EncryptionUtil.cipher(1, pubKey, secKey.getEncoded());
             this.verifyToken = EncryptionUtil.cipher(1, pubKey, verifyToken);
         } catch (GeneralSecurityException e) {
             e.printStackTrace();

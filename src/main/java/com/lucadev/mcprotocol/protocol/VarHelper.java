@@ -48,8 +48,7 @@ public class VarHelper {
      * @throws IOException when something goes wrong reading.
      */
     public static Position readPosition(DataInputStream dis) throws IOException {
-        Position pos = new Position(dis.readLong());
-        return pos;
+        return new Position(dis.readLong());
     }
 
     /**

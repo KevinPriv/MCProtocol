@@ -8,7 +8,7 @@ public enum Dimension {
     OVERWORLD(0),
     END(1);
 
-    private int flag;
+    private final int flag;
 
     Dimension(int flag) {
         this.flag = flag;

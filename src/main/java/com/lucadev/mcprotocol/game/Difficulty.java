@@ -10,7 +10,7 @@ public enum Difficulty {
     NORMAL((byte) 2),
     HARD((byte) 3);
 
-    private byte level;
+    private final byte level;
 
     Difficulty(byte level) {
         this.level = level;

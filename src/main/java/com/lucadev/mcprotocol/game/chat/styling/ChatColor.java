@@ -24,7 +24,7 @@ public enum ChatColor {
     WHITE("f"),
     NONE("");
 
-    private String code;
+    private final String code;
 
     ChatColor(String code) {
         this.code = code;

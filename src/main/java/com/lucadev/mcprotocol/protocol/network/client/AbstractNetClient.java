@@ -10,7 +10,7 @@ import com.lucadev.mcprotocol.protocol.network.connection.Connection;
  */
 public abstract class AbstractNetClient implements NetClient {
 
-    private Bot bot;
+    private final Bot bot;
 
     /**
      * Constructor initializing the NetClient with a bot instance.

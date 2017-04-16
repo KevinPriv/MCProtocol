@@ -9,8 +9,8 @@ import com.lucadev.mcprotocol.game.chat.event.action.ClickAction;
  */
 public class ClickEvent {
 
-    private ClickAction action;
-    private String value;
+    private final ClickAction action;
+    private final String value;
 
     /**
      * Constructs a click event
