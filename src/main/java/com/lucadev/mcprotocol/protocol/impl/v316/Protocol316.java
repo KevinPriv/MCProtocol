@@ -83,36 +83,36 @@ public class Protocol316 extends AbstractProtocol {
     public void setup(Bot bot) {
         this.botBase = bot;
         if(bot instanceof AbstractPlayBot) {
-            bot = (AbstractPlayBot)botBase;
+            this.bot = (AbstractPlayBot)botBase;
         }
         tickEngine = TickEngineFactory.getDefaultFactory().createEngine(bot);
         pluginChannelManager = PluginChannelManagerFactory.getDefaultFactory().createPluginChannelManager();
         setupPluginChannels();
         setupPacketListeners();
         setupTickWorkers();
-        register(State.LOGIN, 0x00, C00Disconnect.class);
-        register(State.LOGIN, 0x01, C01EncryptionRequest.class);
-        register(State.LOGIN, 0x02, C02LoginSuccess.class);
-        register(State.LOGIN, 0x03, C03SetCompression.class);
-        register(State.PLAY, 0x23, C35JoinGame.class);
-        register(State.PLAY, 0x0D, C13ServerDifficulty.class);
-        register(State.PLAY, 0x18, C24PluginMessage.class);
-        register(State.PLAY, 0x43, C67SpawnPosition.class);
-        register(State.PLAY, 0x2B, C43PlayerAbilities.class);
-        register(State.PLAY, 0x2E, C46PlayerPositionLook.class);
-        register(State.PLAY, 0x37, C55SlotChange.class);//WRITE HANDLER
-        register(State.PLAY, 0x0F, C16ChatMessage.class);
-        register(State.PLAY, 0x1F, C31KeepAlive.class);
-        register(State.PLAY, 0x1A, C26Disconnect.class);
-        register(State.PLAY, 0x2D, C45UpdatePlayerListItem.class);
-        register(State.PLAY, 0x20, C32ChunkData.class);
-        register(State.PLAY, 0x03, C03SpawnMob.class);
-        register(State.PLAY, 0x39, C57UpdateEntityMetadata.class);
-        register(State.PLAY, 0x4A, C74EntitityProperties.class);
-        register(State.PLAY, 0x34, C52EntityHeadLook.class);
-        register(State.PLAY, 0x3C, C60EntityEquipment.class);
-        register(State.PLAY, 0x25, C37EntityRelativeMove.class);
-        register(State.PLAY, 0x09, C09UpdateBlockEntity.class);
+        register(State.LOGIN, C00Disconnect.class);
+        register(State.LOGIN, C01EncryptionRequest.class);
+        register(State.LOGIN, C02LoginSuccess.class);
+        register(State.LOGIN, C03SetCompression.class);
+        register(State.PLAY, C35JoinGame.class);
+        register(State.PLAY, C13ServerDifficulty.class);
+        register(State.PLAY, C24PluginMessage.class);
+        register(State.PLAY, C67SpawnPosition.class);
+        register(State.PLAY, C43PlayerAbilities.class);
+        register(State.PLAY, C46PlayerPositionLook.class);
+        register(State.PLAY, C55SlotChange.class);//WRITE HANDLER
+        register(State.PLAY, C16ChatMessage.class);
+        register(State.PLAY, C31KeepAlive.class);
+        register(State.PLAY, C26Disconnect.class);
+        register(State.PLAY, C45UpdatePlayerListItem.class);
+        register(State.PLAY, C32ChunkData.class);
+        register(State.PLAY, C03SpawnMob.class);
+        register(State.PLAY, C57UpdateEntityMetadata.class);
+        register(State.PLAY, C74EntitityProperties.class);
+        register(State.PLAY, C52EntityHeadLook.class);
+        register(State.PLAY, C60EntityEquipment.class);
+        register(State.PLAY, C37EntityRelativeMove.class);
+        register(State.PLAY, C09UpdateBlockEntity.class);
     }
 
     /**

@@ -26,11 +26,10 @@ public abstract class AbstractProtocol implements Protocol {
     /**
      * Register a packet which can later be resolved when read from stream.
      * @param state state in which the packet functions(chat message only functions in PLAY for example).
-     * @param id the packet id
-     * @param packet the packet class
+     * @param packet the packet class, id will be resolved from the given packet class
      */
-    public void register(State state, int id, Class<? extends Packet> packet) {
-        state.registerPacket(id, packet);
+    public void register(State state, Class<? extends Packet> packet) {
+        state.registerPacket(packet);
     }
 
     /**

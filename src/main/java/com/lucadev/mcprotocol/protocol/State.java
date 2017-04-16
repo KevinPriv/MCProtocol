@@ -4,6 +4,7 @@ import com.lucadev.mcprotocol.protocol.packets.Packet;
 import com.lucadev.mcprotocol.protocol.packets.UndefinedPacket;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
 
@@ -63,22 +64,21 @@ public enum State {
 
     /**
      * Register a packet to the state.
-     * @param id packet id
      * @param clazz packet class
      */
-    public void registerPacket(int id, Class<? extends Packet> clazz) {
+    public void registerPacket(Class<? extends Packet> clazz) {
         try {
-            verifyPacketClass(clazz);
+            int id = verifyPacketAndGetId(clazz);
+            if(packets.containsKey(id)) {
+                throw new IllegalStateException("Packet id 0x" +
+                        Integer.toHexString(id).toUpperCase() + " already registered for state " + name());
+            }
+
+            packets.put(id, clazz);
         } catch (ProtocolException e) {
             e.printStackTrace();
             return;
         }
-        if(packets.containsKey(id)) {
-            throw new IllegalStateException("Packet id 0x" +
-                    Integer.toHexString(id).toUpperCase() + " already registered for state " + name());
-        }
-
-        packets.put(id, clazz);
     }
 
     /**
@@ -86,7 +86,7 @@ public enum State {
      * @param packet the packet class to inspect
      * @throws ProtocolException gets thrown when the packet does not meet requirement which result into a protocol exception.
      */
-    private void verifyPacketClass(Class<? extends Packet> packet) throws ProtocolException {
+    private int verifyPacketAndGetId(Class<? extends Packet> packet) throws ProtocolException {
         try {
             //gets the declared constructor with no parameters. Declared means it might not be publicly accessable.
             Constructor con = packet.getDeclaredConstructor();
@@ -95,8 +95,9 @@ public enum State {
                 throw new ProtocolException("Packet " + packet.getName() + " has a non public default constructor.");
             }
 
-            //Well it's for the rest.
-        } catch (NoSuchMethodException e) {
+            Packet p = (Packet) con.newInstance();
+            return p.getId();
+        } catch (Exception e) {
             throw new ProtocolException("No default constructor discovered in packet " + packet.getName(), e);
         }
     }
