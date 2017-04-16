@@ -4,9 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lucadev.mcprotocol.bots.AbstractPlayBot;
 import com.lucadev.mcprotocol.bots.Bot;
 import com.lucadev.mcprotocol.game.chat.components.ChatComponent;
-import com.lucadev.mcprotocol.game.entity.player.BotPlayer;
 import com.lucadev.mcprotocol.game.tick.TickEngineFactory;
-import com.lucadev.mcprotocol.game.world.World;
 import com.lucadev.mcprotocol.protocol.AbstractProtocol;
 import com.lucadev.mcprotocol.protocol.ProtocolException;
 import com.lucadev.mcprotocol.protocol.State;
@@ -35,8 +33,6 @@ import com.lucadev.mcprotocol.protocol.packets.sbound.play.S02ChatMessage;
 import com.lucadev.mcprotocol.protocol.packets.sbound.play.S10KeepAlive;
 import com.lucadev.mcprotocol.protocol.packets.sbound.play.client.S03ClientStatus;
 import com.lucadev.mcprotocol.protocol.packets.sbound.play.client.S04ClientSettings;
-import com.lucadev.mcprotocol.protocol.packets.sbound.play.entity.player.S00TeleportConfirm;
-import com.lucadev.mcprotocol.protocol.packets.sbound.play.entity.player.S13PlayerPositionLook;
 import com.lucadev.mcprotocol.protocol.packets.sbound.status.S00Request;
 import com.lucadev.mcprotocol.protocol.pluginchannel.PluginChannelManager;
 import com.lucadev.mcprotocol.protocol.pluginchannel.PluginChannelManagerFactory;
@@ -71,8 +67,10 @@ public class Protocol316 extends AbstractProtocol {
      */
     private static final Logger logger = LoggerFactory.getLogger(Protocol316.class);
 
-    //most abstract bot
-    private Bot bot;
+    //most abstract bot, called botbase since we will barely use it.
+    private Bot botBase;
+    //Since most of the protocol is about handling a game protocol we'll cast to AbstractPlayBot later
+    private AbstractPlayBot bot;
     private PluginChannelManager pluginChannelManager;
     private HashMap<Class<? extends ReadablePacket>, List<PacketListener>> listenerMap = new HashMap<>();
     private TickEngine tickEngine;
@@ -83,7 +81,10 @@ public class Protocol316 extends AbstractProtocol {
      */
     @Override
     public void setup(Bot bot) {
-        this.bot = bot;
+        this.botBase = bot;
+        if(bot instanceof AbstractPlayBot) {
+            bot = (AbstractPlayBot)botBase;
+        }
         tickEngine = TickEngineFactory.getDefaultFactory().createEngine(bot);
         pluginChannelManager = PluginChannelManagerFactory.getDefaultFactory().createPluginChannelManager();
         setupPluginChannels();
