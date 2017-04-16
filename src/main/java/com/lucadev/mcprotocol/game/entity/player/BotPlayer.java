@@ -1,5 +1,6 @@
 package com.lucadev.mcprotocol.game.entity.player;
 
+import com.lucadev.mcprotocol.bots.AbstractPlayBot;
 import com.lucadev.mcprotocol.game.Difficulty;
 import com.lucadev.mcprotocol.game.Dimension;
 import com.lucadev.mcprotocol.game.GameMode;
@@ -8,7 +9,7 @@ import com.lucadev.mcprotocol.game.PlayerAbilities;
 /**
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  */
-public class BotPlayer implements Player {
+public abstract class BotPlayer implements Player {
 
     private int entityId;
     private GameMode gameMode;
@@ -34,6 +35,13 @@ public class BotPlayer implements Player {
         this.username = username;
         this.uuid = uuid;
     }
+
+    /**
+     * Register listeners for the packets required to manage the player object.
+     * Also contains the tick workers if needed.
+     * @param bot minimum bot implementation to handle a player.
+     */
+    public abstract void registerProtocolListeners(AbstractPlayBot bot);
 
     @Override
     public GameMode getGameMode() {

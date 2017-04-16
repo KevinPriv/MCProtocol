@@ -1,9 +1,11 @@
 package com.lucadev.mcprotocol.game.entity.player;
 
+import com.lucadev.mcprotocol.bots.AbstractPlayBot;
 import com.lucadev.mcprotocol.game.Difficulty;
 import com.lucadev.mcprotocol.game.Dimension;
 import com.lucadev.mcprotocol.game.GameMode;
 import com.lucadev.mcprotocol.game.PlayerAbilities;
+import com.lucadev.mcprotocol.protocol.Protocol;
 
 /**
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >

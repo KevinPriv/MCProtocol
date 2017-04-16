@@ -1,6 +1,6 @@
 package com.lucadev.mcprotocol.game.tick;
 
-import com.lucadev.mcprotocol.Bot;
+import com.lucadev.mcprotocol.bots.Bot;
 import com.lucadev.mcprotocol.game.tick.impl.DefaultTickEngineFactory;
 
 /**

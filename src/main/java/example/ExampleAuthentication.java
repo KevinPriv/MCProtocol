@@ -1,10 +1,11 @@
 package example;
 
-import com.lucadev.mcprotocol.Bot;
-import com.lucadev.mcprotocol.BotBuilder;
+import com.lucadev.mcprotocol.bots.Bot;
+import com.lucadev.mcprotocol.bots.BotBuilder;
 import com.lucadev.mcprotocol.auth.Session;
 import com.lucadev.mcprotocol.auth.SessionProvider;
 import com.lucadev.mcprotocol.auth.yggdrasil.CacheEnabledYggdrasilSessionProvider;
+import com.lucadev.mcprotocol.bots.PlayerBot;
 
 /**
  * Example code on how sessions and their providers work.
@@ -23,8 +24,8 @@ public class ExampleAuthentication {
         SessionProvider cacheEnabledProvider = new CacheEnabledYggdrasilSessionProvider();
 
         builder.sessionProvider(cacheEnabledProvider).username("EMAIL/USERNAME").password("PASSWORD").authenticate();
-        //build to bot
-        Bot bot = builder.build();//build will automatically run the auth steps
+        //buildPlayerBot to bots
+        PlayerBot bot = builder.buildPlayerBot();//buildPlayerBot will automatically run the auth steps
 
         //session information
         Session session = bot.getSession();

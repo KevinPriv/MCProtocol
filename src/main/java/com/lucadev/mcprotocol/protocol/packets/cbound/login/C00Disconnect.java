@@ -1,6 +1,6 @@
 package com.lucadev.mcprotocol.protocol.packets.cbound.login;
 
-import com.lucadev.mcprotocol.Bot;
+import com.lucadev.mcprotocol.bots.Bot;
 import com.lucadev.mcprotocol.game.chat.ChatParseException;
 import com.lucadev.mcprotocol.game.chat.components.ChatComponent;
 import com.lucadev.mcprotocol.protocol.packets.AbstractPacket;

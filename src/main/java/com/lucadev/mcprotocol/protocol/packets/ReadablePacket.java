@@ -1,6 +1,6 @@
 package com.lucadev.mcprotocol.protocol.packets;
 
-import com.lucadev.mcprotocol.Bot;
+import com.lucadev.mcprotocol.bots.Bot;
 
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -15,7 +15,7 @@ public interface ReadablePacket extends Packet {
 
     /**
      * Read the data payload from the packet in here. This does not include packets id and fields.
-     * @param bot the bot that received the packet.
+     * @param bot the bots that received the packet.
      * @param is stream that contains the packet data.
      * @param totalSize size of the available data in the stream
      * @throws IOException gets thrown when something goes wrong reading the data payload

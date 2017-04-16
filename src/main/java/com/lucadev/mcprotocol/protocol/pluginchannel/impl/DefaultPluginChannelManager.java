@@ -1,6 +1,6 @@
 package com.lucadev.mcprotocol.protocol.pluginchannel.impl;
 
-import com.lucadev.mcprotocol.Bot;
+import com.lucadev.mcprotocol.bots.Bot;
 import com.lucadev.mcprotocol.protocol.network.client.NetClient;
 import com.lucadev.mcprotocol.protocol.packets.sbound.play.S09PluginMessage;
 import com.lucadev.mcprotocol.protocol.pluginchannel.PluginChannel;
@@ -76,7 +76,7 @@ public class DefaultPluginChannelManager implements PluginChannelManager {
 
     /**
      * Register the channels to the server.
-     * @param bot instance of the bot.
+     * @param bot instance of the bots.
      * @param client net client which is used for packet networking.
      * @see com.lucadev.mcprotocol.protocol.network.client.NetClient
      */

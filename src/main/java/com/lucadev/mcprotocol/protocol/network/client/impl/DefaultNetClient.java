@@ -1,6 +1,6 @@
 package com.lucadev.mcprotocol.protocol.network.client.impl;
 
-import com.lucadev.mcprotocol.Bot;
+import com.lucadev.mcprotocol.bots.Bot;
 import com.lucadev.mcprotocol.protocol.Protocol;
 import com.lucadev.mcprotocol.protocol.ProtocolException;
 import com.lucadev.mcprotocol.protocol.network.client.AbstractNetClient;

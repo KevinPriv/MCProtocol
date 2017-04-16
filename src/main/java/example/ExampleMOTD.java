@@ -1,12 +1,11 @@
 package example;
 
-import com.lucadev.mcprotocol.Bot;
-import com.lucadev.mcprotocol.BotBuilder;
-import com.lucadev.mcprotocol.auth.SessionProvider;
+import com.lucadev.mcprotocol.bots.Bot;
+import com.lucadev.mcprotocol.bots.BotBuilder;
+import com.lucadev.mcprotocol.bots.MOTDBot;
 import com.lucadev.mcprotocol.util.model.MOTDResponse;
 
 import java.io.IOException;
-import java.util.Scanner;
 
 /**
  * Example code on fetching a server MOTD
@@ -18,13 +17,12 @@ public class ExampleMOTD {
     public static void main(String[] args) {
         //init builder w some info in params
         BotBuilder builder = new BotBuilder("localhost", 25565);
-        //build to bot
-        Bot bot = builder.build();
-        //additional bot config can be done here
+        //buildPlayerBot to bots
+        MOTDBot bot = builder.buildMOTDBot();
+        //additional bots config can be done here
         try {
-            MOTDResponse response = bot.fetchMOTD();
+            MOTDResponse response = bot.getMOTD();
             System.out.println(response.toString());
-            bot.getConnection().close();
         } catch (IOException e) {
             e.printStackTrace();
         }

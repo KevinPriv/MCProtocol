@@ -93,7 +93,8 @@ public class YggdrasilSessionProvider extends SessionProvider<YggdrasilSession> 
             return new YggdrasilSession(accessToken, clientToken, profileId, profileName);
         } else {
             //TODO: Handle error
-            throw new YggdrasilAuthException("No status code 200 returned by auth servers!");
+            AuthError error = objectMapper.readValue(getStringResponse(conn, true), AuthError.class);
+            throw new YggdrasilAuthException(error);
         }
     }
 
@@ -117,7 +118,7 @@ public class YggdrasilSessionProvider extends SessionProvider<YggdrasilSession> 
         }
 
         //else an error is returned
-        AuthError error = objectMapper.readValue(getStringResponse(resp), AuthError.class);
+        AuthError error = objectMapper.readValue(getStringResponse(resp, true), AuthError.class);
         logger.info(new YggdrasilAuthException(error).getMessage());
         return false;
     }
@@ -158,19 +159,30 @@ public class YggdrasilSessionProvider extends SessionProvider<YggdrasilSession> 
     /**
      * Read the string response from a request
      * @param conn the connection with which the request was made.
-     * @return data returned by the request as a string.
+     * @param errorStream shall we use the available error stream instead of the input stream?
+     * @return data returned by the request as a string
      * @throws IOException when we cannot convert it somehow.
      */
-    protected String getStringResponse(HttpsURLConnection conn) throws IOException {
+    protected String getStringResponse(HttpsURLConnection conn, boolean errorStream) throws IOException {
         StringBuilder sb = new StringBuilder();
         BufferedReader br = new BufferedReader(
-                new InputStreamReader(conn.getInputStream(), CHARSET));
+                new InputStreamReader(errorStream ? conn.getErrorStream() : conn.getInputStream(), CHARSET));
         String line = null;
         while ((line = br.readLine()) != null) {
             sb.append(line + "\n");
         }
         br.close();
         return sb.toString();
+    }
+
+    /**
+     * Read the string response from a request
+     * @param conn the connection with which the request was made.
+     * @return data returned by the request as a string
+     * @throws IOException when we cannot convert it somehow.
+     */
+    protected String getStringResponse(HttpsURLConnection conn) throws IOException {
+        return getStringResponse(conn, false);
     }
 
     /**

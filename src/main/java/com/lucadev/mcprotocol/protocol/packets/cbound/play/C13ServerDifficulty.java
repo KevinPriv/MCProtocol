@@ -1,6 +1,6 @@
 package com.lucadev.mcprotocol.protocol.packets.cbound.play;
 
-import com.lucadev.mcprotocol.Bot;
+import com.lucadev.mcprotocol.bots.Bot;
 import com.lucadev.mcprotocol.game.Difficulty;
 import com.lucadev.mcprotocol.protocol.packets.AbstractPacket;
 import com.lucadev.mcprotocol.protocol.packets.ReadablePacket;

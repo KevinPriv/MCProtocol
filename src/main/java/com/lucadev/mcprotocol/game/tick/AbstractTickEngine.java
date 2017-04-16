@@ -1,6 +1,6 @@
 package com.lucadev.mcprotocol.game.tick;
 
-import com.lucadev.mcprotocol.Bot;
+import com.lucadev.mcprotocol.bots.Bot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,8 +15,8 @@ public abstract class AbstractTickEngine implements TickEngine {
     private final List<TickWorker> workers;
 
     /**
-     * Constructor that requires an instance of our bot
-     * @param bot the instance of our bot
+     * Constructor that requires an instance of our bots
+     * @param bot the instance of our bots
      */
     public AbstractTickEngine(Bot bot) {
         this.bot = bot;
@@ -43,7 +43,7 @@ public abstract class AbstractTickEngine implements TickEngine {
     }
 
     /**
-     * @return instance of our bot
+     * @return instance of our bots
      */
     protected Bot getBot() {
         return bot;

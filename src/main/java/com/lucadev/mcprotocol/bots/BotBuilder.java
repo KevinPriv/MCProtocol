@@ -1,15 +1,13 @@
-package com.lucadev.mcprotocol;
+package com.lucadev.mcprotocol.bots;
 
 import com.lucadev.mcprotocol.auth.SessionProvider;
 import com.lucadev.mcprotocol.protocol.ProtocolFactory;
-import com.lucadev.mcprotocol.protocol.network.client.NetClientFactory;
-import com.lucadev.mcprotocol.protocol.network.connection.ConnectionFactory;
 
 import javax.net.SocketFactory;
 
 /**
- * Builder that is used to create a bot.
- * By using a separate builder class we can manage advanced bot configurations.
+ * Basic builder class for all available bots.
+ * TODO: Build methods return generics?
  *
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  */
@@ -86,10 +84,18 @@ public class BotBuilder {
     }
 
     /**
-     * @return a new Bot instance created from this builder configuration.
+     * @return a new player bot instance created from this builder configuration.
      */
-    public Bot build() {
-        return new Bot(this);
+    public PlayerBot buildPlayerBot() {
+        return new PlayerBot(this);
+    }
+
+    public ChatBot buildChatBot() {
+        return new ChatBot(this);
+    }
+
+    public MOTDBot buildMOTDBot() {
+        return new MOTDBot(this);
     }
 
     /**
@@ -146,7 +152,7 @@ public class BotBuilder {
     }
 
     /**
-     * @return player username that will be used by the bot.
+     * @return player username that will be used by the bots.
      */
     public String getUsername() {
         return username;

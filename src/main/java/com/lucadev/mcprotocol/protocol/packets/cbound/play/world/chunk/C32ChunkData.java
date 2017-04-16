@@ -1,6 +1,6 @@
 package com.lucadev.mcprotocol.protocol.packets.cbound.play.world.chunk;
 
-import com.lucadev.mcprotocol.Bot;
+import com.lucadev.mcprotocol.bots.Bot;
 import com.lucadev.mcprotocol.game.world.Chunk;
 import com.lucadev.mcprotocol.protocol.packets.AbstractPacket;
 import com.lucadev.mcprotocol.protocol.packets.ReadablePacket;
@@ -42,7 +42,7 @@ public class C32ChunkData extends AbstractPacket implements ReadablePacket {
         if(continuous) {
             chunk = new Chunk(xPos, zPos);
         } else {
-            chunk = bot.getWorld().getChunk(xPos, zPos);
+            chunk = bots.getWorld().getChunk(xPos, zPos);
         }
         heightMask = readVarInt(is);
         //check mask to calculate from which height we have information

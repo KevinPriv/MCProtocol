@@ -1,6 +1,6 @@
 package com.lucadev.mcprotocol.protocol.pluginchannel;
 
-import com.lucadev.mcprotocol.Bot;
+import com.lucadev.mcprotocol.bots.Bot;
 import com.lucadev.mcprotocol.protocol.network.client.NetClient;
 
 import java.io.IOException;
@@ -42,7 +42,7 @@ public interface PluginChannelManager {
 
     /**
      * Register the channels to the server.
-     * @param bot instance of the bot.
+     * @param bot instance of the bots.
      * @param client net client which is used for packet networking.
      * @see com.lucadev.mcprotocol.protocol.network.client.NetClient
      */

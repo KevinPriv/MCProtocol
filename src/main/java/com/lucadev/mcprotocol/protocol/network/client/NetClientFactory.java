@@ -1,6 +1,6 @@
 package com.lucadev.mcprotocol.protocol.network.client;
 
-import com.lucadev.mcprotocol.Bot;
+import com.lucadev.mcprotocol.bots.Bot;
 import com.lucadev.mcprotocol.protocol.network.client.impl.DefaultNetClientFactory;
 
 /**
@@ -15,7 +15,7 @@ public abstract class NetClientFactory {
 
     /**
      * Create default networking client.
-     * @param bot the bot instance.
+     * @param bot the bots instance.
      * @return newly created networking client.
      */
     public abstract NetClient createClient(Bot bot);

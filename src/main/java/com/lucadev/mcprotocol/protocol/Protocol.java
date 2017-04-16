@@ -1,6 +1,6 @@
 package com.lucadev.mcprotocol.protocol;
 
-import com.lucadev.mcprotocol.Bot;
+import com.lucadev.mcprotocol.bots.Bot;
 import com.lucadev.mcprotocol.game.chat.ChatConverterFactory;
 import com.lucadev.mcprotocol.game.chat.components.ChatComponent;
 import com.lucadev.mcprotocol.protocol.network.client.NetClientFactory;
@@ -9,7 +9,6 @@ import com.lucadev.mcprotocol.protocol.packets.Packet;
 import com.lucadev.mcprotocol.protocol.packets.PacketListener;
 import com.lucadev.mcprotocol.protocol.packets.ReadablePacket;
 import com.lucadev.mcprotocol.game.tick.TickEngine;
-import com.lucadev.mcprotocol.game.tick.TickListener;
 import com.lucadev.mcprotocol.util.model.MOTDResponse;
 
 import java.io.IOException;
@@ -23,7 +22,7 @@ public interface Protocol {
 
     /**
      * Setup the protocol.
-     * @param bot instance of our bot
+     * @param bot instance of our bots
      */
     void setup(Bot bot);
 

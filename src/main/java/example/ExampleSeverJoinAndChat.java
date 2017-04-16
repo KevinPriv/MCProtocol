@@ -1,9 +1,9 @@
 package example;
 
-import com.lucadev.mcprotocol.Bot;
-import com.lucadev.mcprotocol.BotBuilder;
+import com.lucadev.mcprotocol.bots.Bot;
+import com.lucadev.mcprotocol.bots.BotBuilder;
 import com.lucadev.mcprotocol.auth.SessionProvider;
-import com.lucadev.mcprotocol.auth.yggdrasil.CacheEnabledYggdrasilSessionProvider;
+import com.lucadev.mcprotocol.bots.PlayerBot;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -24,17 +24,16 @@ public class ExampleSeverJoinAndChat {
         //This allows us to only join offline mode servers. To also join online mode use the default online authenticate provider.
         builder.sessionProvider(SessionProvider.getDefaultOfflineProvider()).username("Steve").password("").authenticate();
 
-        Bot bot = builder.build();
-        //additional bot config can be done here
+        PlayerBot bot = builder.buildPlayerBot();
+        //additional bots config can be done here
         try {
             //connect
-            bot.connect();
             bot.joinServer();
-            //bot.consoleChat();
+
             Scanner scanner = new Scanner(System.in);
             while(bot.isConnected()) {
                 String msg = scanner.nextLine();
-                bot.getProtocol().sendChatMessage(msg);
+                bot.sendChatMessage(msg);
             }
         } catch (IOException e) {
             e.printStackTrace();

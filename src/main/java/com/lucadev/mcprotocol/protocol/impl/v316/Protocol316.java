@@ -1,7 +1,8 @@
 package com.lucadev.mcprotocol.protocol.impl.v316;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lucadev.mcprotocol.Bot;
+import com.lucadev.mcprotocol.bots.AbstractPlayBot;
+import com.lucadev.mcprotocol.bots.Bot;
 import com.lucadev.mcprotocol.game.chat.components.ChatComponent;
 import com.lucadev.mcprotocol.game.entity.player.BotPlayer;
 import com.lucadev.mcprotocol.game.tick.TickEngineFactory;
@@ -70,6 +71,7 @@ public class Protocol316 extends AbstractProtocol {
      */
     private static final Logger logger = LoggerFactory.getLogger(Protocol316.class);
 
+    //most abstract bot
     private Bot bot;
     private PluginChannelManager pluginChannelManager;
     private HashMap<Class<? extends ReadablePacket>, List<PacketListener>> listenerMap = new HashMap<>();
@@ -77,7 +79,7 @@ public class Protocol316 extends AbstractProtocol {
 
     /**
      * Setup the protocol.
-     * @param bot instance of our bot
+     * @param bot instance of our bots
      */
     @Override
     public void setup(Bot bot) {
@@ -116,15 +118,6 @@ public class Protocol316 extends AbstractProtocol {
      * Register all tick workers for the protocol in this method.
      */
     private void setupTickWorkers() {
-        //Send player pos and look every 1 sec when not moving.
-        getTickEngine().register(20, (bot) -> {
-            try {
-                bot.getNetClient().sendPacket(new S13PlayerPositionLook(bot.getPlayer()));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-
         //tick method for protocol class itself.
         getTickEngine().register(1, (bot) -> {
             tick();
@@ -147,35 +140,6 @@ public class Protocol316 extends AbstractProtocol {
             C24PluginMessage pluginMessage = (C24PluginMessage) packet;
             try {
                 pluginChannelManager.handle(pluginMessage.getChannelName(), pluginMessage.getData());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-
-        registerPacketListener(C13ServerDifficulty.class, (bot, packet) -> {
-            C13ServerDifficulty serverDifficulty = (C13ServerDifficulty) packet;
-            bot.getPlayer().setDifficulty(serverDifficulty.getDifficulty());
-        });
-
-        registerPacketListener(C67SpawnPosition.class, (bot, packet) -> {
-            C67SpawnPosition spawnPosition = (C67SpawnPosition) packet;
-            //logger.info("Updated spawn positon to " + spawnPosition.getPosition().toString());
-        });
-
-        registerPacketListener(C43PlayerAbilities.class, (bot, packet) -> {
-            C43PlayerAbilities playerAbilities = (C43PlayerAbilities) packet;
-            //logger.info("Updated player abilities: {}", playerAbilities.getPlayerAbilities().toString());
-            bot.getPlayer().setPlayerAbilities(playerAbilities.getPlayerAbilities());
-        });
-
-        registerPacketListener(C46PlayerPositionLook.class, (bot, packet) -> {
-            C46PlayerPositionLook positionLook = (C46PlayerPositionLook) packet;
-            bot.getPlayer().setPosition(positionLook.getX(), positionLook.getY(), positionLook.getZ());
-            bot.getPlayer().setYawPitch(positionLook.getYaw(), positionLook.getPitch());
-            //send tp confirmation
-            //logger.info("Updating player pos from server");
-            try {
-                bot.getNetClient().sendPacket(new S00TeleportConfirm(positionLook.getTeleportId()));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -224,6 +188,11 @@ public class Protocol316 extends AbstractProtocol {
     public void serverLogin() throws IOException {
         String host = bot.getConnection().getSocket().getInetAddress().getCanonicalHostName();
         int port = bot.getConnection().getSocket().getPort();
+        if(!(bot instanceof AbstractPlayBot)) {
+            throw new ProtocolException("Server login not supported by " + bot.getClass().getName() + " requires minimal " +
+                    AbstractPlayBot.class.getName() + " implementation.");
+        }
+        AbstractPlayBot bot = (AbstractPlayBot)this.bot;
         String username = bot.getSession().getProfileName();
         NetClient client = bot.getNetClient();
         client.writePacket(new S00Handshake(host, port, getProtocolID(), State.LOGIN));
@@ -259,7 +228,7 @@ public class Protocol316 extends AbstractProtocol {
         if (joingamePacket instanceof C35JoinGame) {
             C35JoinGame joinGame = (C35JoinGame) joingamePacket;
             C02LoginSuccess loginSuccess = (C02LoginSuccess) read;
-            bot.setPlayer(new BotPlayer(joinGame.getEntityId(), loginSuccess.getUuid(), loginSuccess.getUsername(), joinGame.getGameMode(), joinGame.getDimension(),
+            bot.setPlayer(new Player316(joinGame.getEntityId(), loginSuccess.getUuid(), loginSuccess.getUsername(), joinGame.getGameMode(), joinGame.getDimension(),
                     joinGame.getDifficulty(), joinGame.getLevelType(), joinGame.isReducedDebug()));
         }
 
@@ -276,7 +245,6 @@ public class Protocol316 extends AbstractProtocol {
         handlePacket(packet);
         client.writePacket(new S03ClientStatus(S03ClientStatus.ClientAction.PERFORM_RESPAWN));
         //start the tickengine
-        bot.setWorld(new World());
         new ReadTask(bot).start();
         tickEngine.start(true);
     }
@@ -302,12 +270,15 @@ public class Protocol316 extends AbstractProtocol {
      */
     @Override
     public MOTDResponse getMOTD() throws IOException {
-        if (bot.isConnected()) {
+        //Require a fresh connection aka handshake
+        if(!bot.isConnected()) {
+            bot.connect();
+        }
+        if (getCurrentState() != State.HANDSHAKE) {
             throw new IllegalStateException("May only get MOTD if not yet connected!");
         }
-        bot.connect();
         //Send handshake with request to change state to STATUS
-        getNetClient().writePacket(new S00Handshake(bot.getBuilder().getHost(), bot.getBuilder().getPort(),
+        getNetClient().writePacket(new S00Handshake(bot.getBotBuilder().getHost(), bot.getBotBuilder().getPort(),
                 getProtocolID(), State.STATUS));
         //Handle internal state
         setCurrentState(State.STATUS);
@@ -378,9 +349,6 @@ public class Protocol316 extends AbstractProtocol {
      */
     @Override
     public void onChatMessage(ChatComponent component, byte position) {
-        if (position == 1) {
-            logger.info("CHAT: {}", component.getCompleteText());
-        }
     }
 
     /**
@@ -426,6 +394,8 @@ public class Protocol316 extends AbstractProtocol {
      * @throws IOException when something goes wrong setting up crypto
      */
     private void setupCrypto(C01EncryptionRequest cryptoRequest) throws IOException {
+        //we already type checked in joinServer so lets just cast another time
+        AbstractPlayBot bot = (AbstractPlayBot)this.bot;
         if(!(getConnection() instanceof KeySecuredConnection)) {
             throw new ProtocolException("Protocol " + getProtocolID() + " only accepts connections of type " + KeySecuredConnection.class.getName() + "\r\n" +
                                         "But connection is of type " + getConnection().getClass().getName());
@@ -447,7 +417,7 @@ public class Protocol316 extends AbstractProtocol {
 
     /**
      * Easier access
-     * @return the NetClient used by the bot
+     * @return the NetClient used by the bots
      */
     private NetClient getNetClient() {
         return bot.getNetClient();
@@ -455,7 +425,7 @@ public class Protocol316 extends AbstractProtocol {
 
     /**
      * Easier access
-     * @return the Connection being used by the bot.
+     * @return the Connection being used by the bots.
      */
     private Connection getConnection() {
         return bot.getConnection();

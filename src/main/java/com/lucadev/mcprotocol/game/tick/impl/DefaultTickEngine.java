@@ -1,6 +1,6 @@
 package com.lucadev.mcprotocol.game.tick.impl;
 
-import com.lucadev.mcprotocol.Bot;
+import com.lucadev.mcprotocol.bots.Bot;
 import com.lucadev.mcprotocol.game.tick.AbstractTickEngine;
 
 /**
@@ -24,7 +24,7 @@ public class DefaultTickEngine extends AbstractTickEngine {
 
     /**
      * Constructor required to call super constructor.
-     * @param bot an instance of our bot.
+     * @param bot an instance of our bots.
      */
     public DefaultTickEngine(Bot bot) {
         super(bot);

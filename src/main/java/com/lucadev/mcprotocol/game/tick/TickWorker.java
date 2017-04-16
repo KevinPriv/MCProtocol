@@ -1,6 +1,6 @@
 package com.lucadev.mcprotocol.game.tick;
 
-import com.lucadev.mcprotocol.Bot;
+import com.lucadev.mcprotocol.bots.Bot;
 
 /**
  * TickWorkers wrap around tick listeners and provide the rest of the required data such as how many ticks to wait,
@@ -17,7 +17,7 @@ public class TickWorker {
 
     /**
      * Constructor setting up the worker with the given data.
-     * @param bot instance to our bot
+     * @param bot instance to our bots
      * @param delay how many ticks to wait until we can execute the listener
      * @param listener the listener we will invoke once X amount of ticks have elapsed.
      */

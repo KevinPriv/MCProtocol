@@ -1,6 +1,6 @@
 package com.lucadev.mcprotocol.protocol.packets;
 
-import com.lucadev.mcprotocol.Bot;
+import com.lucadev.mcprotocol.bots.Bot;
 
 /**
  * Listener interface used to listen for specified packets.

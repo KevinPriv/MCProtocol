@@ -1,6 +1,6 @@
 package com.lucadev.mcprotocol.protocol.network.client.util;
 
-import com.lucadev.mcprotocol.Bot;
+import com.lucadev.mcprotocol.bots.Bot;
 import com.lucadev.mcprotocol.protocol.network.client.NetClient;
 
 import java.io.IOException;
