@@ -189,11 +189,10 @@ public class Protocol316 extends AbstractProtocol {
     public void serverLogin() throws IOException {
         String host = bot.getConnection().getSocket().getInetAddress().getCanonicalHostName();
         int port = bot.getConnection().getSocket().getPort();
-        if(!(bot instanceof AbstractPlayBot)) {
-            throw new ProtocolException("Server login not supported by " + bot.getClass().getName() + " requires minimal " +
+        if(bot == null && botBase != null) {
+            throw new ProtocolException("Server login not supported by " + botBase.getClass().getName() + " requires minimal " +
                     AbstractPlayBot.class.getName() + " implementation.");
         }
-        AbstractPlayBot bot = (AbstractPlayBot)this.bot;
         String username = bot.getSession().getProfileName();
         NetClient client = bot.getNetClient();
         client.sendPacket(new S00Handshake(host, port, getProtocolID(), State.LOGIN));
