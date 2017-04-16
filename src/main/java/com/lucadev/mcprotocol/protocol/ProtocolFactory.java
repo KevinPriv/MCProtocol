@@ -10,17 +10,17 @@ import com.lucadev.mcprotocol.protocol.impl.DefaultProtocolFactory;
 public abstract class ProtocolFactory {
 
     /**
-     * Protocol ID of game version 1.11
+     * Protocol ID of game protocolVersion 1.11
      */
     public static final int V1_11 = 315;
 
     /**
-     * Protocol ID of game version 1.11.1
+     * Protocol ID of game protocolVersion 1.11.1
      */
     public static final int V1_11_1 = 316;
 
     /**
-     * Protocol ID of game version 1.11.2
+     * Protocol ID of game protocolVersion 1.11.2
      */
     public static final int V1_11_2 = 316;
 
@@ -31,12 +31,12 @@ public abstract class ProtocolFactory {
 
     /**
      * Create protocol implementation of the latest supported protocol id.
-     * @return protocol implementation of latest supported protocol version.
+     * @return protocol implementation of latest supported protocol protocolVersion.
      */
     public abstract Protocol createProtocol();
 
     /**
-     * Obtain the protocol for a specific version. May be null if not found/supported.
+     * Obtain the protocol for a specific protocolVersion. May be null if not found/supported.
      * @param version protocol ID
      * @return protocol implementation of the given protocol id
      */

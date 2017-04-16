@@ -27,14 +27,14 @@ public abstract class SessionProvider {
     public abstract Session authenticate(String email, String password) throws IOException;
 
     /**
-     * @return obtain a new instance of the default online-mode session provider that supports the current game version.
+     * @return obtain a new instance of the default online-mode session provider that supports the current game protocolVersion.
      */
     public static SessionProvider getDefaultOnlineProvider() {
         return new YggdrasilSessionProvider();
     }
 
     /**
-     * @return obtain a new instance of the default online-mode session provider that supports the current game version.
+     * @return obtain a new instance of the default online-mode session provider that supports the current game protocolVersion.
      */
     public static SessionProvider getDefaultOfflineProvider() {
         return new OfflineModeSessionProvider();

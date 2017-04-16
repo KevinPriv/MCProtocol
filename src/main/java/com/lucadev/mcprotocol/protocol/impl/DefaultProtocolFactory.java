@@ -14,7 +14,7 @@ public class DefaultProtocolFactory extends ProtocolFactory {
 
     /**
      * Create protocol implementation of the latest supported protocol id.
-     * @return protocol implementation of latest supported protocol version.
+     * @return protocol implementation of latest supported protocol protocolVersion.
      */
     @Override
     public Protocol createProtocol() {
@@ -22,7 +22,7 @@ public class DefaultProtocolFactory extends ProtocolFactory {
     }
 
     /**
-     * Obtain the protocol for a specific version. May be null if not found/supported.
+     * Obtain the protocol for a specific protocolVersion. May be null if not found/supported.
      * @param version protocol ID
      * @return protocol implementation of the given protocol id
      */

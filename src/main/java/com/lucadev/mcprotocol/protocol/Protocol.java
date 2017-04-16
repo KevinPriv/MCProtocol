@@ -25,7 +25,7 @@ public interface Protocol {
     void setup(Bot bot);
 
     /**
-     * Get the supported protocol version of the protocol.
+     * Get the supported protocol protocolVersion of the protocol.
      * @return protocol id
      */
     int getVersion();

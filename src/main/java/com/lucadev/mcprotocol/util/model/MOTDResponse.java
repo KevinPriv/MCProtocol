@@ -33,7 +33,7 @@ public class MOTDResponse {
         return "MOTDResponse{" +
                 "description=" + description +
                 ", players=" + players +
-                ", version=" + version +
+                ", protocolVersion=" + version +
                 '}';
     }
 

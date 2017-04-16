@@ -120,7 +120,7 @@ public class Bot {
             throw new IllegalStateException("Already connected!");
         }
         Connection connection = connectionFactory.createConnection();
-        protocol = protocolFactory.createProtocol(botBuilder.getVersion());
+        protocol = protocolFactory.createProtocol(botBuilder.getProtocolVersion());
         protocol.setup(this);
         connection.connect(host, port);
         netClient = netClientFactory.createClient(this, connection);

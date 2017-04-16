@@ -41,7 +41,7 @@ public class YggdrasilSessionProvider extends SessionProvider {
     private static final String AGENT = "Minecraft";
 
     /**
-     * Authentication mechanism version that will be used in the authentication payload.
+     * Authentication mechanism protocolVersion that will be used in the authentication payload.
      */
     private static final int AGENT_VERSION = 1;
 

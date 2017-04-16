@@ -185,7 +185,7 @@ public class Protocol316 extends AbstractProtocol {
     }
 
     /**
-     * Get the supported protocol version of the protocol.
+     * Get the supported protocol protocolVersion of the protocol.
      * @return protocol id
      */
     @Override
