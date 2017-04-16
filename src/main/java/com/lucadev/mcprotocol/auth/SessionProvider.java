@@ -14,7 +14,7 @@ import java.io.IOException;
  *
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  */
-public abstract class SessionProvider {
+public abstract class SessionProvider<T extends Session> {
 
     /**
      * Authenticate with the given credentials and obtain a Session object.
@@ -24,7 +24,15 @@ public abstract class SessionProvider {
      * @throws IOException will be thrown when something unexpected happens during authentication.
      *                      An example would be that the auth servers could be down or you lost your internet connection.
      */
-    public abstract Session authenticate(String email, String password) throws IOException;
+    public abstract T authenticate(String email, String password) throws IOException;
+
+    /**
+     * Validate if the session is still usable for authentication.
+     * @param session the session to check against.
+     * @return true if we can use it, false if not.
+     * @throws IOException when we could not check it.
+     */
+    public abstract boolean validate(T session) throws IOException;
 
     /**
      * @return obtain a new instance of the default online-mode session provider that supports the current game protocolVersion.
@@ -47,5 +55,5 @@ public abstract class SessionProvider {
      * @param session the user session
      * @param hash the hash generated from earlier steps. This hash is used to verify the user.
      */
-    public abstract void authenticateServer(Session session, String hash) throws IOException;
+    public abstract void authenticateServer(T session, String hash) throws IOException;
 }

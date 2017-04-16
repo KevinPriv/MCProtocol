@@ -3,6 +3,7 @@ package example;
 import com.lucadev.mcprotocol.Bot;
 import com.lucadev.mcprotocol.BotBuilder;
 import com.lucadev.mcprotocol.auth.SessionProvider;
+import com.lucadev.mcprotocol.auth.yggdrasil.CacheEnabledYggdrasilSessionProvider;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -22,7 +23,7 @@ public class ExampleSeverJoinAndChat {
         //Since we use the offline provider it does not check username and password and returns an offline session.
         //This allows us to only join offline mode servers. To also join online mode use the default online authenticate provider.
         builder.sessionProvider(SessionProvider.getDefaultOfflineProvider()).username("Steve").password("").authenticate();
-        //build to bot
+
         Bot bot = builder.build();
         //additional bot config can be done here
         try {
@@ -31,12 +32,10 @@ public class ExampleSeverJoinAndChat {
             bot.joinServer();
             //bot.consoleChat();
             Scanner scanner = new Scanner(System.in);
-            while(bot.getConnection().getSocket().isConnected()) {
+            while(bot.isConnected()) {
                 String msg = scanner.nextLine();
                 bot.getProtocol().sendChatMessage(msg);
             }
-            System.out.println("BOT FINISHED BLOCKING!");
-            bot.getConnection().close();
         } catch (IOException e) {
             e.printStackTrace();
         }

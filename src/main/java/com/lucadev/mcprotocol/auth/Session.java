@@ -1,6 +1,10 @@
 package com.lucadev.mcprotocol.auth;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
+ * Abstract user session used for authentication.
+ *
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  */
 public abstract class Session {
@@ -68,5 +72,6 @@ public abstract class Session {
      *
      * @return the state of being able to join online-mode servers
      */
+    @JsonIgnore
     public abstract boolean isOnline();
 }

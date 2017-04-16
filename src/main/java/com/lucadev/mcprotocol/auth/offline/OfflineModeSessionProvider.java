@@ -10,7 +10,7 @@ import java.io.IOException;
  *
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  */
-public class OfflineModeSessionProvider extends SessionProvider {
+public class OfflineModeSessionProvider extends SessionProvider<OfflineSession> {
 
     /**
      * Ignores legit authentication and simply returns a session with the given username that can only be used for Offline mode
@@ -21,8 +21,19 @@ public class OfflineModeSessionProvider extends SessionProvider {
      *                      An example would be that the auth servers could be down or you lost your internet connection.
      */
     @Override
-    public Session authenticate(String email, String password) throws IOException {
+    public OfflineSession authenticate(String email, String password) throws IOException {
         return new OfflineSession(email);
+    }
+
+    /**
+     * Offline mode always returns true here.
+     * @param session the session to check against.
+     * @return true if we can use it, false if not.
+     * @throws IOException when we could not check it.
+     */
+    @Override
+    public boolean validate(OfflineSession session) throws IOException {
+        return true;
     }
 
     /**
@@ -34,7 +45,7 @@ public class OfflineModeSessionProvider extends SessionProvider {
      * @param hash the hash generated from earlier steps. This hash is used to verify the user.
      */
     @Override
-    public void authenticateServer(Session session, String hash) {
+    public void authenticateServer(OfflineSession session, String hash) {
 
     }
 }

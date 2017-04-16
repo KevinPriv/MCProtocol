@@ -3,6 +3,8 @@ package com.lucadev.mcprotocol.auth.yggdrasil;
 import com.lucadev.mcprotocol.auth.Session;
 import com.lucadev.mcprotocol.auth.yggdrasil.cache.FileYggdrasilSessionStorage;
 import com.lucadev.mcprotocol.auth.yggdrasil.cache.YggdrasilSessionStorage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
@@ -13,6 +15,12 @@ import java.io.IOException;
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  */
 public class CacheEnabledYggdrasilSessionProvider extends YggdrasilSessionProvider {
+
+    /**
+     * System logger
+     */
+    private static final Logger logger = LoggerFactory.getLogger(CacheEnabledYggdrasilSessionProvider.class);
+
 
     private YggdrasilSessionStorage storageMethod;
 
@@ -29,6 +37,7 @@ public class CacheEnabledYggdrasilSessionProvider extends YggdrasilSessionProvid
      */
     public CacheEnabledYggdrasilSessionProvider(YggdrasilSessionStorage storageMethod) {
         this.storageMethod = storageMethod;
+        logger.info("Setup session caching with " + storageMethod.getClass().getName());
     }
 
     /**
@@ -41,20 +50,22 @@ public class CacheEnabledYggdrasilSessionProvider extends YggdrasilSessionProvid
      *                     An example would be that the auth servers could be down or you lost your internet connection.
      */
     @Override
-    public Session authenticate(String email, String password) throws IOException {
+    public YggdrasilSession authenticate(String email, String password) throws IOException {
         if(storageMethod == null) {
             throw new IOException("No session storage method set!");
         }
         YggdrasilSession cachedSession = storageMethod.load();
         if(cachedSession != null) {
-            //if validated
-            //return cachedSession;
-
+            if(validate(cachedSession)) {
+                logger.info("Cached session is still valid.");
+                return cachedSession;
+            } else {
+                logger.info("Cached session no longer valid. Re-authenticating.");
+            }
         }
-        //YggdrasilSession session = (YggdrasilSession)super.authenticate(email, password);
-        //storageMethod.store(session);
-        //return session;
-        return super.authenticate(email, password);
+        YggdrasilSession session = super.authenticate(email, password);
+        storageMethod.store(session);
+        return session;
     }
 
     /**
