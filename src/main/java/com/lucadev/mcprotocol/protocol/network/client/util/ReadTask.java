@@ -20,7 +20,7 @@ public class ReadTask extends Thread {
     public void run() {
         setName("READ");
         while (bot.getConnection().getSocket().isConnected()) {
-            netClient.tickRead();
+            netClient.read();
         }
     }
 }

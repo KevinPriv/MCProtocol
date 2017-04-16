@@ -20,7 +20,10 @@ import com.lucadev.mcprotocol.util.model.MOTDResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.DataInputStream;
 import java.io.IOException;
+
+import static com.lucadev.mcprotocol.protocol.VarHelper.readString;
 
 /**
  * Connects all classes together and functions as the actual bot.
@@ -157,10 +160,12 @@ public class Bot {
 
         PacketLengthHeader respHead = netClient.readHeader();//since we're only expecting a confirmation we can skip using an actual packets
 
-        byte[] response = netClient.readResponse();
+        String response = readString(getConnection().getDataInputStream());
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.readValue(response, MOTDResponse.class);
     }
+
+
 
     public ConnectionFactory getConnectionFactory() {
         return connectionFactory;
@@ -220,7 +225,11 @@ public class Bot {
     }
 
     public void sendChatMessage(String message) {
-        getNetClient().sendPacket(new S02ChatMessage(message));
+        try {
+            getNetClient().sendPacket(new S02ChatMessage(message));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public World getWorld() {

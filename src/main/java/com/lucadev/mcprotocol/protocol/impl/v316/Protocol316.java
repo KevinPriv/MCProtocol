@@ -8,6 +8,7 @@ import com.lucadev.mcprotocol.game.world.World;
 import com.lucadev.mcprotocol.protocol.AbstractProtocol;
 import com.lucadev.mcprotocol.protocol.State;
 import com.lucadev.mcprotocol.protocol.network.client.NetClient;
+import com.lucadev.mcprotocol.protocol.network.client.impl.DefaultNetClient;
 import com.lucadev.mcprotocol.protocol.network.client.util.ReadTask;
 import com.lucadev.mcprotocol.protocol.packets.PacketListener;
 import com.lucadev.mcprotocol.protocol.packets.ReadablePacket;
@@ -330,7 +331,7 @@ public class Protocol316 extends AbstractProtocol {
     /**
      * Enable compression on the way packets are communicated both ways.
      * @param threshold min packet size before compression is done to that packet.
-     * @see com.lucadev.mcprotocol.protocol.network.client.impl.SimpleNetClient for an example
+     * @see DefaultNetClient for an example
      */
     private void enableCompression(int threshold) {
         bot.getNetClient().enableCompression(threshold);

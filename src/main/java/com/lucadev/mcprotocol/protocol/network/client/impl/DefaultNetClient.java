@@ -25,11 +25,11 @@ import static com.lucadev.mcprotocol.protocol.VarHelper.*;
  *
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  */
-public class SimpleNetClient implements NetClient {
+public class DefaultNetClient implements NetClient {
 
     private Bot bot;
     private Connection connection;
-    private static final Logger logger = LoggerFactory.getLogger(SimpleNetClient.class);
+    private static final Logger logger = LoggerFactory.getLogger(DefaultNetClient.class);
 
     private SecretKey sharedKey;
     private boolean encrypting;
@@ -40,16 +40,14 @@ public class SimpleNetClient implements NetClient {
 
     private static final boolean PRINT_TRAFFIC = false;
 
-    public SimpleNetClient(Bot bot, Connection connection) {
+    public DefaultNetClient(Bot bot, Connection connection) {
         this.connection = connection;
         this.bot = bot;
-        logger.info("Initialized SimpleNetClient");
+        logger.info("Initialized DefaultNetClient");
     }
 
     /**
-     * Obtain the raw connection
-     *
-     * @return
+     * @return connection to wrap around.
      */
     @Override
     public Connection getConnection() {
@@ -57,10 +55,9 @@ public class SimpleNetClient implements NetClient {
     }
 
     /**
-     * Force writes a packets to the stream. No checking
-     *
-     * @param packet
-     * @throws IOException
+     * Force write packet to the connection.
+     * @param packet packet to write to the connection.
+     * @throws IOException when something goes wrong while writing the packet to the connection.
      */
     @Override
     public synchronized void writePacket(WritablePacket packet) throws IOException {
@@ -108,24 +105,20 @@ public class SimpleNetClient implements NetClient {
     }
 
     /**
-     * Write a packets to stream following any possible queue techniques
-     *
-     * @param packet
+     * Sends a packet to the connection.
+     * This implementation does not enable queues.
+     * @param packet the packet to write.
+     * @throws IOException gets thrown when something goes wrong while trying to send the packet.
      */
     @Override
-    public void sendPacket(WritablePacket packet) {
-        try {
-            writePacket(packet);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void sendPacket(WritablePacket packet) throws IOException {
+        writePacket(packet);
     }
 
     /**
-     * Reads a packets directly from stream. No checking
-     *
-     * @return
-     * @throws IOException
+     * Directly read a packet from the connection.
+     * @return the read packet.
+     * @throws IOException when something goes wrong while trying to read the packet.
      */
     @Override
     public synchronized ReadablePacket readPacket() throws IOException {
@@ -190,10 +183,9 @@ public class SimpleNetClient implements NetClient {
     }
 
     /**
-     * Reads packets length and id from stream. No checking.
-     *
-     * @return
-     * @throws IOException
+     * Reads packet length and id into a PacketLengthHeader.
+     * @return packet header consisting of packet length and packet id.
+     * @throws IOException when we could not read the header.
      */
     @Override
     public PacketLengthHeader readHeader() throws IOException {
@@ -205,56 +197,56 @@ public class SimpleNetClient implements NetClient {
     }
 
     /**
-     * Reads packets length as varint then returns byte array with the given length.
-     *
-     * @return
-     * @throws IOException
-     */
-    @Override
-    public byte[] readResponse() throws IOException {
-        int length = readVarInt(connection.getDataInputStream());
-        byte[] bytes = new byte[length];
-        connection.getDataInputStream().readFully(bytes);
-        return bytes;
-    }
-
-    /**
-     * Create packets header
-     *
-     * @param packet
-     * @param data
-     * @return
+     * Create packet header containing the packet size, packet id and data payload.
+     * @param packet the packet to create the header for.
+     * @param data the data payload of the packet.
+     * @return header generated from the given parameters.
      */
     @Override
     public PacketLengthHeader createHeader(Packet packet, byte[] data) {
         int id = packet.getId();
-        int size = data.length + 1;//+1 due to the fact that the packets id is also 1 byte long
+        int size = data.length + varIntLength(id);//+1 due to the fact that the packets id is also 1 byte long
         return new PacketLengthHeader(id, size);
     }
 
+    /**
+     * @return crypto key used for secure communications between both hosts.
+     */
     @Override
     public SecretKey getSharedKey() {
         return sharedKey;
     }
 
+    /**
+     * @param secretKey the crypto key to secure the connection between hosts.
+     */
     @Override
     public void setSharedKey(SecretKey secretKey) {
         if (this.sharedKey != null) {
-            throw new IllegalStateException("May not set shared key again.");
+            throw new IllegalStateException("May not set shared key more than once.");
         }
         this.sharedKey = secretKey;
     }
 
+    /**
+     * @return enabled encryption for connection output(outgoing, serverbound).
+     */
     @Override
     public boolean isEncrypting() {
         return encrypting;
     }
 
+    /**
+     * @return enabled decryption for connection input(incoming, clientbound).
+     */
     @Override
     public boolean isDecrypting() {
         return decrypting;
     }
 
+    /**
+     * Enable encryption on the connection output streams.
+     */
     @Override
     public void enableEncryption() {
         if (isEncrypting()) {
@@ -269,6 +261,9 @@ public class SimpleNetClient implements NetClient {
         logger.info("Enabled encryption");
     }
 
+    /**
+     * Enable decryption on the connection input streams.
+     */
     @Override
     public void enableDecryption() {
         if (isDecrypting()) {
@@ -283,26 +278,34 @@ public class SimpleNetClient implements NetClient {
         logger.info("Enabled decryption");
     }
 
+    /**
+     * Enables packet compression.
+     * @param threshold minimal packet size before packets are compressed into stream.
+     */
     @Override
-    public void enableCompression(int treshold) {
-        if (treshold <= 0) {
+    public void enableCompression(int threshold) {
+        if (threshold <= 0) {
             return;
         }
         compression = true;
-        compressionThreshold = treshold;
-        logger.info("Setup compression with threshold {}", treshold);
-    }
-
-    @Override
-    public void shutdown() {
-
+        compressionThreshold = threshold;
+        logger.info("Setup compression with threshold {}", threshold);
     }
 
     /**
-     * Tick dedicated to reading
+     * Shuts down the networking client by closing streams, connections etc..
      */
     @Override
-    public void tickRead() {
+    public void shutdown() {
+        //TODO: implement
+    }
+
+    /**
+     * Method that gets called externally when we are free to read and process an incoming packet.
+     * @throws IOException when something goes wrong reading from the connection.
+     */
+    @Override
+    public void read() {
         try {
             ReadablePacket packet = readPacket();
             bot.getProtocol().handlePacket(packet);
