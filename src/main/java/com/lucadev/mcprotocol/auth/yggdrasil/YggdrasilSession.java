@@ -11,6 +11,13 @@ import static com.lucadev.mcprotocol.util.StringUtil.isNotNullOrEmpty;
  */
 public class YggdrasilSession extends Session {
 
+    /**
+     * Constructor that should only be used by the json library.
+     */
+    public YggdrasilSession() {
+        super("", "", "", "");
+    }
+
     public YggdrasilSession(String accessToken, String clientToken, String profileId, String profileName) {
         super(accessToken, clientToken, profileId, profileName);
     }
