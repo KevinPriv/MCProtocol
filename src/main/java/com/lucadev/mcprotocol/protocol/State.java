@@ -67,18 +67,13 @@ public enum State {
      * @param clazz packet class
      */
     public void registerPacket(Class<? extends Packet> clazz) {
-        try {
-            int id = verifyPacketAndGetId(clazz);
-            if(packets.containsKey(id)) {
-                throw new IllegalStateException("Packet id 0x" +
-                        Integer.toHexString(id).toUpperCase() + " already registered for state " + name());
-            }
-
-            packets.put(id, clazz);
-        } catch (ProtocolException e) {
-            e.printStackTrace();
-            return;
+        int id = verifyPacketAndGetId(clazz);
+        if(packets.containsKey(id)) {
+            throw new IllegalStateException("Packet id 0x" +
+                    Integer.toHexString(id).toUpperCase() + " already registered for state " + name());
         }
+
+        packets.put(id, clazz);
     }
 
     /**
@@ -86,20 +81,28 @@ public enum State {
      * @param packet the packet class to inspect
      * @throws ProtocolException gets thrown when the packet does not meet requirement which result into a protocol exception.
      */
-    private int verifyPacketAndGetId(Class<? extends Packet> packet) throws ProtocolException {
-        try {
+    private int verifyPacketAndGetId(Class<? extends Packet> packet) {
             //gets the declared constructor with no parameters. Declared means it might not be publicly accessable.
+        try {
             Constructor con = packet.getDeclaredConstructor();
+
             //Checks if we can access it.
             if(!Modifier.isPublic(con.getModifiers())) {
-                throw new ProtocolException("Packet " + packet.getName() + " has a non public default constructor.");
+                throw new IllegalAccessException("Packet " + packet.getName() + " has a non public default constructor.");
             }
 
             Packet p = (Packet) con.newInstance();
             return p.getId();
-        } catch (Exception e) {
-            throw new ProtocolException("No default constructor discovered in packet " + packet.getName(), e);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
         }
+        return -1;
     }
 
     /**

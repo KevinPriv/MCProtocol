@@ -1,14 +1,13 @@
 package com.lucadev.mcprotocol.protocol;
 
-import java.io.IOException;
-
 /**
  * Exception that gets thrown when something in the protocol goes wrong.
+ * Extends runtime exception since we cannot recover from protocol errors.
  *
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
- * @see java.io.IOException
+ * @see java.lang.RuntimeException
  */
-public class ProtocolException extends IOException {
+public class ProtocolException extends RuntimeException {
 
     public ProtocolException() {
     }
@@ -23,5 +22,9 @@ public class ProtocolException extends IOException {
 
     public ProtocolException(Throwable throwable) {
         super(throwable);
+    }
+
+    public ProtocolException(String s, Throwable throwable, boolean b, boolean b1) {
+        super(s, throwable, b, b1);
     }
 }
