@@ -46,6 +46,9 @@ public class UnsecuredConnection extends AbstractConnection {
      * @throws IOException gets thrown when something goes wrong trying to connect.
      */
     public void connect(String host, int port) throws IOException {
+        if(isConnected()) {
+            throw new IllegalStateException("Already connected, please disconnect me first.");
+        }
         logger.info("Connecting to {} on port {}", host, port);
         setSocket(getSocketFactory().createSocket());
         getSocket().connect(new InetSocketAddress(host, port));
@@ -57,7 +60,11 @@ public class UnsecuredConnection extends AbstractConnection {
      * Closes the socket and streams immediately.
      * @throws IOException when something goes wrong closing the connection.
      */
+    @Override
     public void close() throws IOException {
+        if(!isConnected()) {
+            throw new IllegalArgumentException("Connection was already closed.");
+        }
         logger.info("Closing streams and socket.");
         getDataInputStream().close();
         getDataOutputStream().close();

@@ -14,12 +14,13 @@ import javax.net.SocketFactory;
  * @see ConnectionFactory
  * @see KeySecuredConnection
  */
-public class UnsecuredConnectionFactory extends ConnectionFactory<Connection> {
+public class UnsecuredConnectionFactory extends ConnectionFactory {
 
     /**
      * Creates a new connection that cannot be secured.
      * @return a new connection.
      */
+    @Override
     public Connection createConnection() {
         return new UnsecuredConnection();
     }
@@ -29,6 +30,7 @@ public class UnsecuredConnectionFactory extends ConnectionFactory<Connection> {
      * @param socketFactory the socketfactory to use for the connection being created.
      * @return
      */
+    @Override
     public Connection createConnection(SocketFactory socketFactory) {
         return new UnsecuredConnection(socketFactory);
     }

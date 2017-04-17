@@ -1,7 +1,6 @@
 package com.lucadev.mcprotocol.protocol.network.connection;
 
-import com.lucadev.mcprotocol.protocol.network.connection.impl.SecuredConnectionFactory;
-import com.lucadev.mcprotocol.protocol.network.connection.impl.UnsecuredConnectionFactory;
+import com.lucadev.mcprotocol.protocol.network.connection.impl.KeySecuredConnectionFactory;
 
 import javax.net.SocketFactory;
 
@@ -10,7 +9,7 @@ import javax.net.SocketFactory;
  *
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  */
-public abstract class ConnectionFactory<T extends Connection> {
+public abstract class ConnectionFactory {
 
     private static ConnectionFactory defaultFactory;
 
@@ -18,14 +17,14 @@ public abstract class ConnectionFactory<T extends Connection> {
      * Creates a new connection that cannot be secured.
      * @return a new connection.
      */
-    public abstract T createConnection();
+    public abstract Connection createConnection();
 
     /**
      * Create a new connection with the specified socket factory.
      * @param socketFactory the socketfactory to use for the connection being created.
      * @return
      */
-    public abstract T createConnection(SocketFactory socketFactory);
+    public abstract Connection createConnection(SocketFactory socketFactory);
 
 
     /**
@@ -35,7 +34,7 @@ public abstract class ConnectionFactory<T extends Connection> {
      */
     public static ConnectionFactory getDefault() {
         if(defaultFactory == null) {
-            defaultFactory = new SecuredConnectionFactory();
+            defaultFactory = new KeySecuredConnectionFactory();
         }
         return defaultFactory;
     }
