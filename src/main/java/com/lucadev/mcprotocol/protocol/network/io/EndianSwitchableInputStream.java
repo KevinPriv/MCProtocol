@@ -1,4 +1,4 @@
-package com.lucadev.mcprotocol.protocol.network.stream;
+package com.lucadev.mcprotocol.protocol.network.io;
 
 import java.io.*;
 import java.nio.ByteOrder;
@@ -15,8 +15,8 @@ public class EndianSwitchableInputStream extends FilterInputStream implements Da
     private final ByteOrder byteOrder;
 
     /**
-     * Construct a stream with its parent stream and the endianness to use.
-     * @param inputStream parent stream.
+     * Construct a io with its parent io and the endianness to use.
+     * @param inputStream parent io.
      * @param byteOrder endianness to use
      */
     public EndianSwitchableInputStream(InputStream inputStream, ByteOrder byteOrder) {
@@ -25,23 +25,23 @@ public class EndianSwitchableInputStream extends FilterInputStream implements Da
     }
 
     /**
-     * Constructs a stream with it's parent stream. Uses big endian as byte order.
-     * @param inputStream parent stream.
+     * Constructs a io with it's parent io. Uses big endian as byte order.
+     * @param inputStream parent io.
      */
     public EndianSwitchableInputStream(InputStream inputStream) {
         this(inputStream, ByteOrder.BIG_ENDIAN);
     }
 
     /**
-     * The parent stream is a data stream since we encapsulated it.
-     * @return parent data stream.
+     * The parent io is a data io since we encapsulated it.
+     * @return parent data io.
      */
     private DataInputStream getParent() {
         return (DataInputStream) super.in;
     }
 
     /**
-     * @return endianness used by the stream.
+     * @return endianness used by the io.
      */
     public ByteOrder getByteOrder() {
         return byteOrder;

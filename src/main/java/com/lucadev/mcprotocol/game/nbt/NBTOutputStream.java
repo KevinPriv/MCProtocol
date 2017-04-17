@@ -1,7 +1,7 @@
 package com.lucadev.mcprotocol.game.nbt;
 
 import com.lucadev.mcprotocol.game.nbt.tags.NBTEndTag;
-import com.lucadev.mcprotocol.protocol.network.stream.EndianSwitchableOutputStream;
+import com.lucadev.mcprotocol.protocol.network.io.EndianSwitchableOutputStream;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -10,7 +10,7 @@ import java.nio.ByteOrder;
 import static com.lucadev.mcprotocol.game.nbt.NBT.CHARSET;
 
 /**
- * NBT output stream.
+ * NBT output io.
  *
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  */
@@ -26,7 +26,7 @@ public class NBTOutputStream extends EndianSwitchableOutputStream {
     }
 
     /**
-     * Writes a NBT NBTTag to the stream.
+     * Writes a NBT NBTTag to the io.
      *
      * @param NBTTag the NBTTag to write
      * @throws IOException

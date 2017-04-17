@@ -1,7 +1,7 @@
 package com.lucadev.mcprotocol.game.nbt;
 
 import com.lucadev.mcprotocol.game.nbt.tags.*;
-import com.lucadev.mcprotocol.protocol.network.stream.EndianSwitchableInputStream;
+import com.lucadev.mcprotocol.protocol.network.io.EndianSwitchableInputStream;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,7 +11,7 @@ import java.util.zip.GZIPInputStream;
 import static com.lucadev.mcprotocol.game.nbt.NBT.*;
 
 /**
- * IO NBT input stream
+ * IO NBT input io
  *
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  */

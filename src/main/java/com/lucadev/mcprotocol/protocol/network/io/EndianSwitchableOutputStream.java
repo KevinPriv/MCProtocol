@@ -1,4 +1,4 @@
-package com.lucadev.mcprotocol.protocol.network.stream;
+package com.lucadev.mcprotocol.protocol.network.io;
 
 import java.io.*;
 import java.nio.ByteOrder;
@@ -15,8 +15,8 @@ public class EndianSwitchableOutputStream extends FilterOutputStream implements 
     private ByteOrder byteOrder;
 
     /**
-     * Construct a stream from the parent stream and set the endianness that will be used initially.
-     * @param outputStream parent stream.
+     * Construct a io from the parent io and set the endianness that will be used initially.
+     * @param outputStream parent io.
      * @param byteOrder endianness to use.
      */
     public EndianSwitchableOutputStream(OutputStream outputStream, ByteOrder byteOrder) {
@@ -25,16 +25,16 @@ public class EndianSwitchableOutputStream extends FilterOutputStream implements 
     }
 
     /**
-     * Constructs a stream from its parent stream. Using big endian as initial byte order.
-     * @param outputStream the parent stream.
+     * Constructs a io from its parent io. Using big endian as initial byte order.
+     * @param outputStream the parent io.
      */
     public EndianSwitchableOutputStream(OutputStream outputStream) {
         this(outputStream, ByteOrder.BIG_ENDIAN);
     }
 
     /**
-     * Get parent stream. It's a data stream since we encapsulated it in the constructor.
-     * @return parent data stream
+     * Get parent io. It's a data io since we encapsulated it in the constructor.
+     * @return parent data io
      */
     private DataOutputStream getParent() {
         return (DataOutputStream) super.out;
@@ -48,7 +48,7 @@ public class EndianSwitchableOutputStream extends FilterOutputStream implements 
     }
 
     /**
-     * Set what endianness we should use for the stream.
+     * Set what endianness we should use for the io.
      * @param byteOrder the endianness to use.
      */
     public void setByteOrder(ByteOrder byteOrder) {

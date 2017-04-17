@@ -109,7 +109,7 @@ public abstract class NBTTag<T> {
     public abstract String toString();
 
     /**
-     * Write the payload of the tag to the stream.
+     * Write the payload of the tag to the io.
      *
      * @param outputStream
      * @throws IOException
@@ -117,7 +117,7 @@ public abstract class NBTTag<T> {
     public abstract void writePayload(NBTOutputStream outputStream) throws IOException;
 
     /**
-     * Read the payload from the stream.
+     * Read the payload from the io.
      *
      * @param inputStream
      * @throws IOException
