@@ -55,7 +55,7 @@ public interface NetClient {
     /**
      * Shuts down/closes the networking client by closing streams, connections etc..
      */
-    void close() throws IOException;
+    void disconnect() throws IOException;
 
     /**
      * Method that gets called externally when we are free to read and process an incoming packet.

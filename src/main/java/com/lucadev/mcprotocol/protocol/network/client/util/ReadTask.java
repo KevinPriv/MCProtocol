@@ -16,6 +16,9 @@ public class ReadTask extends Thread {
     private NetClient netClient;
 
     public ReadTask(Bot bot) {
+        if(bot == null) {
+            throw new NullPointerException("Bot parameter may not be null.");
+        }
         this.bot = bot;
         netClient = bot.getNetClient();
     }
@@ -23,7 +26,7 @@ public class ReadTask extends Thread {
     @Override
     public void run() {
         setName("READ");
-        while (bot.getConnection().getSocket().isConnected()) {
+        while (bot.isConnected()) {
             try {
                 netClient.read();
             } catch (IOException e) {

@@ -20,6 +20,9 @@ public abstract class AbstractNetClient implements NetClient {
      * @param bot instance of our bots.
      */
     public AbstractNetClient(Bot bot) {
+        if(bot == null) {
+            throw new NullPointerException("Parameter bot may not be null.");
+        }
         this.bot = bot;
     }
 

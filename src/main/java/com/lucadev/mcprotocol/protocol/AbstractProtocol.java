@@ -2,15 +2,9 @@ package com.lucadev.mcprotocol.protocol;
 
 import com.lucadev.mcprotocol.game.chat.ChatConverterFactory;
 import com.lucadev.mcprotocol.game.chat.impl.DefaultChatConverterFactory;
-import com.lucadev.mcprotocol.protocol.network.client.NetClient;
 import com.lucadev.mcprotocol.protocol.network.client.NetClientFactory;
 import com.lucadev.mcprotocol.protocol.network.connection.ConnectionFactory;
 import com.lucadev.mcprotocol.protocol.packets.Packet;
-import com.lucadev.mcprotocol.protocol.packets.UndefinedPacket;
-
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Modifier;
-import java.util.HashMap;
 
 /**
  * Abstract implementation of protocol which contains packet register&resolve, chat converters and state information.
@@ -75,7 +69,7 @@ public abstract class AbstractProtocol implements Protocol {
      */
     @Override
     public NetClientFactory getNetClientFactory() {
-        return NetClientFactory.getDefault();
+        return NetClientFactory.getDefaultFactory();
     }
 
     /**

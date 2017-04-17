@@ -9,7 +9,7 @@ import java.net.Socket;
 /**
  * The Connection interface provides a modular approach on creating an IO connection.
  * This connection does and should not implement any MC protocol specific features.
- * It should only open or close data streams and provide them in their respective getters and setters.
+ * It should only open or disconnect data streams and provide them in their respective getters and setters.
  *
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  */

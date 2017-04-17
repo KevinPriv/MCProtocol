@@ -210,7 +210,10 @@ public class DefaultNetClient extends AbstractNetClient {
      * Shuts down/closes the networking client by closing streams, connections etc..
      */
     @Override
-    public void close() throws IOException {
+    public void disconnect() throws IOException {
+        if(!getConnection().isConnected()) {
+            throw new IllegalStateException("Already disconnected.");
+        }
         getConnection().close();
     }
 

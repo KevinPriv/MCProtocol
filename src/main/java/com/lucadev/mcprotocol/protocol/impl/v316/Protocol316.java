@@ -166,7 +166,7 @@ public class Protocol316 extends AbstractProtocol {
             logger.info("SERVER DISCONNECTED REASON: " + ((C26Disconnect) packet).getReason().getCompleteText());
             try {
                 bot.getConnection().close();
-                bot.getNetClient().close();
+                bot.getNetClient().disconnect();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -360,7 +360,7 @@ public class Protocol316 extends AbstractProtocol {
     public void disconnect() throws IOException {
         //TODO: implement correct disconnect
         getTickEngine().stop();
-        getNetClient().close();
+        getNetClient().disconnect();
     }
 
     /**
