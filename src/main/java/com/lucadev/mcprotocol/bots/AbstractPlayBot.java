@@ -151,6 +151,7 @@ public abstract class AbstractPlayBot extends AbstractBot implements PlayBot {
      * Since there are some essential player packets we will require atleast some form of player object to handle those.
      * @return Model of the bot's minecraft player
      */
+    @Override
     public Player getPlayer() {
         return player;
     }
