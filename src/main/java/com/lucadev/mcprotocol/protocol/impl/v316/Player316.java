@@ -1,6 +1,7 @@
 package com.lucadev.mcprotocol.protocol.impl.v316;
 
 import com.lucadev.mcprotocol.bots.AbstractPlayBot;
+import com.lucadev.mcprotocol.bots.PlayBot;
 import com.lucadev.mcprotocol.game.Difficulty;
 import com.lucadev.mcprotocol.game.Dimension;
 import com.lucadev.mcprotocol.game.GameMode;
@@ -41,7 +42,7 @@ public class Player316 extends BotPlayer {
      * @param playBot minimum bot implementation to handle a player
      */
     @Override
-    public void registerProtocolListeners(AbstractPlayBot playBot) {
+    public void registerProtocolListeners(PlayBot playBot) {
         logger.info("Registering protocol specific player listeners.");
         Protocol prot = playBot.getProtocol();
 

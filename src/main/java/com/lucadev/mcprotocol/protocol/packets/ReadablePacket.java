@@ -6,12 +6,12 @@ import java.io.DataInputStream;
 import java.io.IOException;
 
 /**
- * Extension of the Packet interface.
+ * Extension of the Packet interface. Will also specify which type of bot is passed into the read method.
  * This interface is required for all packets that are read from stream(clientbound/coming from the server)
  *
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  */
-public interface ReadablePacket extends Packet {
+public interface ReadablePacket<T extends Bot> extends Packet {
 
     /**
      * Read the data payload from the packet in here. This does not include packets id and fields.
@@ -20,5 +20,5 @@ public interface ReadablePacket extends Packet {
      * @param totalSize size of the available data in the stream
      * @throws IOException gets thrown when something goes wrong reading the data payload
      */
-    void read(Bot bot, DataInputStream is, int totalSize) throws IOException;
+    void read(T bot, DataInputStream is, int totalSize) throws IOException;
 }

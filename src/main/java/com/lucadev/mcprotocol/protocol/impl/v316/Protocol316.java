@@ -3,6 +3,7 @@ package com.lucadev.mcprotocol.protocol.impl.v316;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lucadev.mcprotocol.bots.AbstractPlayBot;
 import com.lucadev.mcprotocol.bots.Bot;
+import com.lucadev.mcprotocol.bots.PlayBot;
 import com.lucadev.mcprotocol.game.chat.components.ChatComponent;
 import com.lucadev.mcprotocol.game.tick.TickEngineFactory;
 import com.lucadev.mcprotocol.protocol.AbstractProtocol;
@@ -70,7 +71,7 @@ public class Protocol316 extends AbstractProtocol {
     //most abstract bot, called botbase since we will barely use it.
     private Bot botBase;
     //Since most of the protocol is about handling a game protocol we'll cast to AbstractPlayBot later
-    private AbstractPlayBot bot;
+    private PlayBot bot;
     private PluginChannelManager pluginChannelManager;
     private HashMap<Class<? extends ReadablePacket>, List<PacketListener>> listenerMap = new HashMap<>();
     private TickEngine tickEngine;
@@ -82,8 +83,8 @@ public class Protocol316 extends AbstractProtocol {
     @Override
     public void setup(Bot bot) {
         this.botBase = bot;
-        if(bot instanceof AbstractPlayBot) {
-            this.bot = (AbstractPlayBot)botBase;
+        if(bot instanceof PlayBot) {
+            this.bot = (PlayBot)botBase;
         }
         tickEngine = TickEngineFactory.getDefaultFactory().createEngine(bot);
         pluginChannelManager = PluginChannelManagerFactory.getDefaultFactory().createPluginChannelManager();
@@ -191,7 +192,7 @@ public class Protocol316 extends AbstractProtocol {
         int port = bot.getConnection().getSocket().getPort();
         if(bot == null && botBase != null) {
             throw new ProtocolException("Server login not supported by " + botBase.getClass().getName() + " requires minimal " +
-                    AbstractPlayBot.class.getName() + " implementation.");
+                    PlayBot.class.getName() + " implementation.");
         }
         String username = bot.getSession().getProfileName();
         NetClient client = bot.getNetClient();
@@ -228,7 +229,8 @@ public class Protocol316 extends AbstractProtocol {
         if (joingamePacket instanceof C35JoinGame) {
             C35JoinGame joinGame = (C35JoinGame) joingamePacket;
             C02LoginSuccess loginSuccess = (C02LoginSuccess) read;
-            bot.setPlayer(new Player316(joinGame.getEntityId(), loginSuccess.getUuid(), loginSuccess.getUsername(), joinGame.getGameMode(), joinGame.getDimension(),
+            //TODO: Fix nasty casting
+            ((AbstractPlayBot)bot).setPlayer(new Player316(joinGame.getEntityId(), loginSuccess.getUuid(), loginSuccess.getUsername(), joinGame.getGameMode(), joinGame.getDimension(),
                     joinGame.getDifficulty(), joinGame.getLevelType(), joinGame.isReducedDebug()));
         }
 
@@ -395,7 +397,6 @@ public class Protocol316 extends AbstractProtocol {
      */
     private void setupCrypto(C01EncryptionRequest cryptoRequest) throws IOException {
         //we already type checked in joinServer so lets just cast another time
-        AbstractPlayBot bot = (AbstractPlayBot)this.bot;
         if(!(getConnection() instanceof KeySecuredConnection)) {
             throw new ProtocolException("Protocol " + getProtocolID() + " only accepts connections of type " + KeySecuredConnection.class.getName() + "\r\n" +
                                         "But connection is of type " + getConnection().getClass().getName());

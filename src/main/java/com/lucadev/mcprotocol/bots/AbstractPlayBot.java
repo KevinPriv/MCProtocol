@@ -14,7 +14,7 @@ import java.io.IOException;
  *
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  */
-public abstract class AbstractPlayBot extends AbstractBot implements ServerJoinable {
+public abstract class AbstractPlayBot extends AbstractBot implements PlayBot {
 
     /**
      * System logger
