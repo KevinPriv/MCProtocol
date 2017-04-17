@@ -78,15 +78,18 @@ public class Protocol316 extends AbstractProtocol {
 
     /**
      * Setup the protocol.
-     * @param bot instance of our bots
+     * @param botParam instance of our bots
      */
     @Override
-    public void setup(Bot bot) {
-        this.botBase = bot;
-        if(bot instanceof PlayBot) {
+    public void setup(Bot botParam) {
+        if(botParam == null) {
+            throw new NullPointerException("Passed Bot object may not be null.");
+        }
+        this.botBase = botParam;
+        if(botParam instanceof PlayBot) {
             this.bot = (PlayBot)botBase;
         }
-        tickEngine = TickEngineFactory.getDefaultFactory().createEngine(bot);
+        tickEngine = TickEngineFactory.getDefaultFactory().createEngine(botParam);
         pluginChannelManager = PluginChannelManagerFactory.getDefaultFactory().createPluginChannelManager();
         setupPluginChannels();
         setupPacketListeners();
@@ -398,8 +401,8 @@ public class Protocol316 extends AbstractProtocol {
     private void setupCrypto(C01EncryptionRequest cryptoRequest) throws IOException {
         //we already type checked in joinServer so lets just cast another time
         if(!(getConnection() instanceof KeySecuredConnection)) {
-            throw new ProtocolException("Protocol " + getProtocolID() + " only accepts connections of type " + KeySecuredConnection.class.getName() + "\r\n" +
-                                        "But connection is of type " + getConnection().getClass().getName());
+            throw new ProtocolException("Protocol " + getProtocolID() + " uses connection type " + getConnection().getClass().getName() + "\r\n" +
+                                        "which does not implement/use required type " + KeySecuredConnection.class.getName());
         }
         KeySecuredConnection secureConnection = (KeySecuredConnection) getConnection();
         logger.info("Enabling crypto");

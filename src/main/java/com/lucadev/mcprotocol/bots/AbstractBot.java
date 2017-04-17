@@ -1,6 +1,7 @@
 package com.lucadev.mcprotocol.bots;
 
 import com.lucadev.mcprotocol.protocol.Protocol;
+import com.lucadev.mcprotocol.protocol.ProtocolException;
 import com.lucadev.mcprotocol.protocol.network.client.NetClient;
 import com.lucadev.mcprotocol.protocol.network.connection.Connection;
 import org.slf4j.Logger;
@@ -29,9 +30,15 @@ public abstract class AbstractBot implements Bot {
      * @param botBuilder the builder contains all required config to setup the bots.
      */
     public AbstractBot(BotBuilder botBuilder) {
+        if(botBuilder == null) {
+            throw new NullPointerException("BotBuilder parameter cannot be null.");
+        }
         this.botBuilder = botBuilder;
         //Create protocol from builder config.
         protocol = botBuilder.getProtocolFactory().createProtocol(botBuilder.getProtocolVersion());
+        if(protocol == null) {
+            throw new ProtocolException("No protocol implementation found for id: " + botBuilder.getProtocolVersion());
+        }
         protocol.setup(this);
         connection = protocol.getConnectionFactory().createConnection(botBuilder.getSocketFactory());
         //netClient comes after connection since NetClient depends heavily on Connection
