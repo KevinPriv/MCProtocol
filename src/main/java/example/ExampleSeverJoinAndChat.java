@@ -1,8 +1,7 @@
 package example;
 
-import com.lucadev.mcprotocol.bots.Bot;
-import com.lucadev.mcprotocol.bots.BotBuilder;
 import com.lucadev.mcprotocol.auth.SessionProvider;
+import com.lucadev.mcprotocol.bots.BotBuilder;
 import com.lucadev.mcprotocol.bots.PlayerBot;
 
 import java.io.IOException;
@@ -31,7 +30,7 @@ public class ExampleSeverJoinAndChat {
             bot.joinServer();
 
             Scanner scanner = new Scanner(System.in);
-            while(bot.isConnected()) {
+            while (bot.isConnected()) {
                 String msg = scanner.nextLine();
                 bot.sendChatMessage(msg);
             }

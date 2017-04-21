@@ -1,10 +1,9 @@
 package example;
 
-import com.lucadev.mcprotocol.bots.Bot;
-import com.lucadev.mcprotocol.bots.BotBuilder;
 import com.lucadev.mcprotocol.auth.Session;
 import com.lucadev.mcprotocol.auth.SessionProvider;
 import com.lucadev.mcprotocol.auth.yggdrasil.CacheEnabledYggdrasilSessionProvider;
+import com.lucadev.mcprotocol.bots.BotBuilder;
 import com.lucadev.mcprotocol.bots.PlayerBot;
 
 /**

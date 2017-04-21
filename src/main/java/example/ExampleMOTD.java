@@ -1,6 +1,5 @@
 package example;
 
-import com.lucadev.mcprotocol.bots.Bot;
 import com.lucadev.mcprotocol.bots.BotBuilder;
 import com.lucadev.mcprotocol.bots.MOTDBot;
 import com.lucadev.mcprotocol.util.model.MOTDResponse;
