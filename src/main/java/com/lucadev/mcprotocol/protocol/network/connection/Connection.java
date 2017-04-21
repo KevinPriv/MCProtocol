@@ -26,30 +26,35 @@ public interface Connection {
 
     /**
      * Closes the socket and streams immediately.
+     *
      * @throws IOException when something goes wrong closing the connection.
      */
     void close() throws IOException;
 
     /**
      * Obtain a Data input stream from the connection
+     *
      * @return data stream from the connection.
      */
     DataInputStream getDataInputStream();
 
     /**
      * Obtain the output stream from the connection
+     *
      * @return data stream from the connection
      */
     DataOutputStream getDataOutputStream();
 
     /**
      * Get the factory used to create the socket for the connection
+     *
      * @return socket factory instance
      */
     SocketFactory getSocketFactory();
 
     /**
      * Set the SocketFactory we should use when creating a socket.
+     *
      * @param socketFactory the socket factory we will be using.
      */
     void setSocketFactory(SocketFactory socketFactory);

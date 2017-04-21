@@ -21,6 +21,7 @@ public class VarHelper {
     /**
      * Reads a VarInt from the given stream.
      * Credit to: http://wiki.vg/Protocol
+     *
      * @param in the input stream to read from.
      * @return a VarInt
      * @throws IOException when something goes wrong reading.
@@ -43,6 +44,7 @@ public class VarHelper {
 
     /**
      * Reads a position datatype from the given stream.
+     *
      * @param dis the input to read from.
      * @return the read position.
      * @throws IOException when something goes wrong reading.
@@ -53,6 +55,7 @@ public class VarHelper {
 
     /**
      * Writes a position datatype to the given stream.
+     *
      * @param dos the stream to write the position to.
      * @param pos the position to write.
      * @throws IOException when something goes wrong writing.
@@ -63,6 +66,7 @@ public class VarHelper {
 
     /**
      * Get the length of a VarInt which can be useful for some packet structures and compression.
+     *
      * @param x a VarInt
      * @return length of the given VarInt
      */
@@ -80,6 +84,7 @@ public class VarHelper {
     /**
      * Read a VarLong from the given stream.
      * Credit to http://wiki.vg/Protocol
+     *
      * @param is the input stream to read the VarLong from
      * @return a VarLong
      * @throws IOException when something goes wrong reading.
@@ -105,7 +110,8 @@ public class VarHelper {
     /**
      * Writes a VarInt to the specified output stream
      * Credit: http://wiki.vg/Protocol
-     * @param out the stream to write to.
+     *
+     * @param out      the stream to write to.
      * @param paramInt the VarInt
      * @throws IOException gets thrown when something goes wrong writing.
      */
@@ -124,7 +130,8 @@ public class VarHelper {
     /**
      * Writes a VarLong to the specified output stream.
      * Credit: http://wiki.vg/Protocol
-     * @param os the stream to write to.
+     *
+     * @param os    the stream to write to.
      * @param value the VarLong
      * @throws IOException gets thrown when something goes wrong writing.
      */
@@ -142,7 +149,8 @@ public class VarHelper {
 
     /**
      * Read a String datatype from the specified stream.
-     * @param in the stream to read from.
+     *
+     * @param in      the stream to read from.
      * @param maxSize maximum string size to read.
      * @return the read string
      * @throws IOException when something goes wrong reading.
@@ -160,6 +168,7 @@ public class VarHelper {
 
     /**
      * Nearly identical to the other readString but this method uses the max string length and not a specified length.
+     *
      * @param in the stream to read from.
      * @return a UTF-8 string.
      * @throws IOException when something goes wrong reading.
@@ -170,7 +179,8 @@ public class VarHelper {
 
     /**
      * Write a string to the stream.
-     * @param out the stream to write to.
+     *
+     * @param out    the stream to write to.
      * @param string the string to write.
      * @throws IOException gets thrown when something goes wrong writing.
      */

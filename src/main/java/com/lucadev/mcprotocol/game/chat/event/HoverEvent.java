@@ -14,8 +14,9 @@ public class HoverEvent {
 
     /**
      * Constructs a hover event
+     *
      * @param action the action to take when hovered over
-     * @param value the information that the action may consume if wanted.
+     * @param value  the information that the action may consume if wanted.
      */
     public HoverEvent(HoverAction action, String value) {
         this.action = action;

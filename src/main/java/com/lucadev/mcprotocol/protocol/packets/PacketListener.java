@@ -12,7 +12,8 @@ public interface PacketListener<T extends ReadablePacket> {
 
     /**
      * Method that will be invoked on the listener.     *
-     * @param bot instance that received the packet.
+     *
+     * @param bot    instance that received the packet.
      * @param packet the actual packet.
      */
     void onPacket(Bot bot, T packet);

@@ -7,6 +7,7 @@ import java.util.List;
 
 /**
  * Abstract tick engine that contains some pre written methods.
+ *
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  */
 public abstract class AbstractTickEngine implements TickEngine {
@@ -16,6 +17,7 @@ public abstract class AbstractTickEngine implements TickEngine {
 
     /**
      * Constructor that requires an instance of our bots
+     *
      * @param bot the instance of our bots
      */
     public AbstractTickEngine(Bot bot) {

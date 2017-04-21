@@ -4,6 +4,7 @@ import java.io.IOException;
 
 /**
  * Simple custom exception that gets thrown whenever we cannot parse a chat component
+ *
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  */
 public class ChatParseException extends IOException {

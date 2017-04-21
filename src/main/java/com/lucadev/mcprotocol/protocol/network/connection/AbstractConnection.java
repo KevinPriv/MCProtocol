@@ -82,11 +82,12 @@ public abstract class AbstractConnection implements Connection {
     /**
      * Sets the connection's socket. Only accessable through child classes.
      * May only be used if the connection has not connected yet.
+     *
      * @param socket the socket to set.
      * @see #isConnected() is used for connection check.
      */
     protected void setSocket(Socket socket) {
-        if(isConnected()) {
+        if (isConnected()) {
             throw new IllegalStateException("May not set socket after connection has been established.");
         }
         this.socket = socket;
@@ -94,6 +95,7 @@ public abstract class AbstractConnection implements Connection {
 
     /**
      * Sets the input stream for the connection.
+     *
      * @param dataInputStream input stream to use.
      */
     protected void setDataInputStream(DataInputStream dataInputStream) {
@@ -102,6 +104,7 @@ public abstract class AbstractConnection implements Connection {
 
     /**
      * Sets the output stream for the connection
+     *
      * @param dataOutputStream output stream to use
      */
     protected void setDataOutputStream(DataOutputStream dataOutputStream) {

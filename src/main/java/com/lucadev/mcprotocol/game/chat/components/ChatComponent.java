@@ -53,6 +53,7 @@ public abstract class ChatComponent {
 
     /**
      * Sets the color for the component
+     *
      * @param color one of the chatcolors available.
      * @see com.lucadev.mcprotocol.game.chat.styling.ChatColor
      */
@@ -62,6 +63,7 @@ public abstract class ChatComponent {
 
     /**
      * Add a sibling component to this component.
+     *
      * @param component the new sibling component.
      */
     public void addExtra(ChatComponent component) {
@@ -71,6 +73,7 @@ public abstract class ChatComponent {
     /**
      * Remove a sibling component.
      * Does not check if it's a valid sibling component.
+     *
      * @param component the sibling component to remove from this component
      */
     public void removeExtra(ChatComponent component) {
@@ -81,6 +84,7 @@ public abstract class ChatComponent {
      * Sets the text to insert. Only used for messages in chat.
      * When shift is held, clicking the component inserts the given text into the chat box at the cursor (potentially replacing selected text).
      * Has no effect on other locations at this time.
+     *
      * @param insertion the text to insert when this component is clicked on.
      */
     public void setInsertion(String insertion) {
@@ -89,6 +93,7 @@ public abstract class ChatComponent {
 
     /**
      * Set the event that should take place when the component is clicked on.
+     *
      * @param clickEvent the event that will take place.
      */
     public void setClickEvent(ClickEvent clickEvent) {
@@ -97,6 +102,7 @@ public abstract class ChatComponent {
 
     /**
      * Set the event that should take place when the component is hovered over(with the mouse).
+     *
      * @param hoverEvent the event that will take place.
      */
     public void setHoverEvent(HoverEvent hoverEvent) {
@@ -105,6 +111,7 @@ public abstract class ChatComponent {
 
     /**
      * Set the list of sibling components for this component.
+     *
      * @param extra list of components that will be seen as sibling components for this component.
      */
     public void setExtra(List<ChatComponent> extra) {
@@ -121,6 +128,7 @@ public abstract class ChatComponent {
 
     /**
      * Adds a style to the component
+     *
      * @param style the style to add to the component
      * @see com.lucadev.mcprotocol.game.chat.styling.ChatStyle
      */
@@ -130,6 +138,7 @@ public abstract class ChatComponent {
 
     /**
      * Sets the list of styles that are enabled on this component
+     *
      * @param styles the styles to use for this component.
      */
     public void setStyles(List<ChatStyle> styles) {

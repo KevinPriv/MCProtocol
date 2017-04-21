@@ -27,16 +27,17 @@ public abstract class AbstractBot implements Bot {
     /**
      * Construct a new bots using the given config.
      * Requests a secure connection when setting up the connection object.
+     *
      * @param botBuilder the builder contains all required config to setup the bots.
      */
     public AbstractBot(BotBuilder botBuilder) {
-        if(botBuilder == null) {
+        if (botBuilder == null) {
             throw new NullPointerException("BotBuilder parameter cannot be null.");
         }
         this.botBuilder = botBuilder;
         //Create protocol from builder config.
         protocol = botBuilder.getProtocolFactory().createProtocol(botBuilder.getProtocolVersion());
-        if(protocol == null) {
+        if (protocol == null) {
             throw new ProtocolException("No protocol implementation found for id: " + botBuilder.getProtocolVersion());
         }
         protocol.setup(this);
@@ -63,6 +64,7 @@ public abstract class AbstractBot implements Bot {
 
     /**
      * Basic implementation that checks the Connection object
+     *
      * @return true if connection is not null and the Connection#isConnected
      * @see Connection
      */
@@ -89,10 +91,11 @@ public abstract class AbstractBot implements Bot {
 
     /**
      * Sets the protocol implementation that is followed. May not be changed once connected
+     *
      * @param protocol implementation of the protocol.
      */
     public void setProtocol(Protocol protocol) {
-        if(isConnected()) {
+        if (isConnected()) {
             throw new IllegalStateException("Cannot switch protocols while bots is connected.");
         }
         this.protocol = protocol;
@@ -100,11 +103,12 @@ public abstract class AbstractBot implements Bot {
 
     /**
      * Set the connection class to use. NetClient should also be updated afterwards to prevent possible crashes/unwanted behaviour.
+     *
      * @param connection connection to use.
      * @see #setNetClient(NetClient)
      */
     public void setConnection(Connection connection) {
-        if(isConnected()) {
+        if (isConnected()) {
             throw new IllegalStateException("Cannot switch connection while bots is connected.");
         }
         this.connection = connection;
@@ -113,11 +117,12 @@ public abstract class AbstractBot implements Bot {
     /**
      * Update the net client that is in use. Can only change when the bots is not connected.
      * Recommended to use the NetClient factory found in the Protocol class to prevent any protocol related crashes.
+     *
      * @param netClient new NetClient class to use.
      * @see Protocol
      */
     public void setNetClient(NetClient netClient) {
-        if(isConnected()) {
+        if (isConnected()) {
             throw new IllegalStateException("Cannot switch net client while bots is connected.");
         }
         this.netClient = netClient;

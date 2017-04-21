@@ -2,7 +2,6 @@ package com.lucadev.mcprotocol.protocol.network.connection.impl;
 
 import com.lucadev.mcprotocol.protocol.network.connection.Connection;
 import com.lucadev.mcprotocol.protocol.network.connection.ConnectionFactory;
-import com.lucadev.mcprotocol.protocol.network.connection.SecuredConnection;
 
 import javax.net.SocketFactory;
 
@@ -18,6 +17,7 @@ public class KeySecuredConnectionFactory extends ConnectionFactory {
 
     /**
      * Creates a new connection that cannot be secured.
+     *
      * @return a new connection.
      */
     @Override
@@ -27,6 +27,7 @@ public class KeySecuredConnectionFactory extends ConnectionFactory {
 
     /**
      * Create a new connection that cannot be secured with the specified socket factory.
+     *
      * @param socketFactory the socketfactory to use for the connection being created.
      * @return
      */

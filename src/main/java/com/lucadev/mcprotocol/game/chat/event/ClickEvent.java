@@ -14,8 +14,9 @@ public class ClickEvent {
 
     /**
      * Constructs a click event
+     *
      * @param action the action to take when clicked on
-     * @param value the information that the action may consume if wanted.
+     * @param value  the information that the action may consume if wanted.
      */
     public ClickEvent(ClickAction action, String value) {
         this.action = action;

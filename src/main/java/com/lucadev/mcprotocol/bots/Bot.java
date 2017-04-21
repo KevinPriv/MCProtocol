@@ -24,12 +24,14 @@ public interface Bot {
     /**
      * Setup all connection objects and opens the streams.
      * The configured bots address and port from the builder are used.
+     *
      * @throws IOException when something goes wrong while connecting.
      */
     void connect() throws IOException;
 
     /**
      * Same as the connect method but here you may specify the hostname and port yourself.
+     *
      * @param host hostname/ip address
      * @param port port number that the server is listening on.
      * @throws IOException when we could not open the connection.
@@ -39,6 +41,7 @@ public interface Bot {
     /**
      * Disconnect the current connection and streams.
      * Implementations may also put protocol calls in this.
+     *
      * @throws IOException when something goes wrong disconnecting.
      */
     void disconnect() throws IOException;

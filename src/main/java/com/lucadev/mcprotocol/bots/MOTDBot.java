@@ -52,7 +52,7 @@ public class MOTDBot extends AbstractBot {
      * @throws IOException thrown if we fail to obtain the MOTD
      */
     public MOTDResponse getMOTD(String host, int port) throws IOException {
-        if(isConnected()) {
+        if (isConnected()) {
             logger.info("Bot still connected. Disconnecting and trying again.");
             disconnect();
         }
@@ -84,7 +84,7 @@ public class MOTDBot extends AbstractBot {
      */
     @Override
     public void connect(String host, int port) throws IOException {
-        if(isConnected()) {
+        if (isConnected()) {
             throw new IllegalStateException("May not connect when already connected.");
         }
         getConnection().connect(host, port);

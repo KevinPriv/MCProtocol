@@ -12,6 +12,7 @@ public interface ServerLogin {
 
     /**
      * Join the server at the configured host and port
+     *
      * @throws IOException thrown when we cannot join the server somehow.
      */
     void joinServer() throws IOException;

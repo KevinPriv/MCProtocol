@@ -1,16 +1,14 @@
 package com.lucadev.mcprotocol.protocol.packets.sbound.login;
 
+import com.lucadev.mcprotocol.protocol.network.io.VarDataBuffer;
 import com.lucadev.mcprotocol.protocol.packets.AbstractPacket;
 import com.lucadev.mcprotocol.protocol.packets.WritablePacket;
 import com.lucadev.mcprotocol.util.EncryptionUtil;
 
 import javax.crypto.SecretKey;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.security.PublicKey;
-
-import static com.lucadev.mcprotocol.protocol.VarHelper.writeVarInt;
 
 /**
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
@@ -37,14 +35,14 @@ public class S01EncryptionResponse extends AbstractPacket implements WritablePac
     /**
      * Write packets data
      *
-     * @param os
+     * @param buff
      * @throws IOException
      */
     @Override
-    public void write(DataOutputStream os) throws IOException {
-        writeVarInt(os, sharedSecret.length);
-        os.write(sharedSecret);
-        writeVarInt(os, verifyToken.length);
-        os.write(verifyToken);
+    public void write(VarDataBuffer buff) throws IOException {
+        buff.writeVarInt(sharedSecret.length);
+        buff.write(sharedSecret);
+        buff.writeVarInt(verifyToken.length);
+        buff.write(verifyToken);
     }
 }

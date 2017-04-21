@@ -13,6 +13,7 @@ public class TextComponent extends ChatComponent {
 
     /**
      * Setup the text component with the given text.
+     *
      * @param text the text value of the text component
      */
     public TextComponent(String text) {
@@ -29,6 +30,7 @@ public class TextComponent extends ChatComponent {
 
     /**
      * Set the text in the text component.
+     *
      * @param text the text to use as new value.
      */
     public void setText(String text) {

@@ -53,10 +53,11 @@ public class KeySecuredConnection extends AbstractSecuredConnection {
     /**
      * Sets the crypto key to use for securing the connection.
      * This method will only allow you to set the key once. Else it will throw an IllegalStateException
+     *
      * @param sharedKey the crypto key to secure the connection.
      */
     public void setSharedKey(SecretKey sharedKey) {
-        if(getSharedKey() != null) {
+        if (getSharedKey() != null) {
             throw new IllegalStateException("May not set connection security key more than once.");
         }
         this.sharedKey = sharedKey;
@@ -67,13 +68,13 @@ public class KeySecuredConnection extends AbstractSecuredConnection {
      */
     @Override
     public void secureInput() {
-        if(!isConnected()) {
+        if (!isConnected()) {
             throw new IllegalStateException("Connection needs to be connected before securing input.");
         }
-        if(getSharedKey() == null) {
+        if (getSharedKey() == null) {
             throw new IllegalStateException("Crypto key required before securing input.");
         }
-        if(isInputSecured()) {
+        if (isInputSecured()) {
             throw new IllegalStateException("Input already secured. May not secure twice.");
         }
         //AES/CFB8 cipher implemented in the decryptInputStream method from EncryptionUtil
@@ -87,13 +88,13 @@ public class KeySecuredConnection extends AbstractSecuredConnection {
      */
     @Override
     public void secureOutput() {
-        if(!isConnected()) {
+        if (!isConnected()) {
             throw new IllegalStateException("Connection needs to be connected before securing output.");
         }
-        if(getSharedKey() == null) {
+        if (getSharedKey() == null) {
             throw new IllegalStateException("Crypto key required before securing output.");
         }
-        if(isOutputSecured()) {
+        if (isOutputSecured()) {
             throw new IllegalStateException("Output already secured. May not secure twice.");
         }
         //AES/CFB8 cipher implemented in encryptOutputStream method from EncryptionUtil

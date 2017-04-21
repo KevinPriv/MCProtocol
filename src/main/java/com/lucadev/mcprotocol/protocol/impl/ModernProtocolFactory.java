@@ -14,6 +14,7 @@ public class ModernProtocolFactory extends ProtocolFactory {
 
     /**
      * Create protocol implementation of the latest supported protocol id.
+     *
      * @return protocol implementation of latest supported protocol protocolVersion.
      */
     @Override
@@ -23,6 +24,7 @@ public class ModernProtocolFactory extends ProtocolFactory {
 
     /**
      * Obtain the protocol for a specific protocolVersion. May be null if not found/supported.
+     *
      * @param version protocol ID
      * @return protocol implementation of the given protocol id
      */

@@ -30,6 +30,7 @@ public enum HoverAction {
 
     /**
      * Similar to valueOf but first makes all letters of name uppercase
+     *
      * @param name name of the action
      * @return corresponding enum
      */
@@ -40,6 +41,7 @@ public enum HoverAction {
 
     /**
      * Name of the action used by minecraft self. Simply the enum name to lowercase
+     *
      * @return
      */
     public String getName() {

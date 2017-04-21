@@ -14,7 +14,8 @@ public class TranslationComponent extends ChatComponent {
 
     /**
      * Sets up the translation component with the required data.
-     * @param key translation key
+     *
+     * @param key    translation key
      * @param params components that will be used as arguments for the translation.
      * @see <a href="http://wiki.vg/Chat#Translation_Component">Wiki.vg Translation Component</a>
      */
@@ -41,6 +42,7 @@ public class TranslationComponent extends ChatComponent {
 
     /**
      * Parameters to insert into text using the translation formatting.
+     *
      * @return parameter components used for translation using the formatting format.
      * @see <a href="http://wiki.vg/Chat#Translation_Component">Wiki.vg Translation Component</a>
      */
@@ -50,6 +52,7 @@ public class TranslationComponent extends ChatComponent {
 
     /**
      * Sets the key used for translation.
+     *
      * @param translationKey the key to use.
      */
     public void setTranslationKey(String translationKey) {
@@ -58,6 +61,7 @@ public class TranslationComponent extends ChatComponent {
 
     /**
      * Set the parameters used by the key to manage translations.
+     *
      * @param translationParameters array of components
      */
     public void setTranslationParameters(ChatComponent[] translationParameters) {

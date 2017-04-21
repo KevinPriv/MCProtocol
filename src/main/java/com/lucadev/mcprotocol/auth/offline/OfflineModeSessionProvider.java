@@ -1,6 +1,5 @@
 package com.lucadev.mcprotocol.auth.offline;
 
-import com.lucadev.mcprotocol.auth.Session;
 import com.lucadev.mcprotocol.auth.SessionProvider;
 
 import java.io.IOException;
@@ -14,11 +13,12 @@ public class OfflineModeSessionProvider extends SessionProvider<OfflineSession> 
 
     /**
      * Ignores legit authentication and simply returns a session with the given username that can only be used for Offline mode
-     * @param email for offline-mode this requires to be your player name and not an e-mail address.
+     *
+     * @param email    for offline-mode this requires to be your player name and not an e-mail address.
      * @param password skipped completely since we are not actually authenticating.
      * @return a session that contains empty data except the given username.
      * @throws IOException will be thrown when something unexpected happens during authentication.
-     *                      An example would be that the auth servers could be down or you lost your internet connection.
+     *                     An example would be that the auth servers could be down or you lost your internet connection.
      */
     @Override
     public OfflineSession authenticate(String email, String password) throws IOException {
@@ -27,6 +27,7 @@ public class OfflineModeSessionProvider extends SessionProvider<OfflineSession> 
 
     /**
      * Offline mode always returns true here.
+     *
      * @param session the session to check against.
      * @return true if we can use it, false if not.
      * @throws IOException when we could not check it.
@@ -42,7 +43,7 @@ public class OfflineModeSessionProvider extends SessionProvider<OfflineSession> 
      * Offline-mode servers simply skip this step.
      *
      * @param session the user session
-     * @param hash the hash generated from earlier steps. This hash is used to verify the user.
+     * @param hash    the hash generated from earlier steps. This hash is used to verify the user.
      */
     @Override
     public void authenticateServer(OfflineSession session, String hash) {

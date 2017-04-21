@@ -27,6 +27,7 @@ public class DefaultPluginChannelManager implements PluginChannelManager {
 
     /**
      * Register a new plugin channel.
+     *
      * @param pluginChannel the plugin channel to register.
      */
     @Override
@@ -36,6 +37,7 @@ public class DefaultPluginChannelManager implements PluginChannelManager {
 
     /**
      * Unregister/remove a plugin channel.
+     *
      * @param pluginChannel the plugin channel to remove.
      */
     @Override
@@ -45,6 +47,7 @@ public class DefaultPluginChannelManager implements PluginChannelManager {
 
     /**
      * Get a plugin channel by its name.
+     *
      * @param name plugin channel name. Case sensitive.
      * @return corresponding plugin channel or null if not found.
      */
@@ -58,6 +61,7 @@ public class DefaultPluginChannelManager implements PluginChannelManager {
 
     /**
      * Raw handle method to handle incoming plugin messages.
+     *
      * @param name plugin channel name.
      * @param data payload for that channel.
      * @throws IOException when something goes wrong handling the channel.
@@ -76,7 +80,8 @@ public class DefaultPluginChannelManager implements PluginChannelManager {
 
     /**
      * Register the channels to the server.
-     * @param bot instance of the bots.
+     *
+     * @param bot    instance of the bots.
      * @param client net client which is used for packet networking.
      * @see com.lucadev.mcprotocol.protocol.network.client.NetClient
      */

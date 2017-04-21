@@ -17,10 +17,11 @@ public abstract class AbstractNetClient implements NetClient {
 
     /**
      * Constructor initializing the NetClient with a bots instance.
+     *
      * @param bot instance of our bots.
      */
     public AbstractNetClient(Bot bot) {
-        if(bot == null) {
+        if (bot == null) {
             throw new NullPointerException("Parameter bot may not be null.");
         }
         this.bot = bot;
@@ -28,6 +29,7 @@ public abstract class AbstractNetClient implements NetClient {
 
     /**
      * Force write packet to the connection.
+     *
      * @param packet packet to write to the connection.
      * @throws IOException when something goes wrong while writing the packet to the connection.
      */

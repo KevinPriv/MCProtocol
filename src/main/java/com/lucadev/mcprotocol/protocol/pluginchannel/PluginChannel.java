@@ -15,6 +15,7 @@ public abstract class PluginChannel {
 
     /**
      * Construct the plugin channel and specify the channel name.
+     *
      * @param name the plugin channel's name.
      */
     public PluginChannel(String name) {
@@ -30,6 +31,7 @@ public abstract class PluginChannel {
 
     /**
      * Handle custom data payload
+     *
      * @param is stream containing all payload data.
      * @throws IOException when something goes wrong while handling payload data.
      */
@@ -37,6 +39,7 @@ public abstract class PluginChannel {
 
     /**
      * When registering your channel to the server write your data payload through this method.
+     *
      * @param dos stream for custom data payload.
      * @throws IOException when something goes wrong while writing payload data.
      */

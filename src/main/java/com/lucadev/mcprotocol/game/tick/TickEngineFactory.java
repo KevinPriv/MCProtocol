@@ -14,6 +14,7 @@ public abstract class TickEngineFactory {
 
     /**
      * Create a tick engine
+     *
      * @param bot a reference to the Bot which will be used by the tick engine.
      * @return
      */
@@ -23,7 +24,7 @@ public abstract class TickEngineFactory {
      * @return obtain a singleton instance of the default factory for tick engines.
      */
     public static TickEngineFactory getDefaultFactory() {
-        if(defaultFactory == null) {
+        if (defaultFactory == null) {
             defaultFactory = new DefaultTickEngineFactory();
         }
         return defaultFactory;

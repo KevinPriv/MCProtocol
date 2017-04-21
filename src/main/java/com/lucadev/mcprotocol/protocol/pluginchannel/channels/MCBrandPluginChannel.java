@@ -39,6 +39,7 @@ public class MCBrandPluginChannel extends PluginChannel {
 
     /**
      * Handle custom data payload
+     *
      * @param is stream containing all payload data.
      * @throws IOException when something goes wrong while handling payload data.
      */
@@ -50,7 +51,7 @@ public class MCBrandPluginChannel extends PluginChannel {
 
     /**
      * @return name of the server implementation.
-     *          Null if this channel was not supported by the server or the channel hasn't been loaded yet.
+     * Null if this channel was not supported by the server or the channel hasn't been loaded yet.
      */
     public String getServerImplementationName() {
         return serverImplementation;
@@ -58,6 +59,7 @@ public class MCBrandPluginChannel extends PluginChannel {
 
     /**
      * When registering your channel to the server write your data payload through this method.
+     *
      * @param dos stream for custom data payload.
      * @throws IOException when something goes wrong while writing payload data.
      */

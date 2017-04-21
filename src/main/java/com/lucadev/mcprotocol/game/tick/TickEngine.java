@@ -11,6 +11,7 @@ public interface TickEngine extends Runnable {
 
     /**
      * Start the tickEngine
+     *
      * @param thread should we run in a separate thread or the current thread?
      */
     void start(boolean thread);
@@ -27,7 +28,8 @@ public interface TickEngine extends Runnable {
 
     /**
      * Register for the tick engine.
-     * @param delay every X ticks the listener will be executed.
+     *
+     * @param delay    every X ticks the listener will be executed.
      * @param listener the listener
      */
     void register(int delay, TickListener listener);

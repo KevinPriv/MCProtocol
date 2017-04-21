@@ -28,6 +28,7 @@ public class OfflineSession extends Session {
 
     /**
      * Constructor that sets up session with the specified profile name.
+     *
      * @param profileName the name of the player
      */
     public OfflineSession(String profileName) {

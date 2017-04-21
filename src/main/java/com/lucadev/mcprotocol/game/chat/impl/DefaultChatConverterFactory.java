@@ -16,6 +16,7 @@ public class DefaultChatConverterFactory implements ChatConverterFactory {
     /**
      * This method uses the singleton design pattern.
      * Once the converter has been created future calls to this method will return the same converter.
+     *
      * @return a chat converter.
      */
     @Override

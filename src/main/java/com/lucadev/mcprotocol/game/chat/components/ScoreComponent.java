@@ -15,9 +15,10 @@ public class ScoreComponent extends ChatComponent {
 
     /**
      * Setup a score component with the required score data.
-     * @param name username if player, entity uuid if entity
+     *
+     * @param name      username if player, entity uuid if entity
      * @param objective object name
-     * @param value resolved objective value
+     * @param value     resolved objective value
      */
     public ScoreComponent(String name, String objective, String value) {
         this.name = name;

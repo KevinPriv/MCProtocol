@@ -1,9 +1,11 @@
 package com.lucadev.mcprotocol.protocol.network.client.impl;
 
+import com.lucadev.io.ByteBuffer;
 import com.lucadev.mcprotocol.bots.Bot;
 import com.lucadev.mcprotocol.protocol.Protocol;
 import com.lucadev.mcprotocol.protocol.ProtocolException;
 import com.lucadev.mcprotocol.protocol.network.client.AbstractNetClient;
+import com.lucadev.mcprotocol.protocol.network.io.VarDataBuffer;
 import com.lucadev.mcprotocol.protocol.packets.Packet;
 import com.lucadev.mcprotocol.protocol.packets.ReadablePacket;
 import com.lucadev.mcprotocol.protocol.packets.UndefinedPacket;
@@ -13,7 +15,9 @@ import com.lucadev.mcprotocol.util.CompressionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
+import java.io.IOException;
 
 import static com.lucadev.mcprotocol.protocol.VarHelper.*;
 
@@ -38,6 +42,7 @@ public class DefaultNetClient extends AbstractNetClient {
 
     /**
      * Force write packet to the getConnection().
+     *
      * @param packet packet to write to the getConnection().
      * @throws IOException when something goes wrong while writing the packet to the getConnection().
      */
@@ -46,17 +51,16 @@ public class DefaultNetClient extends AbstractNetClient {
         if (PRINT_TRAFFIC) {
             logger.info("SEND 0x{}", Integer.toHexString(packet.getId()).toUpperCase());
         }
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        DataOutputStream packetData = new DataOutputStream(bytes);
+        ByteBuffer bytes = new ByteBuffer();
+        VarDataBuffer packetData = new VarDataBuffer(bytes);
 
         //WRITE PACKET ID
         packetData.writeByte(packet.getId());
         //WRITE PACKET SPECIFIC DATA SUCH AS FIELDS
         packet.write(packetData);
-        packetData.flush();
 
-        int dataSize = bytes.size();
         byte[] uncompressedData = bytes.toByteArray();
+        int dataSize = uncompressedData.length;
         if (compression) {
             //we have to compress it.
             byte[] compressedData = CompressionUtil.compress(uncompressedData.clone());
@@ -89,6 +93,7 @@ public class DefaultNetClient extends AbstractNetClient {
     /**
      * Sends a packet to the getConnection().
      * This implementation does not enable queues.
+     *
      * @param packet the packet to write.
      * @throws IOException gets thrown when something goes wrong while trying to send the packet.
      */
@@ -100,6 +105,7 @@ public class DefaultNetClient extends AbstractNetClient {
 
     /**
      * Directly read a packet from the getConnection().
+     *
      * @return the read packet.
      * @throws IOException when something goes wrong while trying to read the packet.
      */
@@ -155,10 +161,8 @@ public class DefaultNetClient extends AbstractNetClient {
         }
 
         ReadablePacket readablePacket = (ReadablePacket) packet;
-        ByteArrayInputStream b = new ByteArrayInputStream(data);
-        DataInputStream dis = new DataInputStream(b);
-        readablePacket.read(getBot(), dis, data.length);
-        dis.close();
+        VarDataBuffer buff = new VarDataBuffer(new ByteBuffer(data, true));
+        readablePacket.read(getBot(), buff);
         if (PRINT_TRAFFIC) {
             logger.info("RECEIVE: 0x{}", Integer.toHexString(readablePacket.getId()).toUpperCase());
         }
@@ -167,6 +171,7 @@ public class DefaultNetClient extends AbstractNetClient {
 
     /**
      * Reads packet length and id into a PacketLengthHeader.
+     *
      * @return packet header consisting of packet length and packet id.
      * @throws IOException when we could not read the header.
      */
@@ -181,8 +186,9 @@ public class DefaultNetClient extends AbstractNetClient {
 
     /**
      * Create packet header containing the packet size, packet id and data payload.
+     *
      * @param packet the packet to create the header for.
-     * @param data the data payload of the packet.
+     * @param data   the data payload of the packet.
      * @return header generated from the given parameters.
      */
     @Override
@@ -194,6 +200,7 @@ public class DefaultNetClient extends AbstractNetClient {
 
     /**
      * Enables packet compression.
+     *
      * @param threshold minimal packet size before packets are compressed into stream.
      */
     @Override
@@ -211,7 +218,7 @@ public class DefaultNetClient extends AbstractNetClient {
      */
     @Override
     public void disconnect() throws IOException {
-        if(!getConnection().isConnected()) {
+        if (!getConnection().isConnected()) {
             throw new IllegalStateException("Already disconnected.");
         }
         getConnection().close();
@@ -219,6 +226,7 @@ public class DefaultNetClient extends AbstractNetClient {
 
     /**
      * Method that gets called externally when we are free to read and process an incoming packet.
+     *
      * @throws IOException when something goes wrong reading from the getConnection().
      */
     @Override

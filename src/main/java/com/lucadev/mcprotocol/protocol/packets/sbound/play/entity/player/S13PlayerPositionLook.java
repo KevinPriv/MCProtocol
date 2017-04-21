@@ -1,10 +1,10 @@
 package com.lucadev.mcprotocol.protocol.packets.sbound.play.entity.player;
 
 import com.lucadev.mcprotocol.game.entity.player.Player;
+import com.lucadev.mcprotocol.protocol.network.io.VarDataBuffer;
 import com.lucadev.mcprotocol.protocol.packets.AbstractPacket;
 import com.lucadev.mcprotocol.protocol.packets.WritablePacket;
 
-import java.io.DataOutputStream;
 import java.io.IOException;
 
 /**
@@ -30,16 +30,16 @@ public class S13PlayerPositionLook extends AbstractPacket implements WritablePac
     /**
      * Write packets data
      *
-     * @param os
+     * @param buff
      * @throws IOException
      */
     @Override
-    public void write(DataOutputStream os) throws IOException {
-        os.writeDouble(player.getPosX());
-        os.writeDouble(player.getPosY());
-        os.writeDouble(player.getPosZ());
-        os.writeFloat(player.getYaw());
-        os.writeFloat(player.getPitch());
-        os.writeBoolean(player.isOnGround());
+    public void write(VarDataBuffer buff) throws IOException {
+        buff.writeDouble(player.getPosX());
+        buff.writeDouble(player.getPosY());
+        buff.writeDouble(player.getPosZ());
+        buff.writeFloat(player.getYaw());
+        buff.writeFloat(player.getPitch());
+        buff.writeBoolean(player.isOnGround());
     }
 }

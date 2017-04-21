@@ -16,8 +16,9 @@ public class EndianSwitchableInputStream extends FilterInputStream implements Da
 
     /**
      * Construct a io with its parent io and the endianness to use.
+     *
      * @param inputStream parent io.
-     * @param byteOrder endianness to use
+     * @param byteOrder   endianness to use
      */
     public EndianSwitchableInputStream(InputStream inputStream, ByteOrder byteOrder) {
         super(inputStream instanceof DataInputStream ? inputStream : new DataInputStream(inputStream));
@@ -26,6 +27,7 @@ public class EndianSwitchableInputStream extends FilterInputStream implements Da
 
     /**
      * Constructs a io with it's parent io. Uses big endian as byte order.
+     *
      * @param inputStream parent io.
      */
     public EndianSwitchableInputStream(InputStream inputStream) {
@@ -34,6 +36,7 @@ public class EndianSwitchableInputStream extends FilterInputStream implements Da
 
     /**
      * The parent io is a data io since we encapsulated it.
+     *
      * @return parent data io.
      */
     private DataInputStream getParent() {

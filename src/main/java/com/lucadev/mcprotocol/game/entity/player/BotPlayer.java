@@ -1,6 +1,5 @@
 package com.lucadev.mcprotocol.game.entity.player;
 
-import com.lucadev.mcprotocol.bots.AbstractPlayBot;
 import com.lucadev.mcprotocol.bots.PlayBot;
 import com.lucadev.mcprotocol.game.Difficulty;
 import com.lucadev.mcprotocol.game.Dimension;
@@ -40,6 +39,7 @@ public abstract class BotPlayer implements Player {
     /**
      * Register listeners for the packets required to manage the player object.
      * Also contains the tick workers if needed.
+     *
      * @param bot minimum bot implementation to handle a player.
      */
     public abstract void registerProtocolListeners(PlayBot bot);

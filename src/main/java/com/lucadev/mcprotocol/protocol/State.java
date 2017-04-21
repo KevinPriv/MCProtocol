@@ -48,6 +48,7 @@ public enum State {
 
     /**
      * Constructor for the state which sets the integer representation of the state.
+     *
      * @param stateCode the integer value linked to the state
      */
     State(int stateCode) {
@@ -64,11 +65,12 @@ public enum State {
 
     /**
      * Register a packet to the state.
+     *
      * @param clazz packet class
      */
     public void registerPacket(Class<? extends Packet> clazz) {
         int id = verifyPacketAndGetId(clazz);
-        if(packets.containsKey(id)) {
+        if (packets.containsKey(id)) {
             throw new IllegalStateException("Packet id 0x" +
                     Integer.toHexString(id).toUpperCase() + " already registered for state " + name());
         }
@@ -78,16 +80,17 @@ public enum State {
 
     /**
      * Verifies if the class meets requirements such as a default constructor and whatnot.
+     *
      * @param packet the packet class to inspect
      * @throws ProtocolException gets thrown when the packet does not meet requirement which result into a protocol exception.
      */
     private int verifyPacketAndGetId(Class<? extends Packet> packet) {
-            //gets the declared constructor with no parameters. Declared means it might not be publicly accessable.
+        //gets the declared constructor with no parameters. Declared means it might not be publicly accessable.
         try {
             Constructor con = packet.getDeclaredConstructor();
 
             //Checks if we can access it.
-            if(!Modifier.isPublic(con.getModifiers())) {
+            if (!Modifier.isPublic(con.getModifiers())) {
                 throw new IllegalAccessException("Packet " + packet.getName() + " has a non public default constructor.");
             }
 
@@ -107,12 +110,13 @@ public enum State {
 
     /**
      * Resolve a packet id to an instance of the packet from this state.
+     *
      * @param id the packet id to resolve.
      * @return resolved packet object or an UndefinedPacket object if the packet id was not registered.
      * @see com.lucadev.mcprotocol.protocol.packets.UndefinedPacket
      */
     public Packet resolvePacket(int id) {
-        if(!packets.containsKey(id)) {
+        if (!packets.containsKey(id)) {
             return new UndefinedPacket(id);
         }
         try {

@@ -1,11 +1,9 @@
 package com.lucadev.mcprotocol.auth.yggdrasil;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.lucadev.mcprotocol.auth.AuthException;
-import com.lucadev.mcprotocol.auth.Session;
 import com.lucadev.mcprotocol.auth.SessionProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +13,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
@@ -70,11 +67,12 @@ public class YggdrasilSessionProvider extends SessionProvider<YggdrasilSession> 
 
     /**
      * Authenticate with the given credentials and obtain a Session object.
-     * @param email account email or username(depends on migrated account, online/offline-mode etc...)
+     *
+     * @param email    account email or username(depends on migrated account, online/offline-mode etc...)
      * @param password the password used to authenticate the given email/username
      * @return the session obtained from trying to authenticating with the given credentials.
      * @throws IOException will be thrown when something unexpected happens during authentication.
-     *                      An example would be that the auth servers could be down or you lost your internet connection.
+     *                     An example would be that the auth servers could be down or you lost your internet connection.
      */
     @Override
     public YggdrasilSession authenticate(String email, String password) throws IOException {
@@ -113,7 +111,7 @@ public class YggdrasilSessionProvider extends SessionProvider<YggdrasilSession> 
         HttpsURLConnection resp = postJson("/validate", objectMapper.writeValueAsString(payload));
         int code = resp.getResponseCode();
         //code 204 means it's valid
-        if(code == HttpsURLConnection.HTTP_NO_CONTENT) {
+        if (code == HttpsURLConnection.HTTP_NO_CONTENT) {
             return true;
         }
 
@@ -125,8 +123,9 @@ public class YggdrasilSessionProvider extends SessionProvider<YggdrasilSession> 
 
     /**
      * Posts json data to the given endpoint on the authserver
+     *
      * @param endpoint endpoint to connect to such as /authenticate
-     * @param obj object to convert to json
+     * @param obj      object to convert to json
      * @return connection that was used for the request
      * @throws IOException when something goes wrong in the request.
      */
@@ -136,13 +135,14 @@ public class YggdrasilSessionProvider extends SessionProvider<YggdrasilSession> 
 
     /**
      * Posts json data to the given endpoint on the authserver
-     * @param endpoint endpoint to connect to such as /authenticate
+     *
+     * @param endpoint       endpoint to connect to such as /authenticate
      * @param encodedPayload json string
      * @return connection that was used for the request
      * @throws IOException when something goes wrong in the request.
      */
     protected HttpsURLConnection postJson(String endpoint, String encodedPayload) throws IOException {
-        if(!endpoint.startsWith("/")) {
+        if (!endpoint.startsWith("/")) {
             endpoint = "/" + endpoint;
         }
         URL url = new URL(BASE_URL + endpoint);
@@ -158,7 +158,8 @@ public class YggdrasilSessionProvider extends SessionProvider<YggdrasilSession> 
 
     /**
      * Read the string response from a request
-     * @param conn the connection with which the request was made.
+     *
+     * @param conn        the connection with which the request was made.
      * @param errorStream shall we use the available error stream instead of the input stream?
      * @return data returned by the request as a string
      * @throws IOException when we cannot convert it somehow.
@@ -177,6 +178,7 @@ public class YggdrasilSessionProvider extends SessionProvider<YggdrasilSession> 
 
     /**
      * Read the string response from a request
+     *
      * @param conn the connection with which the request was made.
      * @return data returned by the request as a string
      * @throws IOException when we cannot convert it somehow.
@@ -187,6 +189,7 @@ public class YggdrasilSessionProvider extends SessionProvider<YggdrasilSession> 
 
     /**
      * Parses the error json string to an AuthError
+     *
      * @param error json string
      * @return object containing error information
      * @throws IOException when we could not read the json correctly.
@@ -199,7 +202,7 @@ public class YggdrasilSessionProvider extends SessionProvider<YggdrasilSession> 
      * Authenticate to a service so that we are able to join servers. This is mostly used for online-mode
      *
      * @param session the user session
-     * @param hash the hash generated from earlier steps. This hash is used to verify the user.
+     * @param hash    the hash generated from earlier steps. This hash is used to verify the user.
      */
     @Override
     public void authenticateServer(YggdrasilSession session, String hash) throws IOException {

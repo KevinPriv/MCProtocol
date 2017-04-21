@@ -1,12 +1,10 @@
 package com.lucadev.mcprotocol.protocol.packets.sbound.play;
 
+import com.lucadev.mcprotocol.protocol.network.io.VarDataBuffer;
 import com.lucadev.mcprotocol.protocol.packets.AbstractPacket;
 import com.lucadev.mcprotocol.protocol.packets.WritablePacket;
 
-import java.io.DataOutputStream;
 import java.io.IOException;
-
-import static com.lucadev.mcprotocol.protocol.VarHelper.writeString;
 
 /**
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
@@ -33,12 +31,12 @@ public class S09PluginMessage extends AbstractPacket implements WritablePacket {
     /**
      * Write packets data
      *
-     * @param os
+     * @param buff
      * @throws IOException
      */
     @Override
-    public void write(DataOutputStream os) throws IOException {
-        writeString(os, name);
-        os.write(data);
+    public void write(VarDataBuffer buff) throws IOException {
+        buff.writeVarString(name);
+        buff.write(data);
     }
 }

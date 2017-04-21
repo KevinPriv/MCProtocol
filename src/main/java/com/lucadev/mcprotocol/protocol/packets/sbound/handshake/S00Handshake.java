@@ -1,14 +1,11 @@
 package com.lucadev.mcprotocol.protocol.packets.sbound.handshake;
 
 import com.lucadev.mcprotocol.protocol.State;
+import com.lucadev.mcprotocol.protocol.network.io.VarDataBuffer;
 import com.lucadev.mcprotocol.protocol.packets.AbstractPacket;
 import com.lucadev.mcprotocol.protocol.packets.WritablePacket;
 
-import java.io.DataOutputStream;
 import java.io.IOException;
-
-import static com.lucadev.mcprotocol.protocol.VarHelper.writeString;
-import static com.lucadev.mcprotocol.protocol.VarHelper.writeVarInt;
 
 /**
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
@@ -55,15 +52,15 @@ public class S00Handshake extends AbstractPacket implements WritablePacket {
     /**
      * Write packets data
      *
-     * @param os
+     * @param buff
      * @throws IOException
      */
     @Override
-    public void write(DataOutputStream os) throws IOException {
-        writeVarInt(os, protocolVersion);
-        writeString(os, host);
-        os.writeShort(port);
-        writeVarInt(os, state.getStateCode());
+    public void write(VarDataBuffer buff) throws IOException {
+        buff.writeVarInt(protocolVersion);
+        buff.writeVarString(host);
+        buff.writeShort(port);
+        buff.writeVarInt(state.getStateCode());
     }
 }
 

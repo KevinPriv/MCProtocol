@@ -4,13 +4,11 @@ import com.lucadev.mcprotocol.bots.Bot;
 import com.lucadev.mcprotocol.game.Difficulty;
 import com.lucadev.mcprotocol.game.Dimension;
 import com.lucadev.mcprotocol.game.GameMode;
+import com.lucadev.mcprotocol.protocol.network.io.VarDataBuffer;
 import com.lucadev.mcprotocol.protocol.packets.AbstractPacket;
 import com.lucadev.mcprotocol.protocol.packets.ReadablePacket;
 
-import java.io.DataInputStream;
 import java.io.IOException;
-
-import static com.lucadev.mcprotocol.protocol.VarHelper.readString;
 
 /**
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
@@ -32,18 +30,18 @@ public class C35JoinGame extends AbstractPacket implements ReadablePacket {
     /**
      * Read the data from the packets in here. This does not include packets id and stuff.
      *
-     * @param is
+     * @param buff
      * @throws IOException
      */
     @Override
-    public void read(Bot bot, DataInputStream is, int totalSize) throws IOException {
-        entityId = is.readInt();
-        gameMode = GameMode.valueOf(is.readByte());
-        dimension = Dimension.valueOf(is.readInt());
-        difficulty = Difficulty.getDifficulty(is.readByte());
-        byte maxPlayers = is.readByte();//ignored
-        levelType = readString(is, 16);
-        reducedDebug = is.readBoolean();
+    public void read(Bot bot, VarDataBuffer buff) throws IOException {
+        entityId = buff.readInt();
+        gameMode = GameMode.valueOf(buff.readByte());
+        dimension = Dimension.valueOf(buff.readInt());
+        difficulty = Difficulty.getDifficulty(buff.readByte());
+        byte maxPlayers = buff.readByte();//ignored
+        levelType = buff.readVarString(16);
+        reducedDebug = buff.readBoolean();
     }
 
     public int getEntityId() {

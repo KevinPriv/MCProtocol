@@ -1,6 +1,5 @@
 package com.lucadev.mcprotocol.auth.yggdrasil;
 
-import com.lucadev.mcprotocol.auth.Session;
 import com.lucadev.mcprotocol.auth.yggdrasil.cache.FileYggdrasilSessionStorage;
 import com.lucadev.mcprotocol.auth.yggdrasil.cache.YggdrasilSessionStorage;
 import org.slf4j.Logger;
@@ -33,6 +32,7 @@ public class CacheEnabledYggdrasilSessionProvider extends YggdrasilSessionProvid
 
     /**
      * Constructor that sets the storage method for a session.
+     *
      * @param storageMethod method of storing the session.
      */
     public CacheEnabledYggdrasilSessionProvider(YggdrasilSessionStorage storageMethod) {
@@ -51,12 +51,12 @@ public class CacheEnabledYggdrasilSessionProvider extends YggdrasilSessionProvid
      */
     @Override
     public YggdrasilSession authenticate(String email, String password) throws IOException {
-        if(storageMethod == null) {
+        if (storageMethod == null) {
             throw new IOException("No session storage method set!");
         }
         YggdrasilSession cachedSession = storageMethod.load();
-        if(cachedSession != null) {
-            if(validate(cachedSession)) {
+        if (cachedSession != null) {
+            if (validate(cachedSession)) {
                 logger.info("Cached session is still valid.");
                 return cachedSession;
             } else {

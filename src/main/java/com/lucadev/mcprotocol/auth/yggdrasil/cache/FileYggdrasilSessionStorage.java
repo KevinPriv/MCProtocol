@@ -51,13 +51,13 @@ public class FileYggdrasilSessionStorage implements YggdrasilSessionStorage {
      */
     @Override
     public void store(YggdrasilSession session) throws IOException {
-        if(file.exists()) {
-            if(!file.delete()) {
+        if (file.exists()) {
+            if (!file.delete()) {
                 throw new IOException("Could not delete previous session file.");
             }
         }
 
-        if(!file.createNewFile()) {
+        if (!file.createNewFile()) {
             throw new IOException("Could not create session file.");
         }
 
@@ -72,7 +72,7 @@ public class FileYggdrasilSessionStorage implements YggdrasilSessionStorage {
      */
     @Override
     public YggdrasilSession load() throws IOException {
-        if(!file.exists()) {
+        if (!file.exists()) {
             return null;
         }
 

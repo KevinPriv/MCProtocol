@@ -17,8 +17,9 @@ public class TickWorker {
 
     /**
      * Constructor setting up the worker with the given data.
-     * @param bot instance to our bots
-     * @param delay how many ticks to wait until we can execute the listener
+     *
+     * @param bot      instance to our bots
+     * @param delay    how many ticks to wait until we can execute the listener
      * @param listener the listener we will invoke once X amount of ticks have elapsed.
      */
     public TickWorker(Bot bot, int delay, TickListener listener) {
@@ -31,7 +32,7 @@ public class TickWorker {
      * Called by the tick engine, handles internal worker counter and the listener.
      */
     public void tick() {
-        if(delay <= 1) {
+        if (delay <= 1) {
             listener.onAction(bot);
             return;
         }

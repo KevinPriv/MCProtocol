@@ -7,7 +7,7 @@ import com.lucadev.mcprotocol.game.world.World;
  * Most common implementation of Bot used.
  * PlayerBot acts as a regular player to the server and allows you to log in, chat and execute various other tasks.
  * This can be seen as the most feature-rich implementation of Bot.
- *
+ * <p>
  * This implementation inherits the ChatBot functionality
  *
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
@@ -37,6 +37,7 @@ public class PlayerBot extends ChatBot {
 
     /**
      * Sets the world that the player exists in. Might need to change due to world teleportation.
+     *
      * @param world the world the player currently exists in.
      */
     public void setWorld(World world) {

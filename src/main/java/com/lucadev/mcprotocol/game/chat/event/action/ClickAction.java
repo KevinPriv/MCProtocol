@@ -29,6 +29,7 @@ public enum ClickAction {
 
     /**
      * Similar to valueOf but this first makes the name all uppercase to resolve the enum.
+     *
      * @param name the name of the action.
      * @return the enum associated with the given name.
      */

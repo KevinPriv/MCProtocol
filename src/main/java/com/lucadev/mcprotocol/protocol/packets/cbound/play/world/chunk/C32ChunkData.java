@@ -2,6 +2,7 @@ package com.lucadev.mcprotocol.protocol.packets.cbound.play.world.chunk;
 
 import com.lucadev.mcprotocol.bots.Bot;
 import com.lucadev.mcprotocol.game.world.Chunk;
+import com.lucadev.mcprotocol.protocol.network.io.VarDataBuffer;
 import com.lucadev.mcprotocol.protocol.packets.AbstractPacket;
 import com.lucadev.mcprotocol.protocol.packets.ReadablePacket;
 
@@ -28,12 +29,11 @@ public class C32ChunkData extends AbstractPacket implements ReadablePacket {
      * Read the data from the packets in here. This does not include packets id and stuff.
      *
      * @param bot
-     * @param is
-     * @param totalSize total size of the data we're able to read.
+     * @param buff
      * @throws IOException
      */
     @Override
-    public void read(Bot bot, DataInputStream is, int totalSize) throws IOException {
+    public void read(Bot bot, VarDataBuffer buff) throws IOException {
         /*
         xPos = is.readInt();
         zPos = is.readInt();

@@ -16,7 +16,8 @@ public class PacketLengthHeader extends PacketHeader {
 
     /**
      * Construct the header with its packet id and length.
-     * @param id packet id
+     *
+     * @param id     packet id
      * @param length packet length
      */
     public PacketLengthHeader(int id, int length) {
@@ -33,6 +34,7 @@ public class PacketLengthHeader extends PacketHeader {
 
     /**
      * Write the packet's header data to the stream
+     *
      * @param os the stream to write to.
      * @throws IOException when something goes wrong while writing the packet header to stream.
      */

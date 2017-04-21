@@ -15,6 +15,7 @@ public abstract class NetClientFactory {
 
     /**
      * Create default networking client.
+     *
      * @param bot the bot instance.
      * @return newly created networking client.
      */
@@ -24,7 +25,7 @@ public abstract class NetClientFactory {
      * @return lazy initiated singleton instance of the default factory implementation.
      */
     public static NetClientFactory getDefaultFactory() {
-        if(defaultFactory == null) {
+        if (defaultFactory == null) {
             defaultFactory = new DefaultNetClientFactory();
         }
         return defaultFactory;

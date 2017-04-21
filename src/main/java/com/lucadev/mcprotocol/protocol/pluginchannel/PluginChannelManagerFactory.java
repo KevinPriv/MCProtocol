@@ -1,10 +1,10 @@
 package com.lucadev.mcprotocol.protocol.pluginchannel;
 
 import com.lucadev.mcprotocol.protocol.pluginchannel.impl.DefaultPluginChannelManagerFactory;
-import com.lucadev.mcprotocol.protocol.pluginchannel.impl.DefaultPluginChannelManager;
 
 /**
  * TODO: make factory an interface and return default factory
+ *
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
  */
 public abstract class PluginChannelManagerFactory {
@@ -20,7 +20,7 @@ public abstract class PluginChannelManagerFactory {
      * @return singleton instance of the default factory implementation.
      */
     public static PluginChannelManagerFactory getDefaultFactory() {
-        if(defaultFactory == null) {
+        if (defaultFactory == null) {
             defaultFactory = new DefaultPluginChannelManagerFactory();
         }
 

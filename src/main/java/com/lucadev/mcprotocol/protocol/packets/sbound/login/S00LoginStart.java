@@ -1,10 +1,9 @@
 package com.lucadev.mcprotocol.protocol.packets.sbound.login;
 
-import com.lucadev.mcprotocol.protocol.VarHelper;
+import com.lucadev.mcprotocol.protocol.network.io.VarDataBuffer;
 import com.lucadev.mcprotocol.protocol.packets.AbstractPacket;
 import com.lucadev.mcprotocol.protocol.packets.WritablePacket;
 
-import java.io.DataOutputStream;
 import java.io.IOException;
 
 /**
@@ -30,11 +29,11 @@ public class S00LoginStart extends AbstractPacket implements WritablePacket {
     /**
      * Write packets data
      *
-     * @param os
+     * @param buff
      * @throws IOException
      */
     @Override
-    public void write(DataOutputStream os) throws IOException {
-        VarHelper.writeString(os, username);
+    public void write(VarDataBuffer buff) throws IOException {
+        buff.writeVarString(username);
     }
 }

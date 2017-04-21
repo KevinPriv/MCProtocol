@@ -1,6 +1,5 @@
 package com.lucadev.mcprotocol.protocol.impl.v316;
 
-import com.lucadev.mcprotocol.bots.AbstractPlayBot;
 import com.lucadev.mcprotocol.bots.PlayBot;
 import com.lucadev.mcprotocol.game.Difficulty;
 import com.lucadev.mcprotocol.game.Dimension;
@@ -39,6 +38,7 @@ public class Player316 extends BotPlayer {
     /**
      * Register listeners for the packets required to manage the player object.
      * May also register tick workers in here
+     *
      * @param playBot minimum bot implementation to handle a player
      */
     @Override

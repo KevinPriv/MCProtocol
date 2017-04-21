@@ -16,7 +16,7 @@ public class ReadTask extends Thread {
     private NetClient netClient;
 
     public ReadTask(Bot bot) {
-        if(bot == null) {
+        if (bot == null) {
             throw new NullPointerException("Bot parameter may not be null.");
         }
         this.bot = bot;

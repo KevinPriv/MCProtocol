@@ -35,7 +35,7 @@ public abstract class AbstractPlayBot extends AbstractBot implements PlayBot {
         super(botBuilder);
         sessionProvider = botBuilder.getSessionProvider();
         //check if we should auth
-        if(botBuilder.shouldAuthenticate()) {
+        if (botBuilder.shouldAuthenticate()) {
             //yup
             try {
                 authenticate(botBuilder.getUsername(), botBuilder.getPassword());
@@ -48,11 +48,12 @@ public abstract class AbstractPlayBot extends AbstractBot implements PlayBot {
     /**
      * Code to run to join the actual server and game.
      * Returns when the protocol state reaches PLAY
+     *
      * @throws IOException thrown when we cannot join the server somehow.
      */
     @Override
     public void joinServer() throws IOException {
-        if(!isConnected()) {
+        if (!isConnected()) {
             connect();
         }
         getProtocol().serverLogin();
@@ -78,7 +79,7 @@ public abstract class AbstractPlayBot extends AbstractBot implements PlayBot {
      */
     @Override
     public void connect(String host, int port) throws IOException {
-        if(isConnected()) {
+        if (isConnected()) {
             throw new IllegalStateException("May not connect when already connected.");
         }
         getConnection().connect(host, port);
@@ -92,7 +93,7 @@ public abstract class AbstractPlayBot extends AbstractBot implements PlayBot {
      */
     @Override
     public void disconnect() throws IOException {
-        if(!isConnected()) {
+        if (!isConnected()) {
             throw new IllegalStateException("Cannot disconnect when not connected.");
         }
         //Let the protocol handle any disconnect calls since it might be protocol specific.
@@ -129,6 +130,7 @@ public abstract class AbstractPlayBot extends AbstractBot implements PlayBot {
 
     /**
      * Sets the session provider we should use when authenticating.
+     *
      * @param sessionProvider implementation of SessionProvider to use when authenticating next time.
      */
     protected void setSessionProvider(SessionProvider sessionProvider) {
@@ -138,10 +140,11 @@ public abstract class AbstractPlayBot extends AbstractBot implements PlayBot {
     /**
      * Sets the session currently in use by the bots.
      * May only be changed when the bots is not connected.
+     *
      * @param session the session for the bots to use.
      */
     protected void setSession(Session session) {
-        if(isConnected()) {
+        if (isConnected()) {
             throw new IllegalArgumentException("May only change session when not connected. This is to prevent possible crashes/instabilities.");
         }
         this.session = session;
@@ -149,6 +152,7 @@ public abstract class AbstractPlayBot extends AbstractBot implements PlayBot {
 
     /**
      * Since there are some essential player packets we will require atleast some form of player object to handle those.
+     *
      * @return Model of the bot's minecraft player
      */
     @Override
@@ -158,10 +162,11 @@ public abstract class AbstractPlayBot extends AbstractBot implements PlayBot {
 
     /**
      * Sets the minecraft player model.
+     *
      * @param player player model for this bot.
      */
     public void setPlayer(Player player) {
-        if(this.player != null) {
+        if (this.player != null) {
             throw new IllegalStateException("May not set player object twice!");
         }
         this.player = player;

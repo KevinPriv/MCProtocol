@@ -20,6 +20,7 @@ public class ChatHelper {
 
     /**
      * Create a chat component from the given string
+     *
      * @param text the text that the message should contain.
      * @return a chat component that contains the given text.
      */

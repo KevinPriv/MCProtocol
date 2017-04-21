@@ -42,6 +42,7 @@ public class ChatBot extends AbstractPlayBot implements ChatHandler {
 
     /**
      * Send a chat message to the server.
+     *
      * @param message text message to send.
      * @throws IOException when we fail to send the message.
      */
@@ -52,12 +53,13 @@ public class ChatBot extends AbstractPlayBot implements ChatHandler {
 
     /**
      * Handle incoming chat messages for the ChatHandler to further process.
+     *
      * @param component chat component
-     * @param position chat messages are used for multiple things.
-     *                 Position defines what the read component should be used for.
-     *                 0: chat(chat box)
-     *                 1: system message(chat box)
-     *                 2: above hotbar
+     * @param position  chat messages are used for multiple things.
+     *                  Position defines what the read component should be used for.
+     *                  0: chat(chat box)
+     *                  1: system message(chat box)
+     *                  2: above hotbar
      */
     public void handleIncomingChat(ChatComponent component, byte position) {
         //just print chat messages until more functionality is added

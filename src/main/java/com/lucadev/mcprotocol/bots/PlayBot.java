@@ -12,6 +12,7 @@ public interface PlayBot extends Bot, ServerLogin, SessionAuthentication {
 
     /**
      * Player model once logged into the server.
+     *
      * @return
      */
     Player getPlayer();

@@ -1,15 +1,12 @@
 package com.lucadev.mcprotocol.protocol.packets.cbound.login;
 
 import com.lucadev.mcprotocol.bots.Bot;
+import com.lucadev.mcprotocol.protocol.network.io.VarDataBuffer;
 import com.lucadev.mcprotocol.protocol.packets.AbstractPacket;
 import com.lucadev.mcprotocol.protocol.packets.ReadablePacket;
 
-import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.Arrays;
-
-import static com.lucadev.mcprotocol.protocol.VarHelper.readString;
-import static com.lucadev.mcprotocol.protocol.VarHelper.readVarInt;
 
 /**
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
@@ -49,18 +46,18 @@ public class C01EncryptionRequest extends AbstractPacket implements ReadablePack
     /**
      * Read the data from the packets in here. This does not include packets id and stuff.
      *
-     * @param is
+     * @param buff
      * @throws IOException
      */
     @Override
-    public void read(Bot bot, DataInputStream is, int totalSize) throws IOException {
-        serverId = readString(is, 20);
-        pubKeyLength = readVarInt(is);
+    public void read(Bot bot, VarDataBuffer buff) throws IOException {
+        serverId = buff.readVarString(20);
+        pubKeyLength = buff.readVarInt();
         pubKey = new byte[pubKeyLength];
-        is.readFully(pubKey);
-        verifyTokenLength = readVarInt(is);
+        buff.readFully(pubKey);
+        verifyTokenLength = buff.readVarInt();
         verifyToken = new byte[verifyTokenLength];
-        is.readFully(verifyToken);
+        buff.readFully(verifyToken);
         System.out.println(toString());
     }
 

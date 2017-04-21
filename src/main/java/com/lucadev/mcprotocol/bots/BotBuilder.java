@@ -40,6 +40,7 @@ public class BotBuilder {
 
     /**
      * Constructor specifying the server's ip address or hostname
+     *
      * @param host ip address or hostname of the Minecraft server we want to connect to.
      */
     public BotBuilder(String host) {
@@ -48,6 +49,7 @@ public class BotBuilder {
 
     /**
      * Constructor specifying the server's ip address or hostname and port number
+     *
      * @param host ip address or hostname of the Minecraft server we want to connect to.
      * @param port the port that the Minecraft server runs on.
      */
@@ -187,6 +189,7 @@ public class BotBuilder {
 
     /**
      * Enables authentication so we will actually obtain a Session object.
+     *
      * @return instance of this builder.
      * @see com.lucadev.mcprotocol.auth.Session
      */

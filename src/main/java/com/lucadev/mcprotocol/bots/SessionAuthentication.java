@@ -24,7 +24,8 @@ public interface SessionAuthentication {
 
     /**
      * Authenticate and replace the current session.
-     * @param email email or username
+     *
+     * @param email    email or username
      * @param password password to auth with
      * @throws IOException if authentication fails somehow.
      */

@@ -14,6 +14,7 @@ public class PacketHeader {
 
     /**
      * Construct the packet header with a packet id.
+     *
      * @param id read packet id.
      */
     public PacketHeader(int id) {
@@ -29,6 +30,7 @@ public class PacketHeader {
 
     /**
      * Write the packet's header data to the stream
+     *
      * @param os the stream to write to.
      * @throws IOException when something goes wrong while writing the packet header to stream.
      */

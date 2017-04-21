@@ -15,6 +15,7 @@ public interface YggdrasilSessionStorage {
 
     /**
      * Stores the given session
+     *
      * @param session the YggdrasilSession to store.
      * @throws IOException thrown when we somehow cannot store it.
      */
@@ -22,6 +23,7 @@ public interface YggdrasilSessionStorage {
 
     /**
      * Loads the YggdrasilSession
+     *
      * @return loaded YggdrasilSession that has not been verified yet.
      * @throws IOException thrown when we could not load it.
      */

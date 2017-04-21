@@ -13,6 +13,7 @@ public class DefaultNetClientFactory extends NetClientFactory {
 
     /**
      * Create default networking client.
+     *
      * @param bot the bots instance.
      * @return newly created networking client.
      */

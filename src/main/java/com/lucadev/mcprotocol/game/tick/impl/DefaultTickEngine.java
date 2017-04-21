@@ -24,6 +24,7 @@ public class DefaultTickEngine extends AbstractTickEngine {
 
     /**
      * Constructor required to call super constructor.
+     *
      * @param bot an instance of our bots.
      */
     public DefaultTickEngine(Bot bot) {
@@ -37,7 +38,7 @@ public class DefaultTickEngine extends AbstractTickEngine {
      */
     @Override
     public void start(boolean thread) {
-        if(thread) {
+        if (thread) {
             Thread t = new Thread(this);
             t.setName(toString());
             t.start();
@@ -56,6 +57,7 @@ public class DefaultTickEngine extends AbstractTickEngine {
 
     /**
      * May be threaded depending on the boolean given in the start method. If not threaded it will run in the same thread.
+     *
      * @see Runnable#run()
      */
     @Override

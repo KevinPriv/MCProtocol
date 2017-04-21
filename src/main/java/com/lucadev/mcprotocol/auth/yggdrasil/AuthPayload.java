@@ -20,8 +20,9 @@ public class AuthPayload {
 
     /**
      * Constructor that sets the required payload data.
-     * @param agent the authenticate agent: which service are we authenticating for? In this case Minecraft
-     * @param version protocolVersion number that could be used by auth servers to identify the client protocolVersion(not used as of now)
+     *
+     * @param agent    the authenticate agent: which service are we authenticating for? In this case Minecraft
+     * @param version  protocolVersion number that could be used by auth servers to identify the client protocolVersion(not used as of now)
      * @param username the username credential
      * @param password the password for the given username.
      */
@@ -69,7 +70,8 @@ public class AuthPayload {
 
         /**
          * Constructs the agent with the given name and client auth protocolVersion.
-         * @param name identifies which service are we authenticating for? In this case Minecraft but could also be Scrolls.
+         *
+         * @param name    identifies which service are we authenticating for? In this case Minecraft but could also be Scrolls.
          * @param version protocolVersion of our auth mechanism(1 as current value but might increase in the future).
          */
         public Agent(String name, int version) {

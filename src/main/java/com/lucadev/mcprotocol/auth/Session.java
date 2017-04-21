@@ -17,9 +17,10 @@ public abstract class Session {
 
     /**
      * Constructor that sets up the session information.
+     *
      * @param accessToken random hex string used to authenticate the user without password(just like a web cookie)
      * @param clientToken random generated UUID(need to read more documentation about this)
-     * @param profileId player uuid
+     * @param profileId   player uuid
      * @param profileName player username
      */
     public Session(String accessToken, String clientToken, String profileId, String profileName) {

@@ -1,12 +1,10 @@
 package com.lucadev.mcprotocol.protocol.packets.sbound.play;
 
+import com.lucadev.mcprotocol.protocol.network.io.VarDataBuffer;
 import com.lucadev.mcprotocol.protocol.packets.AbstractPacket;
 import com.lucadev.mcprotocol.protocol.packets.WritablePacket;
 
-import java.io.DataOutputStream;
 import java.io.IOException;
-
-import static com.lucadev.mcprotocol.protocol.VarHelper.writeVarInt;
 
 /**
  * @author Luca Camphuisen < Luca.Camphuisen@hva.nl >
@@ -30,11 +28,11 @@ public class S10KeepAlive extends AbstractPacket implements WritablePacket {
     /**
      * Write packets data
      *
-     * @param os
+     * @param buff
      * @throws IOException
      */
     @Override
-    public void write(DataOutputStream os) throws IOException {
-        writeVarInt(os, keepAliveId);
+    public void write(VarDataBuffer buff) throws IOException {
+        buff.writeVarInt(keepAliveId);
     }
 }

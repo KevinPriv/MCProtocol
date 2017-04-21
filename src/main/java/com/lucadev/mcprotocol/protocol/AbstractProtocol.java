@@ -19,7 +19,8 @@ public abstract class AbstractProtocol implements Protocol {
 
     /**
      * Register a packet which can later be resolved when read from stream.
-     * @param state state in which the packet functions(chat message only functions in PLAY for example).
+     *
+     * @param state  state in which the packet functions(chat message only functions in PLAY for example).
      * @param packet the packet class, id will be resolved from the given packet class
      */
     public void register(State state, Class<? extends Packet> packet) {
@@ -28,7 +29,8 @@ public abstract class AbstractProtocol implements Protocol {
 
     /**
      * Get a packet from its id and its state.
-     * @param id the id of the packet
+     *
+     * @param id    the id of the packet
      * @param state the state that we look the packet in.
      *              Packets can have equal id's but are seperated by the state the connection is in.
      * @return the resolved packet.
@@ -49,6 +51,7 @@ public abstract class AbstractProtocol implements Protocol {
 
     /**
      * Change the state to the given state.
+     *
      * @param state new connection state.
      */
     @Override
@@ -65,6 +68,7 @@ public abstract class AbstractProtocol implements Protocol {
 
     /**
      * Implemented in the abstract class since we do not expect much change. Can always be overriden by a protocol implementation.
+     *
      * @return protocol specific NetClient factory implementation.
      */
     @Override
@@ -74,6 +78,7 @@ public abstract class AbstractProtocol implements Protocol {
 
     /**
      * Implemented in the abstract class since we do not expect much change. Can always be override by a protocol implementation.
+     *
      * @return protocol specific Connection factory implementation.
      */
     @Override

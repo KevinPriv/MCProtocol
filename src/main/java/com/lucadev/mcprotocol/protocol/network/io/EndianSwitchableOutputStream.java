@@ -16,8 +16,9 @@ public class EndianSwitchableOutputStream extends FilterOutputStream implements 
 
     /**
      * Construct a io from the parent io and set the endianness that will be used initially.
+     *
      * @param outputStream parent io.
-     * @param byteOrder endianness to use.
+     * @param byteOrder    endianness to use.
      */
     public EndianSwitchableOutputStream(OutputStream outputStream, ByteOrder byteOrder) {
         super(outputStream instanceof DataOutputStream ? outputStream : new DataOutputStream(outputStream));
@@ -26,6 +27,7 @@ public class EndianSwitchableOutputStream extends FilterOutputStream implements 
 
     /**
      * Constructs a io from its parent io. Using big endian as initial byte order.
+     *
      * @param outputStream the parent io.
      */
     public EndianSwitchableOutputStream(OutputStream outputStream) {
@@ -34,6 +36,7 @@ public class EndianSwitchableOutputStream extends FilterOutputStream implements 
 
     /**
      * Get parent io. It's a data io since we encapsulated it in the constructor.
+     *
      * @return parent data io
      */
     private DataOutputStream getParent() {
@@ -49,6 +52,7 @@ public class EndianSwitchableOutputStream extends FilterOutputStream implements 
 
     /**
      * Set what endianness we should use for the io.
+     *
      * @param byteOrder the endianness to use.
      */
     public void setByteOrder(ByteOrder byteOrder) {
